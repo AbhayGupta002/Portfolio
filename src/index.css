@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    background: #fbfcfa;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    min-width: 320px;
+    margin: 0;
+    background: #fbfcfa;
+    color: #17251f;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  html.dark {
+    color-scheme: dark;
+    background: #060B13;
+  }
+
+  html.dark body {
+    background: #060B13;
+    color: #E2E8F0;
+  }
+
+  a { text-decoration: none; }
+  ::selection { background: #cfe5d7; color: #173b31; }
+  html.dark ::selection { background: #1E3A8A; color: #93C5FD; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #fbfcfa; }
+  html.dark ::-webkit-scrollbar-track { background: #060B13; }
+  ::-webkit-scrollbar-thumb { background: #bdcec3; border-radius: 999px; }
+  html.dark ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #789886; }
+  html.dark ::-webkit-scrollbar-thumb:hover { background: #334155; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes flagFlutter {
+  0%, 100% { transform: rotate(0deg) skewY(0deg); }
+  50% { transform: rotate(-3deg) skewY(-6deg); }
+}
+
+@keyframes packetBeam {
+  0% { transform: translateX(0%); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+@layer components {
+  .section-wash {
+    background: #F1F5F9;
+  }
+  html.dark .section-wash {
+    background: #08101E;
+  }
+
+  .section-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: #2563EB;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1rem;
+    text-transform: uppercase;
+  }
+  html.dark .section-kicker {
+    color: #38BDF8;
+  }
+
+  .section-title {
+    color: #0F172A;
+    font-size: clamp(1.75rem, 3.8vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+  html.dark .section-title {
+    color: #FFFFFF;
+  }
+
+  .section-copy {
+    margin-top: 0.65rem;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+  html.dark .section-copy {
+    color: #94A3B8;
+  }
+
+  /* Hide scrollbars on horizontal snap carousels while keeping touch scroll */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
