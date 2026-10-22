@@ -50,7 +50,13 @@ export const FloatingQuickDock: React.FC = () => {
 
   const copyEmail = () => {
     if (profile.email) {
-      navigator.clipboard.writeText(profile.email);
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          navigator.clipboard.writeText(profile.email).catch(() => {});
+        }
+      } catch {
+        // ignore clipboard error on mobile
+      }
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }

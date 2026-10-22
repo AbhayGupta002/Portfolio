@@ -7,18 +7,28 @@ export const InteractiveProfileBackground: React.FC = () => {
 
   useEffect(() => {
     let animationFrameId: number;
-    const handleMouseMove = (e: MouseEvent) => {
+    const updatePos = (clientX: number, clientY: number) => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
-        const x = Math.round((e.clientX / window.innerWidth) * 100);
-        const y = Math.round((e.clientY / window.innerHeight) * 100);
+        if (!window.innerWidth || !window.innerHeight) return;
+        const x = Math.round((clientX / window.innerWidth) * 100);
+        const y = Math.round((clientY / window.innerHeight) * 100);
         setMousePos({ x, y });
       });
     };
 
+    const handleMouseMove = (e: MouseEvent) => updatePos(e.clientX, e.clientY);
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches && e.touches[0]) {
+        updatePos(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
