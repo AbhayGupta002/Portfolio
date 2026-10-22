@@ -15,6 +15,7 @@ import { AdminAuthModal } from './components/admin/AdminAuthModal';
 import { AdminFloatingBar } from './components/admin/AdminFloatingBar';
 import { ResumeHeistModal } from './components/resume/ResumeHeistModal';
 import { InteractiveProfileBackground } from './components/common/InteractiveProfileBackground';
+import { FloatingQuickDock } from './components/common/FloatingQuickDock';
 
 const PortfolioContent: React.FC = () => {
   const { isDark } = useTheme();
@@ -52,6 +53,9 @@ const PortfolioContent: React.FC = () => {
       </main>
 
       <Footer />
+
+      {/* Floating Section Tracker & Quick Action Dock */}
+      <FloatingQuickDock />
 
       {/* Admin Login Gate Modal (Simple Login, Password Change, Recovery) */}
       <AdminAuthModal />

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowUpRight,
   BriefcaseBusiness,
@@ -156,115 +157,124 @@ export const ExperienceSection: React.FC = () => {
             </div>
 
             {/* Laptop / Tablet Open Book 2-Page Spread (12-column adaptive grid) */}
-            {activeExp && (
-              <div className="hidden sm:grid sm:grid-cols-12 divide-y sm:divide-y-0 sm:divide-x divide-slate-200/80 dark:divide-blue-900/40">
-                {/* Left Book Page (4 cols): Role Identity, Timeline, Location & Tech Spans */}
-                <div className="sm:col-span-4 p-6 lg:p-8 flex flex-col justify-between bg-slate-50/40 dark:bg-[#091324]/50">
-                  <div>
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-cyan-400 font-mono text-xs font-semibold">
-                        CHAPTER 0{safeIndex + 1}
+            <AnimatePresence mode="wait">
+              {activeExp && (
+                <motion.div
+                  key={activeExp.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                  className="hidden sm:grid sm:grid-cols-12 divide-y sm:divide-y-0 sm:divide-x divide-slate-200/80 dark:divide-blue-900/40"
+                >
+                  {/* Left Book Page (4 cols): Role Identity, Timeline, Location & Tech Spans */}
+                  <div className="sm:col-span-4 p-6 lg:p-8 flex flex-col justify-between bg-slate-50/40 dark:bg-[#091324]/50">
+                    <div>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-cyan-400 font-mono text-xs font-semibold">
+                          CHAPTER 0{safeIndex + 1}
+                        </span>
+                        <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
+                          {activeExp.period}
+                        </span>
+                      </div>
+
+                      <h3 className="mt-4 text-xl lg:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                        {activeExp.role}
+                      </h3>
+                      <p className="mt-1 text-sm font-semibold text-blue-600 dark:text-cyan-400">
+                        {activeExp.company}
+                      </p>
+
+                      <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-mono text-slate-700 dark:text-slate-300 font-medium">
+                        <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-cyan-400" />
+                        {activeExp.location}
                       </span>
-                      <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
-                        {activeExp.period}
-                      </span>
+
+                      {/* Tech Stack Spans */}
+                      <div className="mt-6">
+                        <span className="block text-[10px] font-mono uppercase tracking-wider text-slate-600 dark:text-slate-400 font-bold mb-2">
+                          Technologies Used
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {activeExp.techStack.map((tech) => (
+                            <span
+                              key={tech}
+                              className="rounded-lg bg-white dark:bg-[#101D33] px-2.5 py-1 text-xs font-mono font-medium text-slate-800 dark:text-cyan-300 border border-slate-300/80 dark:border-blue-900/50 hover:border-blue-400 dark:hover:border-cyan-400 transition"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
 
-                    <h3 className="mt-4 text-xl lg:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                      {activeExp.role}
-                    </h3>
-                    <p className="mt-1 text-sm font-semibold text-blue-600 dark:text-cyan-400">
-                      {activeExp.company}
-                    </p>
+                    {isAdminMode && (
+                      <div className="mt-6 pt-4 border-t border-slate-200/70 dark:border-blue-900/40 flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEditingExperienceId(activeExp.id);
+                            openAdminModal('experience');
+                          }}
+                          className="px-3 py-1.5 rounded-xl border border-blue-500/40 text-blue-600 dark:text-cyan-400 text-xs font-semibold flex items-center gap-1 cursor-pointer"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" /> Edit Role
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (confirm(`Delete experience at ${activeExp.company}?`)) {
+                              deleteExperience(activeExp.id);
+                            }
+                          }}
+                          className="px-3 py-1.5 rounded-xl border border-red-500/40 text-red-500 text-xs font-semibold flex items-center gap-1 cursor-pointer"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
 
-                    <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-mono text-slate-500 dark:text-slate-400">
-                      <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-cyan-400" />
-                      {activeExp.location}
-                    </span>
-
-                    {/* Tech Stack Spans */}
-                    <div className="mt-6">
-                      <span className="block text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
-                        Technologies Used
+                  {/* Right Book Page (8 cols): Key Contributions & Impact Cards */}
+                  <div className="sm:col-span-8 p-6 lg:p-8 flex flex-col justify-between">
+                    <div>
+                      <span className="text-xs font-mono uppercase tracking-wider text-blue-600 dark:text-cyan-400 font-semibold">
+                        Key Engineering Contributions & Impact
                       </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {activeExp.techStack.map((tech) => (
-                          <span
-                            key={tech}
-                            className="rounded-lg bg-white dark:bg-[#101D33] px-2.5 py-1 text-xs font-mono text-slate-700 dark:text-cyan-300 border border-slate-200/90 dark:border-blue-900/50"
+
+                      <div className="mt-4 grid grid-cols-1 gap-3">
+                        {activeExp.highlights.map((item, idx) => (
+                          <div
+                            key={idx}
+                            className="p-3.5 rounded-2xl border border-slate-200/70 dark:border-blue-900/40 bg-slate-50/60 dark:bg-[#0E1A30]/60 flex items-start gap-3 transition hover:border-blue-400 dark:hover:border-cyan-400/50"
                           >
-                            {tech}
-                          </span>
+                            <span className="mt-0.5 shrink-0 font-mono text-xs font-bold text-blue-600 dark:text-cyan-400 bg-blue-500/10 px-2 py-0.5 rounded-md">
+                              0{idx + 1}
+                            </span>
+                            <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+                              {item}
+                            </p>
+                          </div>
                         ))}
                       </div>
                     </div>
-                  </div>
 
-                  {isAdminMode && (
-                    <div className="mt-6 pt-4 border-t border-slate-200/70 dark:border-blue-900/40 flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEditingExperienceId(activeExp.id);
-                          openAdminModal('experience');
-                        }}
-                        className="px-3 py-1.5 rounded-xl border border-blue-500/40 text-blue-600 dark:text-cyan-400 text-xs font-semibold flex items-center gap-1 cursor-pointer"
+                    <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-blue-900/30 flex items-center justify-between text-xs">
+                      <span className="font-mono text-slate-400 dark:text-slate-500">
+                        Page 0{safeIndex + 1} of 0{experiences.length}
+                      </span>
+                      <a
+                        href="#projects"
+                        className="group inline-flex items-center gap-1.5 font-semibold text-blue-600 dark:text-cyan-400 hover:underline"
                       >
-                        <Edit3 className="w-3.5 h-3.5" /> Edit Role
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (confirm(`Delete experience at ${activeExp.company}?`)) {
-                            deleteExperience(activeExp.id);
-                          }
-                        }}
-                        className="px-3 py-1.5 rounded-xl border border-red-500/40 text-red-500 text-xs font-semibold flex items-center gap-1 cursor-pointer"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  )}
-                </div>
-
-                {/* Right Book Page (8 cols): Key Contributions & Impact Cards */}
-                <div className="sm:col-span-8 p-6 lg:p-8 flex flex-col justify-between">
-                  <div>
-                    <span className="text-xs font-mono uppercase tracking-wider text-blue-600 dark:text-cyan-400 font-semibold">
-                      Key Engineering Contributions & Impact
-                    </span>
-
-                    <div className="mt-4 grid grid-cols-1 gap-3">
-                      {activeExp.highlights.map((item, idx) => (
-                        <div
-                          key={idx}
-                          className="p-3.5 rounded-2xl border border-slate-200/70 dark:border-blue-900/40 bg-slate-50/60 dark:bg-[#0E1A30]/60 flex items-start gap-3 transition-colors"
-                        >
-                          <span className="mt-0.5 shrink-0 font-mono text-xs font-bold text-blue-600 dark:text-cyan-400 bg-blue-500/10 px-2 py-0.5 rounded-md">
-                            0{idx + 1}
-                          </span>
-                          <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-200">
-                            {item}
-                          </p>
-                        </div>
-                      ))}
+                        Explore Projects <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </a>
                     </div>
                   </div>
-
-                  <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-blue-900/30 flex items-center justify-between text-xs">
-                    <span className="font-mono text-slate-400 dark:text-slate-500">
-                      Page 0{safeIndex + 1} of 0{experiences.length}
-                    </span>
-                    <a
-                      href="#projects"
-                      className="inline-flex items-center gap-1.5 font-semibold text-blue-600 dark:text-cyan-400 hover:underline"
-                    >
-                      Explore Projects <ArrowUpRight className="h-4 w-4" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Mobile Horizontal Snap Book Slides (Swipeable Cards on Phone Screens) */}
             <div

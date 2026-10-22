@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Award, GraduationCap, MapPin, Edit3, BookMarked } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Award, GraduationCap, MapPin, Edit3, BookMarked, Sparkles } from 'lucide-react';
 import { usePortfolioData } from '../../context/PortfolioDataContext';
 
 export const EducationSection: React.FC = () => {
@@ -29,7 +30,7 @@ export const EducationSection: React.FC = () => {
                 onClick={() => setMobilePane('academic')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-mono font-semibold transition cursor-pointer ${
                   mobilePane === 'academic'
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-blue-600 text-white shadow-xs'
                     : 'text-slate-600 dark:text-slate-300'
                 }`}
               >
@@ -40,7 +41,7 @@ export const EducationSection: React.FC = () => {
                 onClick={() => setMobilePane('certs')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-mono font-semibold transition cursor-pointer ${
                   mobilePane === 'certs'
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-blue-600 text-white shadow-xs'
                     : 'text-slate-600 dark:text-slate-300'
                 }`}
               >
@@ -60,8 +61,14 @@ export const EducationSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Single Unified Glass Credential Book (Rearranges from 12-col laptop spread to tabbed / horizontal slides on mobile) */}
-        <div className="rounded-3xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/90 backdrop-blur-xl shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden transition-colors">
+        {/* Single Unified Glass Credential Book */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.5 }}
+          className="rounded-3xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/90 backdrop-blur-xl shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden transition-all hover:border-blue-400/60 dark:hover:border-cyan-500/40"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-200/80 dark:divide-blue-900/40">
             {/* Left Page (6 cols on laptop): Academic Degrees */}
             <div
@@ -89,13 +96,13 @@ export const EducationSection: React.FC = () => {
                   {education.map((edu, idx) => (
                     <article
                       key={idx}
-                      className="snap-center shrink-0 w-[84vw] sm:w-[70vw] lg:w-auto rounded-2xl border border-slate-200/80 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70 p-5 transition hover:border-blue-400 dark:hover:border-cyan-500/40"
+                      className="snap-center shrink-0 w-[84vw] sm:w-[70vw] lg:w-auto rounded-2xl border border-slate-200/80 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70 p-5 transition hover:border-blue-400 dark:hover:border-cyan-500/40 hover:-translate-y-0.5"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                         <span className="px-2.5 py-0.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-cyan-400 font-mono text-xs font-semibold">
                           {edu.period}
                         </span>
-                        <span className="inline-flex items-center gap-1 text-xs font-mono text-slate-500 dark:text-slate-400">
+                        <span className="inline-flex items-center gap-1 text-xs font-mono text-slate-700 dark:text-slate-300 font-medium">
                           <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-cyan-400" />
                           {edu.location}
                         </span>
@@ -104,12 +111,12 @@ export const EducationSection: React.FC = () => {
                       <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                         {edu.degree}
                       </h3>
-                      <p className="mt-0.5 text-xs sm:text-sm font-semibold text-blue-600 dark:text-cyan-400">
+                      <p className="mt-0.5 text-xs sm:text-sm font-semibold text-blue-700 dark:text-cyan-400">
                         {edu.institution}
                       </p>
 
                       {edu.details && (
-                        <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                        <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-200">
                           {edu.details}
                         </p>
                       )}
@@ -145,7 +152,7 @@ export const EducationSection: React.FC = () => {
                   {certifications.map((cert, idx) => (
                     <article
                       key={idx}
-                      className="snap-center shrink-0 w-[84vw] sm:w-[70vw] lg:w-auto rounded-2xl border border-slate-200/80 dark:border-blue-900/40 bg-white/90 dark:bg-[#0E1A30]/80 p-4 sm:p-5 transition hover:border-blue-400 dark:hover:border-cyan-500/40"
+                      className="snap-center shrink-0 w-[84vw] sm:w-[70vw] lg:w-auto rounded-2xl border border-slate-200/80 dark:border-blue-900/40 bg-white/90 dark:bg-[#0E1A30]/80 p-4 sm:p-5 transition hover:border-blue-400 dark:hover:border-cyan-500/40 hover:-translate-y-0.5"
                     >
                       <div className="flex items-center justify-between gap-2 mb-1.5">
                         <span className="font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400">
@@ -162,7 +169,7 @@ export const EducationSection: React.FC = () => {
                       <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
                         {cert.title}
                       </h3>
-                      <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                      <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-200">
                         {cert.description}
                       </p>
                     </article>
@@ -171,7 +178,7 @@ export const EducationSection: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

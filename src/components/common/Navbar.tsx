@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, Download, Menu, X, Settings, LogOut, ChevronDown, ShieldCheck } from 'lucide-react';
+import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import { ArrowUpRight, Download, Menu, X, Settings, LogOut, ChevronDown, ShieldCheck, Sparkles } from 'lucide-react';
 import { usePortfolioData } from '../../context/PortfolioDataContext';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -8,18 +8,44 @@ import { useBodyScrollLock } from '../../hooks/useBodyScrollLock';
 import { useSecretAdminTrigger } from '../../hooks/useSecretAdminTrigger';
 
 const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Architecture', href: '#architecture-blueprint' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Education', href: '#education' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'About', href: '#about', id: 'about' },
+  { label: 'Architecture', href: '#architecture-blueprint', id: 'architecture-blueprint' },
+  { label: 'Experience', href: '#experience', id: 'experience' },
+  { label: 'Projects', href: '#projects', id: 'projects' },
+  { label: 'Education', href: '#education', id: 'education' },
+  { label: 'Contact', href: '#contact', id: 'contact' },
 ];
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [adminDropdownOpen, setAdminDropdownOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('about');
   const { isDark, toggleTheme } = useTheme();
+
+  // Scroll Progress calculation for top neon bar
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  // Track active section for ScrollSpy
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + 160;
+      for (let i = navLinks.length - 1; i >= 0; i--) {
+        const el = document.getElementById(navLinks[i].id);
+        if (el && el.offsetTop <= scrollPos) {
+          setActiveSection(navLinks[i].id);
+          break;
+        }
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Prevent background page from scrolling when mobile menu drawer is open
   useBodyScrollLock(mobileMenuOpen);
@@ -31,12 +57,11 @@ export const Navbar: React.FC = () => {
     profile,
     isAdminMode,
     setIsAdminMode,
-    toggleAdminMode,
     openAdminModal,
     openResumeHeist,
   } = usePortfolioData();
 
-  const { currentUser, isAuthenticated, logout, openAuthModal } = useAuth();
+  const { currentUser, isAuthenticated, logout } = useAuth();
 
   // Close desktop admin dropdown on outside click
   useEffect(() => {
@@ -52,28 +77,34 @@ export const Navbar: React.FC = () => {
   }, [adminDropdownOpen]);
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 w-full border-b backdrop-blur-xl transition-colors duration-300 ${
+    <header className={`fixed inset-x-0 top-0 z-50 w-full border-b backdrop-blur-xl transition-all duration-300 ${
       isDark
-        ? 'border-blue-900/40 bg-[#091122]/90 shadow-[0_4px_24px_rgba(0,0,0,0.4)] text-white'
-        : 'border-slate-200/90 bg-white/95 shadow-[0_4px_20px_rgba(18,34,29,0.05)] text-[#17251f]'
+        ? 'border-blue-900/40 bg-[#091122]/90 shadow-[0_4px_30px_rgba(0,0,0,0.5)] text-white'
+        : 'border-slate-200/90 bg-white/95 shadow-[0_4px_25px_rgba(15,23,42,0.06)] text-[#0F172A]'
     }`}>
+      {/* Top Neon Scroll Progress Bar */}
+      <motion.div
+        className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-blue-600 via-cyan-400 to-indigo-500 origin-left z-50 pointer-events-none"
+        style={{ scaleX }}
+      />
+
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-3.5">
         <a
           href="#about"
           onClick={triggerSecretClick}
-          className="flex items-center gap-2 sm:gap-3 shrink-0 cursor-pointer"
+          className="group flex items-center gap-2.5 sm:gap-3 shrink-0 cursor-pointer"
           aria-label={`${profile.name}, home`}
         >
-          <span className={`relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl text-xs font-bold tracking-wide transition-all shrink-0 overflow-hidden border ${
+          <span className={`relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl text-xs font-bold tracking-wide transition-all shrink-0 overflow-hidden border group-hover:scale-105 ${
             isDark
-              ? 'border-cyan-500/40 bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-[0_0_12px_rgba(6,182,212,0.3)]'
-              : 'border-slate-300 bg-[#173b31] text-white'
+              ? 'border-cyan-500/40 bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-[0_0_15px_rgba(6,182,212,0.35)]'
+              : 'border-slate-300 bg-blue-600 text-white shadow-sm'
           }`}>
             {profile.avatarUrl ? (
               <img
                 src={profile.avatarUrl}
                 alt={profile.name}
-                className="h-full w-full object-cover object-top"
+                className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
                 style={{
                   filter: `brightness(${profile.photoBrightness || 104}%) contrast(${profile.photoContrast || 102}%)`,
                 }}
@@ -92,26 +123,55 @@ export const Navbar: React.FC = () => {
               </span>
             )}
           </span>
-          <span className={`text-sm font-bold tracking-tight truncate max-w-[125px] sm:max-w-none ${isDark ? 'text-white' : 'text-[#17251f]'}`}>
-            {profile.name}
-          </span>
+          <div className="flex flex-col">
+            <span className={`text-sm font-bold tracking-tight truncate max-w-[130px] sm:max-w-none transition-colors ${
+              isDark ? 'text-white group-hover:text-cyan-300' : 'text-slate-900 group-hover:text-blue-600'
+            }`}>
+              {profile.name}
+            </span>
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+              </span>
+              available for hire
+            </span>
+          </div>
         </a>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden items-center gap-1 md:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`rounded-lg px-3 py-2 text-[13px] font-medium transition-colors ${
-                isDark
-                  ? 'text-[#94A3B8] hover:bg-[#132238] hover:text-cyan-300'
-                  : 'text-[#475569] hover:bg-slate-100 hover:text-blue-600'
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
+        {/* Desktop Navigation Links with Animated Scrollspy Pill */}
+        <div className="hidden items-center gap-1 md:flex bg-slate-100/60 dark:bg-[#071120]/70 p-1 rounded-2xl border border-slate-200/60 dark:border-blue-900/40 backdrop-blur-md">
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`relative rounded-xl px-3.5 py-1.5 text-xs font-mono font-medium transition-colors ${
+                  isActive
+                    ? isDark
+                      ? 'text-cyan-300 font-bold'
+                      : 'text-blue-600 font-bold'
+                    : isDark
+                    ? 'text-slate-400 hover:text-white'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="activeNavPill"
+                    className={`absolute inset-0 rounded-xl -z-10 ${
+                      isDark
+                        ? 'bg-blue-600/25 border border-cyan-500/40 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
+                        : 'bg-white border border-blue-200/90 shadow-xs'
+                    }`}
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+                {link.label}
+              </a>
+            );
+          })}
         </div>
 
         {/* Desktop Actions */}
@@ -122,7 +182,7 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setAdminDropdownOpen((prev) => !prev)}
-                className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-mono font-bold transition-all hover:scale-105 active:scale-95 ${
+                className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-mono font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer ${
                   isAdminMode
                     ? 'bg-blue-600 text-white border-blue-500 shadow-md'
                     : isDark
@@ -167,7 +227,7 @@ export const Navbar: React.FC = () => {
                           setIsAdminMode(true);
                           openAdminModal('profile');
                         }}
-                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition cursor-pointer ${
                           isDark ? 'hover:bg-[#132238] hover:text-cyan-400' : 'hover:bg-slate-100 hover:text-blue-600'
                         }`}
                       >
@@ -182,7 +242,7 @@ export const Navbar: React.FC = () => {
                           logout();
                           setIsAdminMode(false);
                         }}
-                        className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-red-500 hover:bg-red-500/10 transition"
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-red-500 hover:bg-red-500/10 transition cursor-pointer"
                       >
                         <LogOut className="w-3.5 h-3.5 text-red-500" />
                         <span>Logout</span>
@@ -194,25 +254,25 @@ export const Navbar: React.FC = () => {
             </div>
           ) : null}
 
-          {/* Dark Mode / Light Mode Emoji Toggle */}
+          {/* Dark Mode / Light Mode Interactive Toggle */}
           <button
             type="button"
             onClick={toggleTheme}
-            className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-mono font-medium transition-all hover:scale-105 active:scale-95 ${
+            className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-mono font-medium transition-all hover:scale-105 active:scale-95 cursor-pointer ${
               isDark
-                ? 'border-blue-500/40 bg-[#0F1C33] text-yellow-300 hover:bg-[#162744] hover:border-yellow-400'
-                : 'border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 hover:border-slate-400'
+                ? 'border-blue-500/40 bg-[#0F1C33] text-yellow-300 hover:bg-[#162744] hover:border-yellow-400 shadow-[0_0_12px_rgba(234,179,8,0.15)]'
+                : 'border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 hover:border-slate-400 shadow-2xs'
             }`}
             title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             aria-label="Toggle theme"
           >
-            <span className="text-sm">{isDark ? '🌙' : '☀️'}</span>
-            <span className="font-semibold">{isDark ? 'Night' : 'Day'}</span>
+            <span className="text-sm transition-transform duration-300 hover:rotate-12">{isDark ? '🌙' : '☀️'}</span>
+            <span className="font-semibold">{isDark ? 'Dark' : 'Light'}</span>
           </button>
 
           <a
             href="#contact"
-            className={`rounded-lg px-3 py-2 text-[13px] font-semibold transition-colors ${
+            className={`rounded-xl px-3.5 py-2 text-xs font-mono font-semibold transition-all hover:scale-105 active:scale-95 ${
               isDark
                 ? 'text-[#CBD5E1] hover:bg-[#132238] hover:text-white'
                 : 'text-slate-700 hover:bg-slate-100 hover:text-blue-600'
@@ -224,13 +284,13 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={openResumeHeist}
-            className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-semibold text-white transition active:scale-95 cursor-pointer ${
+            className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-mono font-bold text-white transition-all hover:scale-105 active:scale-95 cursor-pointer ${
               isDark
-                ? 'bg-blue-600 hover:bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.4)]'
-                : 'bg-[#173b31] hover:bg-[#245744]'
+                ? 'bg-blue-600 hover:bg-blue-500 shadow-[0_0_20px_rgba(37,99,235,0.4)]'
+                : 'bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20'
             }`}
           >
-            <Download className="h-3.5 w-3.5" /> Resume
+            <Download className="h-3.5 w-3.5" /> Résumé
           </button>
         </div>
 
@@ -243,7 +303,7 @@ export const Navbar: React.FC = () => {
                 setIsAdminMode(true);
                 openAdminModal('profile');
               }}
-              className={`flex items-center gap-1 rounded-xl border p-2 text-xs font-mono font-semibold transition-colors ${
+              className={`flex items-center gap-1 rounded-xl border p-2 text-xs font-mono font-semibold transition-colors cursor-pointer ${
                 isAdminMode
                   ? 'bg-blue-600 text-white border-blue-500'
                   : isDark
@@ -259,7 +319,7 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className={`flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-xs font-mono font-semibold transition-colors ${
+            className={`flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-xs font-mono font-semibold transition-all active:scale-95 cursor-pointer ${
               isDark
                 ? 'border-blue-500/40 bg-[#0F1C33] text-yellow-300'
                 : 'border-slate-300 bg-slate-50 text-slate-700'
@@ -267,13 +327,13 @@ export const Navbar: React.FC = () => {
             aria-label="Toggle theme"
           >
             <span>{isDark ? '🌙' : '☀️'}</span>
-            <span className="text-[11px]">{isDark ? 'Night' : 'Day'}</span>
+            <span className="text-[11px]">{isDark ? 'Dark' : 'Light'}</span>
           </button>
 
           <button
             type="button"
             onClick={() => setMobileMenuOpen((open) => !open)}
-            className={`rounded-xl border p-2 transition-colors ${
+            className={`rounded-xl border p-2 transition-colors cursor-pointer ${
               isDark
                 ? 'border-blue-900/40 bg-[#0F1C33] text-white hover:bg-[#162744]'
                 : 'border-slate-200 bg-white text-slate-800 hover:bg-slate-50'
@@ -286,11 +346,11 @@ export const Navbar: React.FC = () => {
         </div>
       </nav>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Dropdown Menu with Active Section Highlights */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            {/* Backdrop Dimming Blur Overlay (Click outside to close) */}
+            {/* Backdrop Dimming Blur Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -300,7 +360,7 @@ export const Navbar: React.FC = () => {
               className="fixed inset-0 top-[57px] sm:top-[65px] z-40 bg-black/60 backdrop-blur-sm md:hidden"
             />
 
-            {/* Mobile Dropdown Panel: Flush Full-Width attached directly below header */}
+            {/* Mobile Dropdown Panel */}
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
@@ -313,21 +373,28 @@ export const Navbar: React.FC = () => {
               }`}
             >
               <div className="mx-auto max-w-6xl space-y-1">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${
-                      isDark
-                        ? 'text-slate-200 hover:bg-[#132238] hover:text-cyan-400'
-                        : 'text-slate-800 hover:bg-slate-100 hover:text-blue-600'
-                    }`}
-                  >
-                    {link.label}
-                    <ArrowUpRight className={`h-4 w-4 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
-                  </a>
-                ))}
+                {navLinks.map((link) => {
+                  const isActive = activeSection === link.id;
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center justify-between rounded-xl px-4 py-2.5 text-xs font-mono font-semibold transition-all ${
+                        isActive
+                          ? isDark
+                            ? 'bg-blue-600/20 text-cyan-300 border border-cyan-500/30'
+                            : 'bg-blue-50 text-blue-600 border border-blue-200'
+                          : isDark
+                          ? 'text-slate-200 hover:bg-[#132238] hover:text-cyan-400'
+                          : 'text-slate-800 hover:bg-slate-100 hover:text-blue-600'
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      <ArrowUpRight className={`h-4 w-4 ${isActive ? (isDark ? 'text-cyan-300' : 'text-blue-600') : 'opacity-40'}`} />
+                    </a>
+                  );
+                })}
               </div>
 
               <div className="mx-auto max-w-6xl mt-3 pt-3 border-t border-slate-200 dark:border-blue-900/50 flex flex-col gap-2">
@@ -339,7 +406,7 @@ export const Navbar: React.FC = () => {
                       setIsAdminMode(true);
                       openAdminModal('profile');
                     }}
-                    className={`flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold border transition ${
+                    className={`flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-mono font-bold border transition cursor-pointer ${
                       isDark
                         ? 'border-blue-500/40 bg-blue-950/50 text-cyan-300 hover:bg-blue-900/60'
                         : 'border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100'
@@ -355,8 +422,8 @@ export const Navbar: React.FC = () => {
                     setMobileMenuOpen(false);
                     openResumeHeist();
                   }}
-                  className={`flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-md transition active:scale-95 cursor-pointer ${
-                    isDark ? 'bg-blue-600 hover:bg-blue-500' : 'bg-[#173b31] hover:bg-[#245744]'
+                  className={`flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-white shadow-md transition active:scale-95 cursor-pointer ${
+                    isDark ? 'bg-blue-600 hover:bg-blue-500' : 'bg-blue-600 hover:bg-blue-700'
                   }`}
                 >
                   <Download className="h-4 w-4" /> Download résumé
@@ -370,7 +437,7 @@ export const Navbar: React.FC = () => {
                       setIsAdminMode(false);
                       logout();
                     }}
-                    className={`flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold border transition ${
+                    className={`flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-mono font-bold border transition cursor-pointer ${
                       isDark
                         ? 'border-red-500/40 bg-red-950/40 text-red-400 hover:bg-red-900/60'
                         : 'border-red-200 bg-red-50 text-red-600 hover:bg-red-100'

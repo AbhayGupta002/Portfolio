@@ -804,7 +804,7 @@ export const FullStackBlueprint: React.FC = () => {
                       {step.title}
                     </h3>
                     <p className={`text-xs font-mono font-semibold ${
-                      isDark ? 'text-[#94A3B8]' : 'text-[#475569]'
+                      isDark ? 'text-slate-300' : 'text-slate-700'
                     }`}>
                       {step.subtitle}
                     </p>
@@ -825,7 +825,7 @@ export const FullStackBlueprint: React.FC = () => {
           {currentActiveStep && (
             <div className={`mt-4 p-5 rounded-2xl border transition-all duration-300 ${
               isDark
-                ? 'bg-[#0B1528]/95 border-cyan-500/30 text-slate-200'
+                ? 'bg-[#0B1528]/95 border-cyan-500/30 text-slate-200 shadow-xl'
                 : 'bg-white/95 border-blue-200 shadow-sm text-slate-800'
             }`}>
               <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
@@ -834,7 +834,7 @@ export const FullStackBlueprint: React.FC = () => {
                   <span className={`font-bold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
                     NODE [{currentActiveStep.stepNumber}]: {currentActiveStep.title}
                   </span>
-                  <span className={isDark ? 'text-[#94A3B8]' : 'text-slate-600'}>
+                  <span className={isDark ? 'text-slate-300 font-medium' : 'text-slate-700 font-medium'}>
                     — {currentActiveStep.telemetry.protocol}
                   </span>
                 </div>
@@ -842,10 +842,10 @@ export const FullStackBlueprint: React.FC = () => {
                   {currentActiveStep.telemetry.latency}
                 </div>
               </div>
-              <div className={`mt-2 text-sm font-sans ${isDark ? 'text-[#CBD5E1]' : 'text-[#334155]'}`}>
+              <div className={`mt-2 text-sm font-sans ${isDark ? 'text-slate-200' : 'text-slate-800 font-normal'}`}>
                 {currentActiveStep.telemetry.description}
               </div>
-              <div className={`mt-1 text-xs font-mono font-semibold ${isDark ? 'text-cyan-300/80' : 'text-blue-700'}`}>
+              <div className={`mt-1 text-xs font-mono font-semibold ${isDark ? 'text-cyan-300' : 'text-blue-700'}`}>
                 Stack: {currentActiveStep.telemetry.tech}
               </div>
             </div>
