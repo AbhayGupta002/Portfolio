@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
-import { ArrowUpRight, Download, Menu, X, Settings, LogOut, ChevronDown, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Download, Menu, X, Settings, LogOut, ChevronDown, ShieldCheck, Sparkles, Film } from 'lucide-react';
 import { usePortfolioData } from '../../context/PortfolioDataContext';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -59,6 +59,7 @@ export const Navbar: React.FC = () => {
     setIsAdminMode,
     openAdminModal,
     openResumeHeist,
+    openOneShot,
   } = usePortfolioData();
 
   const { currentUser, isAuthenticated, logout } = useAuth();
@@ -270,6 +271,25 @@ export const Navbar: React.FC = () => {
             <span className="font-semibold">{isDark ? 'Dark' : 'Light'}</span>
           </button>
 
+          {/* One Shot View Cinematic Journey Button */}
+          <button
+            type="button"
+            onClick={openOneShot}
+            className={`group inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-mono font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer border ${
+              isDark
+                ? 'border-cyan-500/40 bg-gradient-to-r from-blue-900/40 via-cyan-950/40 to-blue-900/40 text-cyan-300 shadow-[0_0_16px_rgba(6,182,212,0.25)] hover:border-cyan-300 hover:text-white'
+                : 'border-blue-300 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 shadow-xs hover:border-blue-500 hover:bg-blue-100/80'
+            }`}
+            title="Watch 1-Shot Story View (Cinetic Video-like Tour)"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
+            </span>
+            <Film className="h-3.5 w-3.5 text-blue-600 dark:text-cyan-400" />
+            <span>One Shot View</span>
+          </button>
+
           <a
             href="#contact"
             className={`rounded-xl px-3.5 py-2 text-xs font-mono font-semibold transition-all hover:scale-105 active:scale-95 ${
@@ -294,8 +314,22 @@ export const Navbar: React.FC = () => {
           </button>
         </div>
 
-        {/* Mobile Actions: Emoji Toggle + (Admin Button only when authenticated) + Hamburger Button */}
-        <div className="flex items-center gap-2 md:hidden">
+        {/* Mobile Actions: 1-Shot Button + Theme Toggle + (Admin Button only when authenticated) + Hamburger Button */}
+        <div className="flex items-center gap-1.5 sm:gap-2 md:hidden">
+          <button
+            type="button"
+            onClick={openOneShot}
+            className={`flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-xs font-mono font-bold transition-all active:scale-95 cursor-pointer ${
+              isDark
+                ? 'border-cyan-500/40 bg-blue-950/60 text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.2)]'
+                : 'border-blue-300 bg-blue-50 text-blue-700 shadow-xs'
+            }`}
+            title="One Shot View"
+          >
+            <Film className="w-3.5 h-3.5 text-blue-600 dark:text-cyan-400" />
+            <span className="text-[11px]">1-Shot</span>
+          </button>
+
           {isAuthenticated && (
             <button
               type="button"
@@ -415,6 +449,23 @@ export const Navbar: React.FC = () => {
                     <Settings className="h-4 w-4" /> Open Admin Edit Panel
                   </button>
                 )}
+
+                {/* One Shot View Mobile Drawer Trigger */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openOneShot();
+                  }}
+                  className={`flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-mono font-bold border transition active:scale-95 cursor-pointer ${
+                    isDark
+                      ? 'border-cyan-500/50 bg-gradient-to-r from-blue-900/60 to-cyan-900/40 text-cyan-300 shadow-md'
+                      : 'border-blue-300 bg-blue-50 text-blue-700 shadow-xs'
+                  }`}
+                >
+                  <Film className="h-4 w-4 text-blue-600 dark:text-cyan-400" />
+                  <span>One Shot View: Java Backend</span>
+                </button>
 
                 <button
                   type="button"

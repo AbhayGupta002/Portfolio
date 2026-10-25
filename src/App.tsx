@@ -16,6 +16,7 @@ import { AdminFloatingBar } from './components/admin/AdminFloatingBar';
 import { ResumeHeistModal } from './components/resume/ResumeHeistModal';
 import { InteractiveProfileBackground } from './components/common/InteractiveProfileBackground';
 import { FloatingQuickDock } from './components/common/FloatingQuickDock';
+import { OneShotViewModal } from './components/common/OneShotViewModal';
 
 const PortfolioContent: React.FC = () => {
   const { isDark } = useTheme();
@@ -66,6 +67,9 @@ const PortfolioContent: React.FC = () => {
 
       {/* Playful Thief Resume Heist Interactive Modal */}
       <ResumeHeistModal />
+
+      {/* Cinematic One Shot View (Mac-Styled Interactive Video Journey) */}
+      <OneShotViewModal />
     </div>
   );
 };

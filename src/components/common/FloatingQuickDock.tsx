@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUp, Copy, Check, FileDown, Mail } from 'lucide-react';
+import { ArrowUp, Copy, Check, FileDown, Mail, Film } from 'lucide-react';
 import { usePortfolioData } from '../../context/PortfolioDataContext';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -8,7 +8,7 @@ export const FloatingQuickDock: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('About');
   const [copied, setCopied] = useState(false);
-  const { profile, openResumeHeist } = usePortfolioData();
+  const { profile, openResumeHeist, openOneShot } = usePortfolioData();
   const { isDark } = useTheme();
 
   useEffect(() => {
@@ -82,6 +82,17 @@ export const FloatingQuickDock: React.FC = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
             <span className="font-bold">{activeSection}</span>
           </div>
+
+          {/* Quick One Shot View Trigger */}
+          <button
+            type="button"
+            onClick={openOneShot}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer text-cyan-600 dark:text-cyan-300 hover:bg-cyan-50 dark:hover:bg-blue-900/40"
+            title="Watch 1-Shot Story View"
+          >
+            <Film className="w-3.5 h-3.5 text-blue-600 dark:text-cyan-400" />
+            <span className="hidden md:inline text-[11px]">One Shot</span>
+          </button>
 
           {/* Quick Copy Email Button */}
           <button

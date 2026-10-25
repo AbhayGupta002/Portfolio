@@ -18,6 +18,7 @@ import {
   Trash2,
   Activity,
   Code2,
+  Film,
 } from 'lucide-react';
 import { usePortfolioData } from '../../context/PortfolioDataContext';
 import { GithubIcon, LinkedinIcon } from '../common/BrandIcons';
@@ -33,6 +34,7 @@ export const HeroSection: React.FC = () => {
     isAdminMode,
     openAdminModal,
     openResumeHeist,
+    openOneShot,
   } = usePortfolioData();
 
   const taxItem = findProfessionByLabel(profile.profession);
@@ -178,6 +180,15 @@ export const HeroSection: React.FC = () => {
                 >
                   Explore Blueprint <ArrowDownRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
                 </motion.a>
+                <motion.button
+                  type="button"
+                  onClick={openOneShot}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="group inline-flex items-center gap-2 rounded-xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/40 px-4 py-2.5 text-xs sm:text-sm font-semibold text-cyan-700 dark:text-cyan-300 transition-all hover:border-cyan-400 cursor-pointer shadow-xs"
+                >
+                  <Film className="h-4 w-4 text-cyan-600 dark:text-cyan-400" /> One Shot
+                </motion.button>
                 <motion.button
                   type="button"
                   onClick={openResumeHeist}

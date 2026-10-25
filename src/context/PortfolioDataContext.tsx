@@ -198,6 +198,11 @@ interface PortfolioDataContextType {
   openResumeHeist: () => void;
   closeResumeHeist: () => void;
 
+  // One Shot View Cinematic Journey Modal
+  isOneShotOpen: boolean;
+  openOneShot: () => void;
+  closeOneShot: () => void;
+
   // Admin Modal Controls
   isAdminModalOpen: boolean;
   adminModalTab: AdminTab;
@@ -422,6 +427,11 @@ export const PortfolioDataProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isResumeHeistOpen, setIsResumeHeistOpen] = useState(false);
   const openResumeHeist = () => setIsResumeHeistOpen(true);
   const closeResumeHeist = () => setIsResumeHeistOpen(false);
+
+  // One Shot View Cinematic Journey state
+  const [isOneShotOpen, setIsOneShotOpen] = useState(false);
+  const openOneShot = () => setIsOneShotOpen(true);
+  const closeOneShot = () => setIsOneShotOpen(false);
 
   // Direct editing IDs
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
@@ -1033,6 +1043,10 @@ export const PortfolioDataProvider: React.FC<{ children: React.ReactNode }> = ({
         isResumeHeistOpen,
         openResumeHeist,
         closeResumeHeist,
+
+        isOneShotOpen,
+        openOneShot,
+        closeOneShot,
 
         isAdminModalOpen,
         adminModalTab,
