@@ -9,7 +9,6 @@ import {
   Target,
   ArrowRight,
   Code2,
-  Sparkles,
   Layers,
   Play,
   RotateCcw,

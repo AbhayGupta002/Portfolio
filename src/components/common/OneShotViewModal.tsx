@@ -8,21 +8,21 @@ import {
   RotateCcw,
   X,
   Maximize2,
-  Minimize2,
   Database,
   Layers,
   Code2,
   CheckCircle2,
-  Sparkles,
   ArrowRight,
   Shield,
   Coffee,
-  GitBranch,
   Table,
   Zap,
   Terminal,
-  ExternalLink,
   Download,
+  Server,
+  Box,
+  Cpu,
+  GitBranch,
 } from 'lucide-react';
 import { usePortfolioData } from '../../context/PortfolioDataContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -41,31 +41,31 @@ const CHAPTERS: Chapter[] = [
   {
     id: 'intro',
     badge: '01 / OVERVIEW',
-    tabTitle: 'Introduction',
+    tabTitle: 'Overview',
     headline: 'Java Backend Journey — Abhay Gupta',
     subtitle: 'Architecting scalable, production-grade distributed backend applications with Java 17 and Spring Boot 3.',
     durationMs: 7000,
   },
   {
     id: 'java-core',
-    badge: '02 / LANGUAGE RUNTIME',
-    tabTitle: 'Java Core Topics',
+    badge: '02 / CORE RUNTIME',
+    tabTitle: 'Java Core',
     headline: 'Java Core Topics & Concurrency Foundations',
-    subtitle: 'Mastering the JVM runtime, memory management, and modern asynchronous execution.',
-    durationMs: 8500,
+    subtitle: 'Mastering the JVM runtime, memory layout, Collections framework, and multi-threaded concurrency.',
+    durationMs: 9500,
   },
   {
-    id: 'spring-boot',
-    badge: '03 / MICROSERVICES',
-    tabTitle: 'Spring Boot 3',
-    headline: 'Spring Boot 3 & Enterprise Architecture',
-    subtitle: 'Clean layered architecture, RESTful API design, and zero-trust Spring Security with stateless JWT.',
-    durationMs: 8500,
+    id: 'mvc-monolith',
+    badge: '03 / SYSTEM DESIGN',
+    tabTitle: 'MVC & Monolith',
+    headline: 'Spring MVC & Monolithic Architecture',
+    subtitle: 'Clean request lifecycle, decoupled layered boundaries, and high-performance monolithic deployment.',
+    durationMs: 9500,
   },
   {
     id: 'orm-jpa',
     badge: '04 / DATA PERSISTENCE',
-    tabTitle: 'ORM & ER Diagram',
+    tabTitle: 'ORM & Architecture',
     headline: 'ORM (Object-Relational Mapping): Hibernate and JPA',
     subtitle: 'Hibernate and JPA for mapping Java objects directly to database tables.',
     durationMs: 11000,
@@ -73,10 +73,10 @@ const CHAPTERS: Chapter[] = [
   {
     id: 'production',
     badge: '05 / CLOUD & IMPACT',
-    tabTitle: 'Production & Summary',
+    tabTitle: 'Production',
     headline: 'Production Engineering & Cloud Delivery',
-    subtitle: 'High performance database tuning, Docker microservices, and continuous deployment.',
-    durationMs: 7500,
+    subtitle: 'High-throughput query tuning, containerized delivery, and rigorous interview readiness.',
+    durationMs: 8000,
   },
 ];
 
@@ -92,7 +92,7 @@ export const OneShotViewModal: React.FC = () => {
   const [progress, setProgress] = useState(0); // 0 to 100 for current chapter
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1); // 0.75, 1, 1.5
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [activeEntityTab, setActiveEntityTab] = useState<'Order' | 'User' | 'OrderItem' | 'Product'>('Order');
+  const [activeEntityTab, setActiveEntityTab] = useState<'UserAccount' | 'PortfolioData' | 'PortfolioRepository'>('UserAccount');
 
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number | null>(null);
@@ -272,7 +272,7 @@ export const OneShotViewModal: React.FC = () => {
               type="button"
               onClick={closeOneShot}
               className="group relative flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#FF5F56] border border-[#E0443E] transition-transform hover:scale-110 active:scale-95 cursor-pointer"
-              title="Close One Shot View (ESC)"
+              title="Close Tour (ESC)"
               aria-label="Close"
             >
               <X className="h-2 w-2 text-[#4A0002] opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -281,7 +281,7 @@ export const OneShotViewModal: React.FC = () => {
               type="button"
               onClick={() => setIsPlaying((p) => !p)}
               className="group relative flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#FFBD2E] border border-[#DEA123] transition-transform hover:scale-110 active:scale-95 cursor-pointer"
-              title={isPlaying ? 'Pause Story' : 'Play Story'}
+              title={isPlaying ? 'Pause' : 'Play'}
               aria-label="Pause or Play"
             >
               <span className="h-1 w-1 rounded-full bg-[#5C3C00] opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -297,11 +297,11 @@ export const OneShotViewModal: React.FC = () => {
             </button>
           </div>
 
-          {/* Central Title Tag */}
+          {/* Central Title Tag (Engineering Clean - No AI Sparkles) */}
           <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-xl border border-slate-200/80 dark:border-blue-800/50 bg-slate-100/70 dark:bg-[#0E1A30]/80 text-xs font-mono">
-            <Sparkles className="h-3.5 w-3.5 text-cyan-500 animate-pulse" />
+            <Terminal className="h-3.5 w-3.5 text-blue-600 dark:text-cyan-400" />
             <span className="font-semibold text-slate-800 dark:text-cyan-300">
-              One Shot View: Java Backend Journey
+              Java Backend Journey — Abhay Gupta
             </span>
             <span className="mx-1 text-slate-400">•</span>
             <span className={`inline-flex items-center gap-1 font-bold ${isPlaying ? 'text-emerald-500' : 'text-amber-500'}`}>
@@ -310,7 +310,7 @@ export const OneShotViewModal: React.FC = () => {
             </span>
           </div>
 
-          {/* Right Action Icons */}
+          {/* Right Action Controls */}
           <div className="flex items-center gap-2">
             {/* Speed Selector */}
             <div className="flex items-center rounded-xl border border-slate-200 dark:border-blue-900/60 bg-slate-100/80 dark:bg-[#0E1A30] p-0.5 text-[11px] font-mono">
@@ -456,15 +456,16 @@ export const OneShotViewModal: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="mt-8 flex flex-wrap items-center justify-center gap-2.5 max-w-xl"
+                  className="mt-8 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl"
                 >
                   {[
                     'Core Java 17/21',
                     'Spring Boot 3',
-                    'Hibernate ORM',
-                    'JPA Repositories',
-                    'MySQL & Relational Modeling',
-                    'REST APIs & JWT',
+                    'Spring MVC',
+                    'Monolithic Architecture',
+                    'Hibernate & JPA ORM',
+                    'MySQL Relational Modeling',
+                    'RESTful APIs & JWT',
                     'Docker Microservices',
                   ].map((tech) => (
                     <span
@@ -495,7 +496,7 @@ export const OneShotViewModal: React.FC = () => {
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 2: JAVA CORE TOPICS ("java core Topics or mention list")  */}
+            {/* CHAPTER 2: JAVA CORE TOPICS & INTERVIEW ESSENTIALS               */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 1 && (
               <motion.div
@@ -506,82 +507,103 @@ export const OneShotViewModal: React.FC = () => {
                 transition={{ duration: 0.35, ease: 'easeOut' }}
                 className="py-2 sm:py-4"
               >
-                <div className="text-center max-w-2xl mx-auto mb-6">
+                <div className="text-center max-w-2xl mx-auto mb-5">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 mb-2">
                     <Code2 className="w-3.5 h-3.5" />
-                    CORE RUNTIME PARADIGMS
+                    JAVA CORE & INTERVIEW MASTERY
                   </span>
                   <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">
-                    Java Core Topics & Architecture
+                    Java Core Topics & Concurrency Foundations
                   </h2>
                   <p className="mt-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                    Solid programming fundamentals powering multi-threaded enterprise services.
+                    High-yield concepts tested in senior engineering technical interviews.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
                   {[
                     {
-                      title: 'OOP & Clean Architecture',
-                      tags: ['Polymorphism', 'Encapsulation', 'SOLID Principles'],
-                      desc: 'Design patterns, loose coupling, interface contracts, and clean object hierarchies.',
+                      title: 'JVM Memory Architecture',
+                      badge: 'Heap vs Stack vs Metaspace',
+                      points: [
+                        'Heap: Young Gen (Eden, S0, S1) & Old Gen (Tenured) for objects.',
+                        'Thread Stack: Private frames for local vars & operand stack.',
+                        'Metaspace: Native memory storing class metadata & bytecodes.',
+                      ],
                     },
                     {
-                      title: 'Collections Framework',
-                      tags: ['HashMap Collision', 'ConcurrentHashMap', 'TreeSet'],
-                      desc: 'Deep algorithmic choice of List, Set, Map structures based on lookup and concurrency needs.',
+                      title: 'Garbage Collection (GC)',
+                      badge: 'G1GC & ZGC Mechanics',
+                      points: [
+                        'G1GC: Region-based generational collection minimizing STW pauses.',
+                        'ZGC: Concurrent colored pointers with < 1ms pause times.',
+                        'Minor GC (Eden) vs Major/Full GC (Tenured compaction).',
+                      ],
                     },
                     {
-                      title: 'Streams API & Functional',
-                      tags: ['filter()', 'map()', 'Collectors', 'Optional<T>'],
-                      desc: 'Declarative parallel and sequential data manipulation with immutable lambda pipelines.',
+                      title: 'Collections & HashMap',
+                      badge: 'Bucket Array & Treeification',
+                      points: [
+                        'Hashing index: (n - 1) & hash(key) using separate chaining.',
+                        'Treeifies to Red-Black tree when bucket length >= 8 and cap >= 64.',
+                        'ConcurrentHashMap: Lock-free reads, CAS & bucket-head locks.',
+                      ],
                     },
                     {
                       title: 'Multithreading & Concurrency',
-                      tags: ['ExecutorService', 'Thread Pools', 'Synchronized'],
-                      desc: 'Asynchronous workers, thread lifecycle, atomic state guarantees, and race prevention.',
+                      badge: 'ExecutorService & JMM',
+                      points: [
+                        'ThreadPoolExecutor: corePoolSize, maxPoolSize, BlockingQueue.',
+                        'volatile: Enforces memory visibility & prevents instruction reordering.',
+                        'Atomic variables: Hardware Compare-And-Swap (CAS) lock-freedom.',
+                      ],
                     },
                     {
-                      title: 'Exception Handling & Safety',
-                      tags: ['Try-with-resources', 'Custom Exceptions', 'Fail-Safe'],
-                      desc: 'Robust error recovery, non-blocking fault barriers, and clean exception bubbling.',
+                      title: 'equals() & hashCode() Contract',
+                      badge: 'Object Integrity',
+                      points: [
+                        'If a.equals(b) == true, a.hashCode() MUST equal b.hashCode().',
+                        'Violating the contract corrupts HashMap and HashSet lookups.',
+                        'Comparable<T> (natural order) vs Comparator<T> (custom multi-sort).',
+                      ],
                     },
                     {
-                      title: 'JVM Internals & Memory',
-                      tags: ['Heap vs Stack', 'Garbage Collection (G1)', 'ClassLoaders'],
-                      desc: 'Memory footprint tuning, profiling execution, JIT compilation, and lifecycle optimization.',
+                      title: 'Java 17+ Modern Standards',
+                      badge: 'LTS Language Features',
+                      points: [
+                        'Records: Immutable carrier models with compiler-generated accessors.',
+                        'Sealed Classes: Strict hierarchy control via permits keyword.',
+                        'Pattern Matching for instanceof & switch, Text blocks.',
+                      ],
                     },
                   ].map((topic, i) => (
                     <motion.div
                       key={topic.title}
-                      initial={{ opacity: 0, y: 16 }}
+                      initial={{ opacity: 0, y: 14 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.08 * i }}
-                      className="p-4 sm:p-5 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-md shadow-xs hover:border-amber-400 dark:hover:border-amber-400/60 transition-all flex flex-col justify-between"
+                      transition={{ delay: 0.06 * i }}
+                      className="p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-md shadow-xs hover:border-amber-400 dark:hover:border-amber-400/60 transition-all flex flex-col justify-between"
                     >
                       <div>
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-mono text-[11px] font-bold text-amber-600 dark:text-amber-400">
                             0{i + 1}.
                           </span>
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-300 font-bold">
+                            {topic.badge}
+                          </span>
                         </div>
-                        <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                        <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
                           {topic.title}
                         </h3>
-                        <p className="mt-1.5 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-                          {topic.desc}
-                        </p>
-                      </div>
-                      <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-blue-900/40 flex flex-wrap gap-1">
-                        {topic.tags.map((tg) => (
-                          <span
-                            key={tg}
-                            className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#101D33] text-slate-700 dark:text-cyan-300 font-medium"
-                          >
-                            {tg}
-                          </span>
-                        ))}
+                        <ul className="mt-2 space-y-1.5 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                          {topic.points.map((pt, pIdx) => (
+                            <li key={pIdx} className="flex items-start gap-1.5">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                              <span>{pt}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </motion.div>
                   ))}
@@ -590,7 +612,7 @@ export const OneShotViewModal: React.FC = () => {
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 3: SPRING BOOT 3 & REST ARCHITECTURE                     */}
+            {/* CHAPTER 3: MVC PATTERN & MONOLITHIC ARCHITECTURE                  */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 2 && (
               <motion.div
@@ -599,102 +621,124 @@ export const OneShotViewModal: React.FC = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: -16 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="py-2 sm:py-4"
+                className="py-1 sm:py-3"
               >
-                <div className="text-center max-w-2xl mx-auto mb-6">
+                <div className="text-center max-w-2xl mx-auto mb-5">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 mb-2">
                     <Layers className="w-3.5 h-3.5" />
-                    TIERED ENTERPRISE SERVICES
+                    MVC & MONOLITHIC SYSTEM DESIGN
                   </span>
                   <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">
-                    Spring Boot 3 & REST API Pipeline
+                    Spring MVC & Monolithic Architecture
                   </h2>
-                  <p className="mt-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                    High throughput HTTP processing decoupled with Dependency Injection and layered architecture.
+                  <p className="mt-1 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                    Clean Model-View-Controller request flow combined with high-performance monolithic transactional boundaries.
                   </p>
                 </div>
 
-                {/* Layered Architecture Visual Flow */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
-                  {[
-                    {
-                      step: '01',
-                      title: 'REST Controller',
-                      anno: '@RestController',
-                      detail: 'Endpoint routing, HTTP serialization, RequestBody DTO validation.',
-                      color: 'border-blue-500/50 bg-blue-500/10 text-blue-600 dark:text-cyan-400',
-                    },
-                    {
-                      step: '02',
-                      title: 'Service Layer',
-                      anno: '@Service @Transactional',
-                      detail: 'Core business logic, security permissions, workflow coordination.',
-                      color: 'border-emerald-500/50 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
-                    },
-                    {
-                      step: '03',
-                      title: 'Data Repository',
-                      anno: '@Repository JpaRepository',
-                      detail: 'Spring Data JPA queries, pagination, Hibernate session handling.',
-                      color: 'border-cyan-500/50 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300',
-                    },
-                    {
-                      step: '04',
-                      title: 'Database Tier',
-                      anno: 'MySQL 8 / ACID Engine',
-                      detail: 'Relational storage, foreign key constraints, indexes, B-Trees.',
-                      color: 'border-purple-500/50 bg-purple-500/10 text-purple-600 dark:text-purple-400',
-                    },
-                  ].map((layer, idx) => (
-                    <motion.div
-                      key={layer.title}
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 * idx }}
-                      className="p-4 sm:p-5 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-md relative"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-mono text-xs font-bold text-slate-400">
-                          {layer.step}
+                {/* Section A: MVC Request Flow */}
+                <div className="mb-4 p-4 sm:p-5 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-md">
+                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-200/70 dark:border-blue-900/40">
+                    <span className="font-mono text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <Server className="w-4 h-4 text-blue-600 dark:text-cyan-400" />
+                      Spring MVC Pattern: End-to-End Request Pipeline
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-cyan-300 font-bold">
+                      DispatcherServlet Flow
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                    {[
+                      {
+                        stage: '01. Client & Dispatcher',
+                        role: 'DispatcherServlet',
+                        desc: 'Front controller intercepts incoming HTTP requests and queries HandlerMapping for matching route.',
+                        color: 'border-blue-500/40 bg-blue-500/10 text-blue-600 dark:text-cyan-400',
+                      },
+                      {
+                        stage: '02. Controller Layer',
+                        role: '@RestController',
+                        desc: 'Validates DTO (@Valid), deserializes JSON via Jackson HttpMessageConverter, dispatches to service.',
+                        color: 'border-cyan-500/40 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300',
+                      },
+                      {
+                        stage: '03. Service Layer',
+                        role: '@Service @Transactional',
+                        desc: 'Executes core business logic, coordinates domain rules, enforces ACID transaction boundary.',
+                        color: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
+                      },
+                      {
+                        stage: '04. Model & Response',
+                        role: 'Entities & View DTO',
+                        desc: 'JPA entities hydrate from database. Controller projects secure DTO back to Client UI as JSON.',
+                        color: 'border-purple-500/40 bg-purple-500/10 text-purple-600 dark:text-purple-400',
+                      },
+                    ].map((step) => (
+                      <div
+                        key={step.stage}
+                        className="p-3 rounded-xl border border-slate-200 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70"
+                      >
+                        <span className="text-[10px] font-mono font-bold text-slate-400">
+                          {step.stage}
                         </span>
-                        <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${layer.color}`}>
-                          {layer.anno}
-                        </span>
+                        <div className="text-xs font-mono font-bold text-slate-900 dark:text-white mt-0.5">
+                          {step.role}
+                        </div>
+                        <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                          {step.desc}
+                        </p>
                       </div>
-                      <h4 className="text-base font-bold text-slate-900 dark:text-white mt-2">
-                        {layer.title}
-                      </h4>
-                      <p className="mt-1 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-                        {layer.detail}
-                      </p>
-                    </motion.div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
 
-                {/* Spring Security & JWT Highlight Strip */}
-                <div className="p-4 sm:p-5 rounded-2xl border border-blue-500/30 bg-blue-50/70 dark:bg-[#0E1A30]/80 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-start gap-3">
-                    <Shield className="w-5 h-5 text-blue-600 dark:text-cyan-400 shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                        Spring Security 6 & Stateless Bearer JWT
-                      </h4>
-                      <p className="text-xs text-slate-700 dark:text-slate-300 mt-0.5">
-                        Cryptographic HMAC/RSA signature verification on every HTTP request, BCrypt password hashing, and Role-Based Access Control (RBAC).
+                {/* Section B: Monolithic Architecture Strengths */}
+                <div className="p-4 sm:p-5 rounded-2xl border border-blue-500/30 bg-blue-50/60 dark:bg-[#0E1A30]/80 backdrop-blur-md">
+                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-blue-200 dark:border-blue-900/50">
+                    <span className="font-mono text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <Box className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      Production Strengths of Monolithic Architecture
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-bold">
+                      Zero Distributed Friction
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="p-3 rounded-xl border border-slate-200 dark:border-blue-900/40 bg-white/80 dark:bg-[#0B1528]/80">
+                      <div className="font-mono text-xs font-bold text-blue-600 dark:text-cyan-400">
+                        1. Single Deployable Unit
+                      </div>
+                      <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                        Packaged into a single optimized Spring Boot executable JAR. Eliminates multi-service container orchestration nightmares and simplifies CI/CD.
                       </p>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-[11px] font-mono px-3 py-1 rounded-xl bg-blue-600 text-white font-bold">
-                      Zero-Trust Secure
-                    </span>
+
+                    <div className="p-3 rounded-xl border border-slate-200 dark:border-blue-900/40 bg-white/80 dark:bg-[#0B1528]/80">
+                      <div className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                        2. In-Process ACID Integrity
+                      </div>
+                      <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                        Single @Transactional boundary guarantees atomicity. No fragile 2PC (Two-Phase Commit) or complex Saga compensations required across network partitions.
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl border border-slate-200 dark:border-blue-900/40 bg-white/80 dark:bg-[#0B1528]/80">
+                      <div className="font-mono text-xs font-bold text-purple-600 dark:text-purple-400">
+                        3. Zero Network Serialization Latency
+                      </div>
+                      <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                        Internal module calls execute as direct in-memory method invocations (&lt; 0.1ms) instead of costly HTTP/gRPC network hops between services.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 4: ORM, HIBERNATE & JPA + INTERACTIVE ER DIAGRAM          */}
+            {/* CHAPTER 4: ORM, HIBERNATE & JPA + ACTUAL ARCHITECTURE DIAGRAM     */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 3 && (
               <motion.div
@@ -705,229 +749,205 @@ export const OneShotViewModal: React.FC = () => {
                 transition={{ duration: 0.35, ease: 'easeOut' }}
                 className="py-1 sm:py-2"
               >
-                {/* User Prompt Exact Quote Banner */}
-                <div className="p-4 sm:p-5 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/30 backdrop-blur-md mb-5">
+                {/* User Prompt Exact Required Quote Banner */}
+                <div className="p-4 sm:p-5 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/30 backdrop-blur-md mb-4">
                   <div className="flex items-start gap-3">
                     <Database className="w-5 h-5 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
                     <div>
                       <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-cyan-700 dark:text-cyan-300">
-                        ORM DEFINITION & ARCHITECTURE
+                        CORE ORM ARCHITECTURE
                       </span>
                       <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-0.5">
                         ORM (Object-Relational Mapping): Hibernate and JPA for mapping Java objects directly to database tables.
                       </h3>
                       <p className="text-xs text-slate-700 dark:text-slate-300 mt-1">
-                        Eliminates boilerplate JDBC code, manages entity lifecycles, and maintains relational integrity using Hibernate Dialects.
+                        Eliminates manual JDBC code, manages entity lifecycles, and maintains relational integrity using Hibernate dialects and dirty checking.
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Interactive ER Diagram & Entity Code Viewer */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
-                  {/* Left 7 Cols: Visual ER Diagram with Connected Nodes */}
-                  <div className="lg:col-span-7 p-4 sm:p-5 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-md">
-                    <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-200/70 dark:border-blue-900/40">
-                      <div className="flex items-center gap-2">
-                        <Table className="w-4 h-4 text-blue-600 dark:text-cyan-400" />
-                        <span className="font-mono text-xs font-bold text-slate-900 dark:text-white">
-                          Relational Schema & JPA Entity Mappings
+                {/* Abhay's Actual Architecture Diagram & Relational Mapping */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
+                  {/* Left 7 Cols: Abhay's Actual Multi-Tier Architecture Pipeline */}
+                  <div className="lg:col-span-7 p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-md flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-200/70 dark:border-blue-900/40">
+                        <div className="flex items-center gap-2">
+                          <GitBranch className="w-4 h-4 text-blue-600 dark:text-cyan-400" />
+                          <span className="font-mono text-xs font-bold text-slate-900 dark:text-white">
+                            What We Built: Architecture & Data Mapping Pipeline
+                          </span>
+                        </div>
+                        <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
+                          Multi-Tier Java Stack
                         </span>
                       </div>
-                      <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
-                        Click an entity to inspect
-                      </span>
-                    </div>
 
-                    {/* 4 Interactive ER Entities Grid */}
-                    <div className="grid grid-cols-2 gap-3">
-                      {/* Entity: User */}
-                      <div
-                        onClick={() => setActiveEntityTab('User')}
-                        className={`p-3 rounded-xl border transition-all cursor-pointer ${
-                          activeEntityTab === 'User'
-                            ? 'border-blue-500 bg-blue-500/15 shadow-sm scale-[1.02]'
-                            : 'border-slate-200 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70 hover:border-blue-400'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between text-xs font-mono font-bold mb-1.5 text-blue-600 dark:text-cyan-400">
-                          <span>users</span>
-                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-500/10">1 : N</span>
+                      {/* Architecture Step Flow */}
+                      <div className="space-y-2">
+                        {/* Layer 1: Client UI */}
+                        <div className="p-2.5 rounded-xl border border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-6 w-6 rounded-lg bg-blue-600 text-white font-mono text-xs font-bold flex items-center justify-center">1</span>
+                            <div>
+                              <div className="text-xs font-bold text-slate-900 dark:text-white">Client UI & Admin Interface</div>
+                              <div className="text-[10px] font-mono text-slate-500 dark:text-slate-400">React 19 SPA • HTTPS JSON Payload</div>
+                            </div>
+                          </div>
+                          <span className="text-[10px] font-mono text-blue-600 dark:text-cyan-300 font-semibold">User Credentials / Profile Data</span>
                         </div>
-                        <ul className="text-[11px] font-mono space-y-0.5 text-slate-700 dark:text-slate-300">
-                          <li>🔑 <span className="font-bold text-slate-900 dark:text-white">id:</span> BIGINT (PK)</li>
-                          <li>📧 email: VARCHAR(120)</li>
-                          <li>👤 full_name: VARCHAR(80)</li>
-                          <li>🛡️ role: VARCHAR(20)</li>
-                        </ul>
-                      </div>
 
-                      {/* Entity: Order */}
-                      <div
-                        onClick={() => setActiveEntityTab('Order')}
-                        className={`p-3 rounded-xl border transition-all cursor-pointer ${
-                          activeEntityTab === 'Order'
-                            ? 'border-cyan-500 bg-cyan-500/15 shadow-sm scale-[1.02]'
-                            : 'border-slate-200 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70 hover:border-cyan-400'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between text-xs font-mono font-bold mb-1.5 text-cyan-600 dark:text-cyan-300">
-                          <span>orders</span>
-                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-cyan-500/10">N : 1</span>
-                        </div>
-                        <ul className="text-[11px] font-mono space-y-0.5 text-slate-700 dark:text-slate-300">
-                          <li>🔑 <span className="font-bold text-slate-900 dark:text-white">id:</span> BIGINT (PK)</li>
-                          <li>🔗 <span className="text-blue-600 dark:text-cyan-400">user_id:</span> BIGINT (FK)</li>
-                          <li>💰 total_amount: DECIMAL(10,2)</li>
-                          <li>📦 status: VARCHAR(30)</li>
-                        </ul>
-                      </div>
+                        {/* Arrow */}
+                        <div className="flex justify-center text-slate-400 dark:text-slate-600 text-xs">↓</div>
 
-                      {/* Entity: OrderItem */}
-                      <div
-                        onClick={() => setActiveEntityTab('OrderItem')}
-                        className={`p-3 rounded-xl border transition-all cursor-pointer ${
-                          activeEntityTab === 'OrderItem'
-                            ? 'border-emerald-500 bg-emerald-500/15 shadow-sm scale-[1.02]'
-                            : 'border-slate-200 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70 hover:border-emerald-400'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between text-xs font-mono font-bold mb-1.5 text-emerald-700 dark:text-emerald-400">
-                          <span>order_items</span>
-                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/10">N : 1</span>
+                        {/* Layer 2: Spring MVC & Security */}
+                        <div className="p-2.5 rounded-xl border border-cyan-500/30 bg-cyan-50/50 dark:bg-cyan-950/20 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-6 w-6 rounded-lg bg-cyan-600 text-white font-mono text-xs font-bold flex items-center justify-center">2</span>
+                            <div>
+                              <div className="text-xs font-bold text-slate-900 dark:text-white">Spring Boot 3 MVC Controller & Service</div>
+                              <div className="text-[10px] font-mono text-slate-500 dark:text-slate-400">@RestController • @Transactional Boundary • JWT Auth</div>
+                            </div>
+                          </div>
+                          <span className="text-[10px] font-mono text-cyan-600 dark:text-cyan-300 font-semibold">DTO Validation & Business Logic</span>
                         </div>
-                        <ul className="text-[11px] font-mono space-y-0.5 text-slate-700 dark:text-slate-300">
-                          <li>🔑 <span className="font-bold text-slate-900 dark:text-white">id:</span> BIGINT (PK)</li>
-                          <li>🔗 <span className="text-cyan-600 dark:text-cyan-400">order_id:</span> BIGINT (FK)</li>
-                          <li>🔗 <span className="text-purple-600 dark:text-purple-400">product_id:</span> BIGINT (FK)</li>
-                          <li>🔢 quantity: INT</li>
-                        </ul>
-                      </div>
 
-                      {/* Entity: Product */}
-                      <div
-                        onClick={() => setActiveEntityTab('Product')}
-                        className={`p-3 rounded-xl border transition-all cursor-pointer ${
-                          activeEntityTab === 'Product'
-                            ? 'border-purple-500 bg-purple-500/15 shadow-sm scale-[1.02]'
-                            : 'border-slate-200 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70 hover:border-purple-400'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between text-xs font-mono font-bold mb-1.5 text-purple-600 dark:text-purple-400">
-                          <span>products</span>
-                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-purple-500/10">1 : N</span>
+                        {/* Arrow */}
+                        <div className="flex justify-center text-slate-400 dark:text-slate-600 text-xs">↓</div>
+
+                        {/* Layer 3: Hibernate ORM Engine */}
+                        <div className="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-6 w-6 rounded-lg bg-emerald-600 text-white font-mono text-xs font-bold flex items-center justify-center">3</span>
+                            <div>
+                              <div className="text-xs font-bold text-slate-900 dark:text-white">Hibernate 6 / JPA Persistence Context</div>
+                              <div className="text-[10px] font-mono text-slate-500 dark:text-slate-400">First-Level Cache • Automated Dirty Checking • HikariCP</div>
+                            </div>
+                          </div>
+                          <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-300 font-semibold">Object-to-Relational Mapping</span>
                         </div>
-                        <ul className="text-[11px] font-mono space-y-0.5 text-slate-700 dark:text-slate-300">
-                          <li>🔑 <span className="font-bold text-slate-900 dark:text-white">id:</span> BIGINT (PK)</li>
-                          <li>🏷️ sku: VARCHAR(50) UNIQUE</li>
-                          <li>💵 unit_price: DECIMAL(10,2)</li>
-                          <li>📊 stock_count: INT</li>
-                        </ul>
+
+                        {/* Arrow */}
+                        <div className="flex justify-center text-slate-400 dark:text-slate-600 text-xs">↓</div>
+
+                        {/* Layer 4: Relational MySQL Database */}
+                        <div className="p-2.5 rounded-xl border border-purple-500/30 bg-purple-50/50 dark:bg-purple-950/20 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-6 w-6 rounded-lg bg-purple-600 text-white font-mono text-xs font-bold flex items-center justify-center">4</span>
+                            <div>
+                              <div className="text-xs font-bold text-slate-900 dark:text-white">Relational Database (MySQL 8 / ACID Storage)</div>
+                              <div className="text-[10px] font-mono text-slate-500 dark:text-slate-400">user_accounts & portfolio_data tables (1-to-1 Tenant Isolation)</div>
+                            </div>
+                          </div>
+                          <span className="text-[10px] font-mono text-purple-600 dark:text-purple-300 font-semibold">B-Tree Indexes & Constraints</span>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="mt-3.5 pt-2.5 border-t border-slate-200/70 dark:border-blue-900/40 flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
-                      <span>Cardinals: @OneToMany (User $\rightarrow$ Orders)</span>
-                      <span>CascadeType.ALL • FetchType.LAZY</span>
+                    <div className="mt-3 pt-2 border-t border-slate-200/70 dark:border-blue-900/40 flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                      <span>Zero Boilerplate JDBC</span>
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">ACID Transaction Guarantees</span>
                     </div>
                   </div>
 
-                  {/* Right 5 Cols: Real Java JPA Source Code Snippet */}
-                  <div className="lg:col-span-5 p-4 sm:p-5 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-[#070F1E] text-slate-200 flex flex-col justify-between font-mono text-xs">
+                  {/* Right 5 Cols: Real JPA Entity Code for Abhay's Application */}
+                  <div className="lg:col-span-5 p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-[#070F1E] text-slate-200 flex flex-col justify-between font-mono text-xs">
                     <div>
-                      <div className="flex items-center justify-between pb-2 border-b border-blue-900/50 mb-3">
-                        <span className="text-[11px] font-bold text-cyan-400 flex items-center gap-1.5">
-                          <Code2 className="w-3.5 h-3.5" />
-                          {activeEntityTab}.java (JPA Model)
-                        </span>
-                        <span className="text-[10px] px-2 py-0.5 rounded bg-blue-900/40 text-blue-300">
-                          Hibernate 6
-                        </span>
+                      {/* Tabs */}
+                      <div className="flex items-center gap-1.5 pb-2 border-b border-blue-900/50 mb-3 overflow-x-auto no-scrollbar">
+                        {[
+                          { id: 'UserAccount', label: 'UserAccount.java' },
+                          { id: 'PortfolioData', label: 'PortfolioData.java' },
+                          { id: 'PortfolioRepository', label: 'Repository.java' },
+                        ].map((t) => (
+                          <button
+                            key={t.id}
+                            type="button"
+                            onClick={() => setActiveEntityTab(t.id as any)}
+                            className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition-colors cursor-pointer ${
+                              activeEntityTab === t.id
+                                ? 'bg-blue-600 text-white font-bold'
+                                : 'text-slate-400 hover:text-white'
+                            }`}
+                          >
+                            {t.label}
+                          </button>
+                        ))}
                       </div>
 
                       {/* Dynamic Code Viewer */}
-                      {activeEntityTab === 'Order' && (
+                      {activeEntityTab === 'UserAccount' && (
                         <pre className="text-[11px] leading-relaxed text-slate-300 overflow-x-auto no-scrollbar">
                           <code>{`@Entity
-@Table(name = "orders")
-public class Order {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+@Table(name = "user_accounts")
+public class UserAccount {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
 
-  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-  private List<OrderItem> items = new ArrayList<>();
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
 
-  @Column(name = "total_amount", nullable = false)
-  private BigDecimal totalAmount;
+    @Column(name = "salt", nullable = false)
+    private String salt;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "portfolio_id", referencedColumnName = "portfolio_id")
+    private PortfolioData portfolio;
 }`}</code>
                         </pre>
                       )}
 
-                      {activeEntityTab === 'User' && (
+                      {activeEntityTab === 'PortfolioData' && (
                         <pre className="text-[11px] leading-relaxed text-slate-300 overflow-x-auto no-scrollbar">
                           <code>{`@Entity
-@Table(name = "users")
-public class User {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+@Table(name = "portfolio_data")
+public class PortfolioData {
+    @Id
+    @Column(name = "portfolio_id", nullable = false)
+    private String portfolioId;
 
-  @Column(unique = true, nullable = false)
-  private String email;
+    @Lob
+    @Column(name = "profile_json", columnDefinition = "JSON")
+    private String profile;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private List<Order> orders = new ArrayList<>();
+    @Lob
+    @Column(name = "projects_json", columnDefinition = "JSON")
+    private String projects;
+
+    @Lob
+    @Column(name = "experiences_json", columnDefinition = "JSON")
+    private String experiences;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Instant updatedAt;
 }`}</code>
                         </pre>
                       )}
 
-                      {activeEntityTab === 'OrderItem' && (
+                      {activeEntityTab === 'PortfolioRepository' && (
                         <pre className="text-[11px] leading-relaxed text-slate-300 overflow-x-auto no-scrollbar">
-                          <code>{`@Entity
-@Table(name = "order_items")
-public class OrderItem {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+                          <code>{`@Repository
+public interface PortfolioRepository extends JpaRepository<PortfolioData, String> {
+    // Solves N+1 Problem: fetches User + Portfolio in single JOIN query
+    @Query("SELECT u FROM UserAccount u JOIN FETCH u.portfolio WHERE u.email = :email")
+    Optional<UserAccount> findByEmailWithPortfolio(@Param("email") String email);
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "order_id")
-  private Order order;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id")
-  private Product product;
-}`}</code>
-                        </pre>
-                      )}
-
-                      {activeEntityTab === 'Product' && (
-                        <pre className="text-[11px] leading-relaxed text-slate-300 overflow-x-auto no-scrollbar">
-                          <code>{`@Entity
-@Table(name = "products")
-public class Product {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  @Column(unique = true, nullable = false)
-  private String sku;
-
-  private BigDecimal price;
-  private Integer stockCount;
+    @EntityGraph(attributePaths = {"portfolio"})
+    Optional<UserAccount> findById(Long id);
 }`}</code>
                         </pre>
                       )}
                     </div>
 
                     <div className="mt-3 pt-2 border-t border-blue-900/50 flex items-center justify-between text-[10px] text-slate-400">
-                      <span>Automated DDL Schema Sync</span>
-                      <span className="text-cyan-400 font-semibold">Zero N+1 Queries</span>
+                      <span>JOIN FETCH & EntityGraph</span>
+                      <span className="text-cyan-400 font-semibold">Zero N+1 Query Overhead</span>
                     </div>
                   </div>
                 </div>
@@ -955,7 +975,7 @@ public class Product {
                   Enterprise Ready & Continuously Delivered
                 </h2>
 
-                <p className="mt-4 max-w-2xl text-sm sm:text-base text-slate-700 dark:text-slate-200 leading-relaxed">
+                <p className="mt-3 max-w-2xl text-xs sm:text-base text-slate-700 dark:text-slate-200 leading-relaxed">
                   Combining clean Java architecture, optimized SQL queries, Hibernate mapping, and Docker microservices to deliver reliable end-to-end applications.
                 </p>
 

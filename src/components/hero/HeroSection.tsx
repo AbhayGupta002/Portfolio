@@ -8,7 +8,6 @@ import {
   Terminal,
   CheckCircle2,
   Edit3,
-  Sparkles,
   Sliders,
   X,
   Maximize2,
@@ -19,6 +18,7 @@ import {
   Activity,
   Code2,
   Film,
+  Play,
 } from 'lucide-react';
 import { usePortfolioData } from '../../context/PortfolioDataContext';
 import { GithubIcon, LinkedinIcon } from '../common/BrandIcons';
@@ -183,11 +183,13 @@ export const HeroSection: React.FC = () => {
                 <motion.button
                   type="button"
                   onClick={openOneShot}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="group inline-flex items-center gap-2 rounded-xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/40 px-4 py-2.5 text-xs sm:text-sm font-semibold text-cyan-700 dark:text-cyan-300 transition-all hover:border-cyan-400 cursor-pointer shadow-xs"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group inline-flex items-center gap-1.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/40 px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-cyan-700 dark:text-cyan-300 transition-all hover:border-cyan-400 cursor-pointer shadow-xs"
+                  title="Play Tour: Java Architecture"
+                  aria-label="Play Tour"
                 >
-                  <Film className="h-4 w-4 text-cyan-600 dark:text-cyan-400" /> One Shot
+                  <Play className="h-4 w-4 fill-current text-cyan-600 dark:text-cyan-400 ml-0.5" />
                 </motion.button>
                 <motion.button
                   type="button"

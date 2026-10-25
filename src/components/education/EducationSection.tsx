@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Award, GraduationCap, MapPin, Edit3, BookMarked, Sparkles } from 'lucide-react';
+import { Award, GraduationCap, MapPin, Edit3, BookMarked } from 'lucide-react';
 import { usePortfolioData } from '../../context/PortfolioDataContext';
 
 export const EducationSection: React.FC = () => {
