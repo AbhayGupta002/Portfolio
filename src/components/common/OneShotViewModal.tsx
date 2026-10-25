@@ -22,9 +22,6 @@ import {
   Server,
   Box,
   GitBranch,
-  ArrowDown,
-  Check,
-  FileCode,
 } from 'lucide-react';
 import { usePortfolioData } from '../../context/PortfolioDataContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -39,6 +36,7 @@ interface Chapter {
   durationMs: number;
 }
 
+// 2x Faster Timing: energetic, snappy motion graphics pacing
 const CHAPTERS: Chapter[] = [
   {
     id: 'intro',
@@ -46,7 +44,7 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'Overview',
     headline: 'Java Backend Journey — Abhay Gupta',
     subtitle: 'Architecting scalable, production-grade distributed backend applications with Java 17 and Spring Boot 3.',
-    durationMs: 7500,
+    durationMs: 4200,
   },
   {
     id: 'java-core',
@@ -54,7 +52,7 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'Java Core',
     headline: 'Java Core Topics & Concurrency Foundations',
     subtitle: 'Mastering the JVM runtime, memory layout, Collections framework, and multi-threaded concurrency.',
-    durationMs: 12000,
+    durationMs: 6000,
   },
   {
     id: 'mvc-monolith',
@@ -62,7 +60,7 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'MVC, DTO & Monolith',
     headline: 'Spring MVC, DTOs & Monolithic Request Workflow',
     subtitle: 'Step-by-step trace of how an HTTP request flows end-to-end through controllers, DTO validation, service transactions, and MySQL.',
-    durationMs: 13500,
+    durationMs: 6800,
   },
   {
     id: 'orm-jpa',
@@ -70,7 +68,7 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'ORM & Architecture',
     headline: 'ORM (Object-Relational Mapping): Hibernate and JPA',
     subtitle: 'Hibernate and JPA for mapping Java objects directly to database tables.',
-    durationMs: 12500,
+    durationMs: 6200,
   },
   {
     id: 'production',
@@ -78,7 +76,7 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'Production',
     headline: 'Production Engineering & Cloud Delivery',
     subtitle: 'High-throughput query tuning, containerized delivery, and rigorous interview readiness.',
-    durationMs: 8500,
+    durationMs: 4500,
   },
 ];
 
@@ -101,7 +99,7 @@ export const OneShotViewModal: React.FC = () => {
 
   const currentChapter = CHAPTERS[currentChapterIndex];
 
-  // Fixed 1x playback speed by default (speed selector completely removed per user request)
+  // Fixed 1x playback speed
   const playbackSpeed = 1;
 
   // Reset to chapter 0 on modal open
@@ -170,12 +168,11 @@ export const OneShotViewModal: React.FC = () => {
       setProgress((prev) => {
         const next = prev + (delta / duration) * 100;
         if (next >= 100) {
-          // Chapter finished -> advance or loop
+          // Chapter finished -> advance or pause on last
           if (currentChapterIndex < CHAPTERS.length - 1) {
             setCurrentChapterIndex((c) => c + 1);
             return 0;
           } else {
-            // End of journey -> pause on last chapter
             setIsPlaying(false);
             return 100;
           }
@@ -233,7 +230,7 @@ export const OneShotViewModal: React.FC = () => {
 
   if (!isOneShotOpen) return null;
 
-  // Helper function: Checks if element has been reached by the video timer
+  // Immediate sequential reveal helpers
   const isRevealed = (threshold: number) => progress >= threshold;
   const isCurrentActive = (from: number, to: number) => progress >= from && progress < to;
 
@@ -252,7 +249,7 @@ export const OneShotViewModal: React.FC = () => {
       {/* Dynamic Ambient Background Lights */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
-          className={`absolute -top-40 left-1/3 h-[500px] w-[500px] rounded-full blur-[140px] transition-all duration-1000 ${
+          className={`absolute -top-40 left-1/3 h-[500px] w-[500px] rounded-full blur-[140px] transition-all duration-700 ${
             currentChapterIndex === 0
               ? 'bg-blue-600/25'
               : currentChapterIndex === 1
@@ -397,7 +394,7 @@ export const OneShotViewModal: React.FC = () => {
         <div className="relative z-10 mx-auto w-full max-w-5xl">
           <AnimatePresence mode="wait">
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 1: INTRO (Sequential 1-by-1 Video-like Appearance)        */}
+            {/* CHAPTER 1: INTRO (Fast Kinetic Cascade from t = 0)               */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 0 && (
               <motion.div
@@ -405,13 +402,13 @@ export const OneShotViewModal: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="flex flex-col items-center text-center py-6 sm:py-10"
               >
-                {/* 1. Badge appears at t >= 2% */}
+                {/* 1. Badge appears immediately at t >= 0% */}
                 <div
-                  className={`transition-all duration-700 transform ${
-                    isRevealed(2) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  className={`transition-all duration-300 ease-out transform ${
+                    isRevealed(0) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
                   }`}
                 >
                   <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-xs font-mono font-bold text-blue-600 dark:text-cyan-300">
@@ -420,10 +417,10 @@ export const OneShotViewModal: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 2. Headline appears at t >= 16% */}
+                {/* 2. Headline appears at t >= 5% (0.2s) */}
                 <div
-                  className={`transition-all duration-700 transform ${
-                    isRevealed(16) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+                  className={`transition-all duration-300 ease-out transform ${
+                    isRevealed(5) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                   }`}
                 >
                   <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]">
@@ -436,10 +433,10 @@ export const OneShotViewModal: React.FC = () => {
                   </h1>
                 </div>
 
-                {/* 3. Subtitle appears at t >= 36% */}
+                {/* 3. Subtitle appears at t >= 12% (0.5s) */}
                 <div
-                  className={`transition-all duration-700 transform ${
-                    isRevealed(36) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+                  className={`transition-all duration-300 ease-out transform ${
+                    isRevealed(12) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                   }`}
                 >
                   <p className="mt-5 max-w-2xl text-base sm:text-xl font-normal leading-relaxed text-slate-700 dark:text-slate-200">
@@ -447,24 +444,24 @@ export const OneShotViewModal: React.FC = () => {
                   </p>
                 </div>
 
-                {/* 4. Core Stack Badges appear 1 by 1 from t >= 52% */}
+                {/* 4. Core Stack Badges cascade rapidly 1-by-1 from t >= 20% */}
                 <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl">
                   {[
-                    { name: 'Core Java 17/21', threshold: 52 },
-                    { name: 'Spring Boot 3', threshold: 58 },
-                    { name: 'Spring MVC', threshold: 64 },
-                    { name: 'DTO Pattern', threshold: 70 },
-                    { name: 'Monolithic Architecture', threshold: 76 },
-                    { name: 'Hibernate & JPA ORM', threshold: 82 },
-                    { name: 'MySQL Relational Modeling', threshold: 88 },
-                    { name: 'Docker Microservices', threshold: 92 },
+                    { name: 'Core Java 17/21', threshold: 20 },
+                    { name: 'Spring Boot 3', threshold: 24 },
+                    { name: 'Spring MVC', threshold: 28 },
+                    { name: 'DTO Pattern', threshold: 32 },
+                    { name: 'Monolithic Architecture', threshold: 36 },
+                    { name: 'Hibernate & JPA ORM', threshold: 40 },
+                    { name: 'MySQL Relational Modeling', threshold: 44 },
+                    { name: 'Docker Microservices', threshold: 48 },
                   ].map((tech) => (
                     <span
                       key={tech.name}
-                      className={`transition-all duration-500 transform rounded-xl border border-slate-300/80 dark:border-blue-900/50 bg-white/90 dark:bg-[#0E1A30]/90 px-3.5 py-1.5 text-xs font-mono font-semibold text-slate-800 dark:text-cyan-300 shadow-sm ${
+                      className={`transition-all duration-300 ease-out transform rounded-xl border border-slate-300/80 dark:border-blue-900/50 bg-white/90 dark:bg-[#0E1A30]/90 px-3.5 py-1.5 text-xs font-mono font-semibold text-slate-800 dark:text-cyan-300 shadow-sm ${
                         isRevealed(tech.threshold)
                           ? 'opacity-100 scale-100 translate-y-0'
-                          : 'opacity-0 scale-90 translate-y-3 pointer-events-none'
+                          : 'opacity-0 scale-90 translate-y-2 pointer-events-none'
                       }`}
                     >
                       {tech.name}
@@ -472,10 +469,10 @@ export const OneShotViewModal: React.FC = () => {
                   ))}
                 </div>
 
-                {/* 5. Begin Action appears at t >= 90% */}
+                {/* 5. Begin Action appears at t >= 55% */}
                 <div
-                  className={`mt-10 flex items-center gap-3 transition-all duration-700 transform ${
-                    isRevealed(90) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                  className={`mt-10 flex items-center gap-3 transition-all duration-300 ease-out transform ${
+                    isRevealed(55) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                   }`}
                 >
                   <button
@@ -491,7 +488,7 @@ export const OneShotViewModal: React.FC = () => {
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 2: JAVA CORE TOPICS (Cards Appear 1-by-1 Like a Video)   */}
+            {/* CHAPTER 2: JAVA CORE TOPICS (Cards Appear 1-by-1 Line-by-Line)   */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 1 && (
               <motion.div
@@ -499,13 +496,13 @@ export const OneShotViewModal: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="py-2 sm:py-4"
               >
                 <div className="text-center max-w-2xl mx-auto mb-5">
                   <div
-                    className={`transition-all duration-500 transform ${
-                      isRevealed(2) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+                    className={`transition-all duration-300 ease-out transform ${
+                      isRevealed(0) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                     }`}
                   >
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 mb-2">
@@ -521,13 +518,13 @@ export const OneShotViewModal: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 6 High-Yield Cards Revealed 1 by 1 */}
+                {/* 6 High-Yield Cards Revealed 1 by 1 Line by Line */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
                   {[
                     {
                       title: 'JVM Memory Architecture',
                       badge: 'Heap vs Stack vs Metaspace',
-                      threshold: 8,
+                      threshold: 2,
                       points: [
                         'Heap: Young Gen (Eden, S0, S1) & Old Gen (Tenured) for objects.',
                         'Thread Stack: Private frames for local vars & operand stack.',
@@ -537,7 +534,7 @@ export const OneShotViewModal: React.FC = () => {
                     {
                       title: 'Garbage Collection (GC)',
                       badge: 'G1GC & ZGC Mechanics',
-                      threshold: 24,
+                      threshold: 11,
                       points: [
                         'G1GC: Region-based generational collection minimizing STW pauses.',
                         'ZGC: Concurrent colored pointers with < 1ms pause times.',
@@ -547,7 +544,7 @@ export const OneShotViewModal: React.FC = () => {
                     {
                       title: 'Collections & HashMap',
                       badge: 'Bucket Array & Treeification',
-                      threshold: 40,
+                      threshold: 20,
                       points: [
                         'Hashing index: (n - 1) & hash(key) using separate chaining.',
                         'Treeifies to Red-Black tree when bucket length >= 8 and cap >= 64.',
@@ -557,7 +554,7 @@ export const OneShotViewModal: React.FC = () => {
                     {
                       title: 'Multithreading & Concurrency',
                       badge: 'ExecutorService & JMM',
-                      threshold: 56,
+                      threshold: 29,
                       points: [
                         'ThreadPoolExecutor: corePoolSize, maxPoolSize, BlockingQueue.',
                         'volatile: Enforces memory visibility & prevents instruction reordering.',
@@ -567,7 +564,7 @@ export const OneShotViewModal: React.FC = () => {
                     {
                       title: 'equals() & hashCode() Contract',
                       badge: 'Object Integrity',
-                      threshold: 72,
+                      threshold: 38,
                       points: [
                         'If a.equals(b) == true, a.hashCode() MUST equal b.hashCode().',
                         'Violating the contract corrupts HashMap and HashSet lookups.',
@@ -577,7 +574,7 @@ export const OneShotViewModal: React.FC = () => {
                     {
                       title: 'Java 17+ Modern Standards',
                       badge: 'LTS Language Features',
-                      threshold: 88,
+                      threshold: 47,
                       points: [
                         'Records: Immutable carrier models with compiler-generated accessors.',
                         'Sealed Classes: Strict hierarchy control via permits keyword.',
@@ -586,15 +583,15 @@ export const OneShotViewModal: React.FC = () => {
                     },
                   ].map((topic, i) => {
                     const revealed = isRevealed(topic.threshold);
-                    const activeNow = isCurrentActive(topic.threshold, topic.threshold + 16);
+                    const activeNow = isCurrentActive(topic.threshold, topic.threshold + 9);
 
                     return (
                       <div
                         key={topic.title}
-                        className={`transition-all duration-700 transform p-4 rounded-2xl border backdrop-blur-md flex flex-col justify-between ${
+                        className={`transition-all duration-300 ease-out transform p-4 rounded-2xl border backdrop-blur-md flex flex-col justify-between ${
                           revealed
                             ? 'opacity-100 translate-y-0 scale-100'
-                            : 'opacity-0 translate-y-8 scale-95 pointer-events-none'
+                            : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                         } ${
                           activeNow
                             ? 'border-amber-400 bg-amber-50/20 dark:bg-amber-950/20 shadow-md ring-2 ring-amber-400/40'
@@ -602,6 +599,7 @@ export const OneShotViewModal: React.FC = () => {
                         }`}
                       >
                         <div>
+                          {/* Card Header Line */}
                           <div className="flex items-center justify-between mb-2">
                             <span className="font-mono text-[11px] font-bold text-amber-600 dark:text-amber-400">
                               0{i + 1}.
@@ -610,12 +608,20 @@ export const OneShotViewModal: React.FC = () => {
                               {topic.badge}
                             </span>
                           </div>
+                          {/* Card Title Line */}
                           <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
                             {topic.title}
                           </h3>
+                          {/* Card Bullets Line by Line */}
                           <ul className="mt-2 space-y-1.5 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                             {topic.points.map((pt, pIdx) => (
-                              <li key={pIdx} className="flex items-start gap-1.5">
+                              <li
+                                key={pIdx}
+                                className={`flex items-start gap-1.5 transition-all duration-300 ease-out transform ${
+                                  revealed ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
+                                }`}
+                                style={{ transitionDelay: `${pIdx * 70}ms` }}
+                              >
                                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
                                 <span>{pt}</span>
                               </li>
@@ -630,7 +636,7 @@ export const OneShotViewModal: React.FC = () => {
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 3: MVC, DTO & MONOLITHIC WORKFLOW (1-by-1 Flow Animation) */}
+            {/* CHAPTER 3: MVC, DTO & MONOLITH (Fast 1-by-1 Motion Workflow)     */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 2 && (
               <motion.div
@@ -638,13 +644,13 @@ export const OneShotViewModal: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="py-1 sm:py-3"
               >
                 <div className="text-center max-w-2xl mx-auto mb-4">
                   <div
-                    className={`transition-all duration-500 transform ${
-                      isRevealed(2) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+                    className={`transition-all duration-300 ease-out transform ${
+                      isRevealed(0) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                     }`}
                   >
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 mb-2">
@@ -677,7 +683,7 @@ export const OneShotViewModal: React.FC = () => {
                       {
                         step: '1',
                         label: 'Client Ingress',
-                        threshold: 6,
+                        threshold: 2,
                         role: 'POST /api/v1/auth/login',
                         desc: 'React 19 SPA dispatches JSON body { email, password } over HTTPS to the backend server.',
                         color: 'border-blue-500 text-blue-600 dark:text-cyan-400',
@@ -685,7 +691,7 @@ export const OneShotViewModal: React.FC = () => {
                       {
                         step: '2',
                         label: 'Dispatcher & Security',
-                        threshold: 22,
+                        threshold: 10,
                         role: 'DispatcherServlet + Security Filter',
                         desc: 'Front controller intercepts request, enforces CORS/CSRF headers, and queries HandlerMapping to locate the matching controller method.',
                         color: 'border-cyan-500 text-cyan-600 dark:text-cyan-300',
@@ -693,7 +699,7 @@ export const OneShotViewModal: React.FC = () => {
                       {
                         step: '3',
                         label: 'Controller & DTO Validation',
-                        threshold: 38,
+                        threshold: 18,
                         role: '@Valid LoginRequestDTO',
                         desc: 'Jackson HttpMessageConverter deserializes JSON into Request DTO. Bean Validation enforces @NotBlank & @Email before hitting business logic.',
                         color: 'border-emerald-500 text-emerald-700 dark:text-emerald-400',
@@ -701,7 +707,7 @@ export const OneShotViewModal: React.FC = () => {
                       {
                         step: '4',
                         label: 'Service & Transaction',
-                        threshold: 54,
+                        threshold: 26,
                         role: '@Service @Transactional',
                         desc: 'Opens an in-process ACID transaction boundary. Enforces business workflows, applies SHA-256 cryptographic salting, maps DTO to Entity.',
                         color: 'border-amber-500 text-amber-600 dark:text-amber-400',
@@ -709,7 +715,7 @@ export const OneShotViewModal: React.FC = () => {
                       {
                         step: '5',
                         label: 'Hibernate ORM & DB',
-                        threshold: 70,
+                        threshold: 34,
                         role: 'JPA Repository + MySQL 8',
                         desc: 'Queries 1st-level session cache, borrows HikariCP connection, executes indexed SQL query, and fetches the UserAccount entity.',
                         color: 'border-purple-500 text-purple-600 dark:text-purple-400',
@@ -717,28 +723,29 @@ export const OneShotViewModal: React.FC = () => {
                       {
                         step: '6',
                         label: 'Response DTO Projection',
-                        threshold: 86,
+                        threshold: 42,
                         role: 'UserResponseDTO Serialization',
                         desc: 'Service projects Entity into UserResponseDTO (sanitizing password hash and salt). Controller returns HTTP 200 OK with clean JSON.',
                         color: 'border-pink-500 text-pink-600 dark:text-pink-400',
                       },
                     ].map((st) => {
                       const revealed = isRevealed(st.threshold);
-                      const activeNow = isCurrentActive(st.threshold, st.threshold + 16);
+                      const activeNow = isCurrentActive(st.threshold, st.threshold + 8);
 
                       return (
                         <div
                           key={st.step}
-                          className={`transition-all duration-600 transform p-3 rounded-xl border ${
+                          className={`transition-all duration-300 ease-out transform p-3 rounded-xl border ${
                             revealed
                               ? 'opacity-100 translate-y-0 scale-100'
-                              : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                              : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                           } ${
                             activeNow
                               ? 'border-cyan-400 bg-cyan-50/20 dark:bg-cyan-950/30 shadow-md ring-2 ring-cyan-400/40'
                               : 'border-slate-200 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70'
                           }`}
                         >
+                          {/* Step Header Line */}
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-[10px] font-mono font-bold text-slate-400">
                               STEP 0{st.step} • {st.label}
@@ -750,10 +757,22 @@ export const OneShotViewModal: React.FC = () => {
                               </span>
                             )}
                           </div>
-                          <div className="text-xs font-mono font-bold text-slate-900 dark:text-white">
+                          {/* Step Method Line */}
+                          <div
+                            className={`text-xs font-mono font-bold text-slate-900 dark:text-white transition-all duration-300 ease-out ${
+                              revealed ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'
+                            }`}
+                            style={{ transitionDelay: '50ms' }}
+                          >
                             {st.role}
                           </div>
-                          <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                          {/* Step Description Line */}
+                          <p
+                            className={`mt-1 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed transition-all duration-300 ease-out ${
+                              revealed ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'
+                            }`}
+                            style={{ transitionDelay: '100ms' }}
+                          >
                             {st.desc}
                           </p>
                         </div>
@@ -762,10 +781,10 @@ export const OneShotViewModal: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Monolith & DTO Architecture Strengths (Appears at t >= 65%) */}
+                {/* Monolith & DTO Architecture Strengths (Appears at t >= 50%) */}
                 <div
-                  className={`p-4 rounded-2xl border border-blue-500/30 bg-blue-50/60 dark:bg-[#0E1A30]/80 backdrop-blur-md transition-all duration-700 transform ${
-                    isRevealed(65) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'
+                  className={`p-4 rounded-2xl border border-blue-500/30 bg-blue-50/60 dark:bg-[#0E1A30]/80 backdrop-blur-md transition-all duration-300 ease-out transform ${
+                    isRevealed(50) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-blue-200 dark:border-blue-900/50">
@@ -812,13 +831,13 @@ export const OneShotViewModal: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="py-1 sm:py-2"
               >
-                {/* 1. Exact Required Quote Banner (Appears at t >= 4%) */}
+                {/* 1. Exact Required Quote Banner (Appears immediately at t >= 0%) */}
                 <div
-                  className={`p-4 sm:p-5 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/30 backdrop-blur-md mb-4 transition-all duration-700 transform ${
-                    isRevealed(4) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  className={`p-4 sm:p-5 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/30 backdrop-blur-md mb-4 transition-all duration-300 ease-out transform ${
+                    isRevealed(0) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
                   }`}
                 >
                   <div className="flex items-start gap-3">
@@ -856,10 +875,10 @@ export const OneShotViewModal: React.FC = () => {
 
                       {/* 4 Pipeline Layers Revealed 1 by 1 */}
                       <div className="space-y-2">
-                        {/* Layer 1: Client UI (Appears at t >= 18%) */}
+                        {/* Layer 1: Client UI (Appears at t >= 8%) */}
                         <div
-                          className={`p-2.5 rounded-xl border border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20 flex items-center justify-between transition-all duration-600 transform ${
-                            isRevealed(18) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+                          className={`p-2.5 rounded-xl border border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20 flex items-center justify-between transition-all duration-300 ease-out transform ${
+                            isRevealed(8) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
                           }`}
                         >
                           <div className="flex items-center gap-2">
@@ -872,10 +891,10 @@ export const OneShotViewModal: React.FC = () => {
                           <span className="text-[10px] font-mono text-blue-600 dark:text-cyan-300 font-semibold">User Credentials / Profile DTO</span>
                         </div>
 
-                        {/* Layer 2: Spring MVC & Security (Appears at t >= 36%) */}
+                        {/* Layer 2: Spring MVC & Security (Appears at t >= 18%) */}
                         <div
-                          className={`p-2.5 rounded-xl border border-cyan-500/30 bg-cyan-50/50 dark:bg-cyan-950/20 flex items-center justify-between transition-all duration-600 transform ${
-                            isRevealed(36) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+                          className={`p-2.5 rounded-xl border border-cyan-500/30 bg-cyan-50/50 dark:bg-cyan-950/20 flex items-center justify-between transition-all duration-300 ease-out transform ${
+                            isRevealed(18) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
                           }`}
                         >
                           <div className="flex items-center gap-2">
@@ -888,10 +907,10 @@ export const OneShotViewModal: React.FC = () => {
                           <span className="text-[10px] font-mono text-cyan-600 dark:text-cyan-300 font-semibold">DTO Validation & Business Logic</span>
                         </div>
 
-                        {/* Layer 3: Hibernate ORM Engine (Appears at t >= 54%) */}
+                        {/* Layer 3: Hibernate ORM Engine (Appears at t >= 28%) */}
                         <div
-                          className={`p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20 flex items-center justify-between transition-all duration-600 transform ${
-                            isRevealed(54) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+                          className={`p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20 flex items-center justify-between transition-all duration-300 ease-out transform ${
+                            isRevealed(28) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
                           }`}
                         >
                           <div className="flex items-center gap-2">
@@ -904,10 +923,10 @@ export const OneShotViewModal: React.FC = () => {
                           <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-300 font-semibold">Object-to-Relational Mapping</span>
                         </div>
 
-                        {/* Layer 4: Relational MySQL Database (Appears at t >= 72%) */}
+                        {/* Layer 4: Relational MySQL Database (Appears at t >= 38%) */}
                         <div
-                          className={`p-2.5 rounded-xl border border-purple-500/30 bg-purple-50/50 dark:bg-purple-950/20 flex items-center justify-between transition-all duration-600 transform ${
-                            isRevealed(72) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+                          className={`p-2.5 rounded-xl border border-purple-500/30 bg-purple-50/50 dark:bg-purple-950/20 flex items-center justify-between transition-all duration-300 ease-out transform ${
+                            isRevealed(38) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
                           }`}
                         >
                           <div className="flex items-center gap-2">
@@ -928,10 +947,10 @@ export const OneShotViewModal: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Right 5 Cols: Real JPA Entity Code for Abhay's Application (Appears at t >= 45%) */}
+                  {/* Right 5 Cols: Real JPA Entity Code for Abhay's Application (Appears at t >= 48%) */}
                   <div
-                    className={`lg:col-span-5 p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-[#070F1E] text-slate-200 flex flex-col justify-between font-mono text-xs transition-all duration-700 transform ${
-                      isRevealed(45) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'
+                    className={`lg:col-span-5 p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-[#070F1E] text-slate-200 flex flex-col justify-between font-mono text-xs transition-all duration-300 ease-out transform ${
+                      isRevealed(48) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
                     }`}
                   >
                     <div>
@@ -1036,7 +1055,7 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 5: PRODUCTION & SUMMARY (Pillars Appear 1 by 1)           */}
+            {/* CHAPTER 5: PRODUCTION & SUMMARY (Pillars Appear Line by Line)      */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 4 && (
               <motion.div
@@ -1044,12 +1063,12 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="flex flex-col items-center text-center py-6 sm:py-8"
               >
                 <div
-                  className={`mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-1 text-xs font-mono font-bold text-purple-600 dark:text-purple-300 transition-all duration-500 transform ${
-                    isRevealed(4) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+                  className={`mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-1 text-xs font-mono font-bold text-purple-600 dark:text-purple-300 transition-all duration-300 ease-out transform ${
+                    isRevealed(0) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                   }`}
                 >
                   <Zap className="h-4 w-4" />
@@ -1057,8 +1076,8 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
                 </div>
 
                 <div
-                  className={`transition-all duration-600 transform ${
-                    isRevealed(12) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  className={`transition-all duration-300 ease-out transform ${
+                    isRevealed(8) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
                   }`}
                 >
                   <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white">
@@ -1072,8 +1091,8 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
                 {/* 3 Pillars Revealed 1 by 1 */}
                 <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-3xl w-full text-left">
                   <div
-                    className={`p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md transition-all duration-600 transform ${
-                      isRevealed(30) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                    className={`p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md transition-all duration-300 ease-out transform ${
+                      isRevealed(16) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                     }`}
                   >
                     <div className="font-mono text-xs font-bold text-blue-600 dark:text-cyan-400 mb-1">
@@ -1088,8 +1107,8 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
                   </div>
 
                   <div
-                    className={`p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md transition-all duration-600 transform ${
-                      isRevealed(52) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                    className={`p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md transition-all duration-300 ease-out transform ${
+                      isRevealed(28) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                     }`}
                   >
                     <div className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">
@@ -1104,8 +1123,8 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
                   </div>
 
                   <div
-                    className={`p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md transition-all duration-600 transform ${
-                      isRevealed(74) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                    className={`p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md transition-all duration-300 ease-out transform ${
+                      isRevealed(40) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                     }`}
                   >
                     <div className="font-mono text-xs font-bold text-purple-600 dark:text-purple-400 mb-1">
@@ -1120,10 +1139,10 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
                   </div>
                 </div>
 
-                {/* Final Actions (Appears at t >= 88%) */}
+                {/* Final Actions (Appears at t >= 52%) */}
                 <div
-                  className={`mt-8 flex flex-wrap items-center justify-center gap-3 transition-all duration-600 transform ${
-                    isRevealed(88) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                  className={`mt-8 flex flex-wrap items-center justify-center gap-3 transition-all duration-300 ease-out transform ${
+                    isRevealed(52) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                   }`}
                 >
                   <button
