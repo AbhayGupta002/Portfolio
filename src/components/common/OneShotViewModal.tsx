@@ -8,6 +8,7 @@ import {
   RotateCcw,
   X,
   Maximize2,
+  Minimize2,
   Database,
   Layers,
   Code2,
@@ -15,14 +16,15 @@ import {
   ArrowRight,
   Shield,
   Coffee,
-  Table,
   Zap,
   Terminal,
   Download,
   Server,
   Box,
-  Cpu,
   GitBranch,
+  ArrowDown,
+  Check,
+  FileCode,
 } from 'lucide-react';
 import { usePortfolioData } from '../../context/PortfolioDataContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -34,7 +36,7 @@ interface Chapter {
   tabTitle: string;
   headline: string;
   subtitle: string;
-  durationMs: number; // Duration of this slide in milliseconds
+  durationMs: number;
 }
 
 const CHAPTERS: Chapter[] = [
@@ -44,7 +46,7 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'Overview',
     headline: 'Java Backend Journey — Abhay Gupta',
     subtitle: 'Architecting scalable, production-grade distributed backend applications with Java 17 and Spring Boot 3.',
-    durationMs: 7000,
+    durationMs: 7500,
   },
   {
     id: 'java-core',
@@ -52,31 +54,31 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'Java Core',
     headline: 'Java Core Topics & Concurrency Foundations',
     subtitle: 'Mastering the JVM runtime, memory layout, Collections framework, and multi-threaded concurrency.',
-    durationMs: 9500,
+    durationMs: 12000,
   },
   {
     id: 'mvc-monolith',
-    badge: '03 / SYSTEM DESIGN',
-    tabTitle: 'MVC & Monolith',
-    headline: 'Spring MVC & Monolithic Architecture',
-    subtitle: 'Clean request lifecycle, decoupled layered boundaries, and high-performance monolithic deployment.',
-    durationMs: 9500,
+    badge: '03 / WORKFLOW & DTO',
+    tabTitle: 'MVC, DTO & Monolith',
+    headline: 'Spring MVC, DTOs & Monolithic Request Workflow',
+    subtitle: 'Step-by-step trace of how an HTTP request flows end-to-end through controllers, DTO validation, service transactions, and MySQL.',
+    durationMs: 13500,
   },
   {
     id: 'orm-jpa',
-    badge: '04 / DATA PERSISTENCE',
+    badge: '04 / PERSISTENCE',
     tabTitle: 'ORM & Architecture',
     headline: 'ORM (Object-Relational Mapping): Hibernate and JPA',
     subtitle: 'Hibernate and JPA for mapping Java objects directly to database tables.',
-    durationMs: 11000,
+    durationMs: 12500,
   },
   {
     id: 'production',
-    badge: '05 / CLOUD & IMPACT',
+    badge: '05 / PRODUCTION',
     tabTitle: 'Production',
     headline: 'Production Engineering & Cloud Delivery',
     subtitle: 'High-throughput query tuning, containerized delivery, and rigorous interview readiness.',
-    durationMs: 8000,
+    durationMs: 8500,
   },
 ];
 
@@ -90,7 +92,6 @@ export const OneShotViewModal: React.FC = () => {
   const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0); // 0 to 100 for current chapter
-  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1); // 0.75, 1, 1.5
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [activeEntityTab, setActiveEntityTab] = useState<'UserAccount' | 'PortfolioData' | 'PortfolioRepository'>('UserAccount');
 
@@ -99,6 +100,9 @@ export const OneShotViewModal: React.FC = () => {
   const lastTimeRef = useRef<number | null>(null);
 
   const currentChapter = CHAPTERS[currentChapterIndex];
+
+  // Fixed 1x playback speed by default (speed selector completely removed per user request)
+  const playbackSpeed = 1;
 
   // Reset to chapter 0 on modal open
   useEffect(() => {
@@ -229,6 +233,10 @@ export const OneShotViewModal: React.FC = () => {
 
   if (!isOneShotOpen) return null;
 
+  // Helper function: Checks if element has been reached by the video timer
+  const isRevealed = (threshold: number) => progress >= threshold;
+  const isCurrentActive = (from: number, to: number) => progress >= from && progress < to;
+
   return (
     <div
       ref={containerRef}
@@ -272,7 +280,7 @@ export const OneShotViewModal: React.FC = () => {
               type="button"
               onClick={closeOneShot}
               className="group relative flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#FF5F56] border border-[#E0443E] transition-transform hover:scale-110 active:scale-95 cursor-pointer"
-              title="Close Tour (ESC)"
+              title="Close Tour"
               aria-label="Close"
             >
               <X className="h-2 w-2 text-[#4A0002] opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -290,17 +298,17 @@ export const OneShotViewModal: React.FC = () => {
               type="button"
               onClick={toggleFullscreen}
               className="group relative flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#27C93F] border border-[#1AAB29] transition-transform hover:scale-110 active:scale-95 cursor-pointer"
-              title={isFullscreen ? 'Exit Fullscreen (F)' : 'Enter Fullscreen (F)'}
+              title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
               aria-label="Toggle Fullscreen"
             >
               <Maximize2 className="h-1.5 w-1.5 text-[#004D11] opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
           </div>
 
-          {/* Central Title Tag (Engineering Clean - No AI Sparkles) */}
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-xl border border-slate-200/80 dark:border-blue-800/50 bg-slate-100/70 dark:bg-[#0E1A30]/80 text-xs font-mono">
+          {/* Central Title Tag (Pure Engineering - No AI Sparkles) */}
+          <div className="flex items-center gap-2 px-3 py-1 rounded-xl border border-slate-200/80 dark:border-blue-800/50 bg-slate-100/70 dark:bg-[#0E1A30]/80 text-xs font-mono">
             <Terminal className="h-3.5 w-3.5 text-blue-600 dark:text-cyan-400" />
-            <span className="font-semibold text-slate-800 dark:text-cyan-300">
+            <span className="font-semibold text-slate-800 dark:text-cyan-300 truncate max-w-[200px] sm:max-w-none">
               Java Backend Journey — Abhay Gupta
             </span>
             <span className="mx-1 text-slate-400">•</span>
@@ -310,34 +318,16 @@ export const OneShotViewModal: React.FC = () => {
             </span>
           </div>
 
-          {/* Right Action Controls */}
-          <div className="flex items-center gap-2">
-            {/* Speed Selector */}
-            <div className="flex items-center rounded-xl border border-slate-200 dark:border-blue-900/60 bg-slate-100/80 dark:bg-[#0E1A30] p-0.5 text-[11px] font-mono">
-              {[0.75, 1, 1.5].map((spd) => (
-                <button
-                  key={spd}
-                  type="button"
-                  onClick={() => setPlaybackSpeed(spd)}
-                  className={`px-2 py-0.5 rounded-lg transition-colors cursor-pointer ${
-                    playbackSpeed === spd
-                      ? 'bg-blue-600 text-white font-bold shadow-xs'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-blue-600'
-                  }`}
-                >
-                  {spd}x
-                </button>
-              ))}
-            </div>
-
-            {/* Quick Close Button */}
+          {/* Right Header: Fullscreen Toggle Only (Speed selector & ESC button completely removed) */}
+          <div className="flex items-center gap-1.5">
             <button
               type="button"
-              onClick={closeOneShot}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-blue-900/60 bg-slate-100/80 dark:bg-[#0E1A30] text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/40 transition-all cursor-pointer"
+              onClick={toggleFullscreen}
+              className="p-1.5 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#0E1A30] transition cursor-pointer"
+              title={isFullscreen ? 'Exit Fullscreen (F)' : 'Fullscreen (F)'}
+              aria-label="Toggle Fullscreen"
             >
-              <X className="h-3.5 w-3.5" />
-              <span className="hidden md:inline">ESC</span>
+              {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
             </button>
           </div>
         </div>
@@ -407,81 +397,86 @@ export const OneShotViewModal: React.FC = () => {
         <div className="relative z-10 mx-auto w-full max-w-5xl">
           <AnimatePresence mode="wait">
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 1: INTRO ("Java Backend Journey Abhay Gupta")             */}
+            {/* CHAPTER 1: INTRO (Sequential 1-by-1 Video-like Appearance)        */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 0 && (
               <motion.div
                 key="ch-0"
-                initial={{ opacity: 0, scale: 0.96, y: 16 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: -16 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
                 className="flex flex-col items-center text-center py-6 sm:py-10"
               >
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-xs font-mono font-bold text-blue-600 dark:text-cyan-300"
+                {/* 1. Badge appears at t >= 2% */}
+                <div
+                  className={`transition-all duration-700 transform ${
+                    isRevealed(2) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  }`}
                 >
-                  <Coffee className="h-4 w-4" />
-                  <span>CHAPTER 01 • OVERVIEW</span>
-                </motion.div>
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-xs font-mono font-bold text-blue-600 dark:text-cyan-300">
+                    <Coffee className="h-4 w-4" />
+                    <span>CHAPTER 01 • OVERVIEW</span>
+                  </div>
+                </div>
 
-                <motion.h1
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]"
+                {/* 2. Headline appears at t >= 16% */}
+                <div
+                  className={`transition-all duration-700 transform ${
+                    isRevealed(16) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+                  }`}
                 >
-                  <span className="block text-slate-900 dark:text-white">
-                    Java Backend Journey
-                  </span>
-                  <span className="block bg-gradient-to-r from-blue-600 via-cyan-400 to-indigo-500 bg-clip-text text-transparent mt-1">
-                    Abhay Gupta
-                  </span>
-                </motion.h1>
+                  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]">
+                    <span className="block text-slate-900 dark:text-white">
+                      Java Backend Journey
+                    </span>
+                    <span className="block bg-gradient-to-r from-blue-600 via-cyan-400 to-indigo-500 bg-clip-text text-transparent mt-1">
+                      Abhay Gupta
+                    </span>
+                  </h1>
+                </div>
 
-                <motion.p
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="mt-5 max-w-2xl text-base sm:text-xl font-normal leading-relaxed text-slate-700 dark:text-slate-200"
+                {/* 3. Subtitle appears at t >= 36% */}
+                <div
+                  className={`transition-all duration-700 transform ${
+                    isRevealed(36) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+                  }`}
                 >
-                  {currentChapter.subtitle}
-                </motion.p>
+                  <p className="mt-5 max-w-2xl text-base sm:text-xl font-normal leading-relaxed text-slate-700 dark:text-slate-200">
+                    {currentChapter.subtitle}
+                  </p>
+                </div>
 
-                {/* Core Stack Badges */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="mt-8 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl"
-                >
+                {/* 4. Core Stack Badges appear 1 by 1 from t >= 52% */}
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl">
                   {[
-                    'Core Java 17/21',
-                    'Spring Boot 3',
-                    'Spring MVC',
-                    'Monolithic Architecture',
-                    'Hibernate & JPA ORM',
-                    'MySQL Relational Modeling',
-                    'RESTful APIs & JWT',
-                    'Docker Microservices',
+                    { name: 'Core Java 17/21', threshold: 52 },
+                    { name: 'Spring Boot 3', threshold: 58 },
+                    { name: 'Spring MVC', threshold: 64 },
+                    { name: 'DTO Pattern', threshold: 70 },
+                    { name: 'Monolithic Architecture', threshold: 76 },
+                    { name: 'Hibernate & JPA ORM', threshold: 82 },
+                    { name: 'MySQL Relational Modeling', threshold: 88 },
+                    { name: 'Docker Microservices', threshold: 92 },
                   ].map((tech) => (
                     <span
-                      key={tech}
-                      className="rounded-xl border border-slate-300/80 dark:border-blue-900/50 bg-white/90 dark:bg-[#0E1A30]/90 px-3.5 py-1.5 text-xs font-mono font-semibold text-slate-800 dark:text-cyan-300 shadow-sm"
+                      key={tech.name}
+                      className={`transition-all duration-500 transform rounded-xl border border-slate-300/80 dark:border-blue-900/50 bg-white/90 dark:bg-[#0E1A30]/90 px-3.5 py-1.5 text-xs font-mono font-semibold text-slate-800 dark:text-cyan-300 shadow-sm ${
+                        isRevealed(tech.threshold)
+                          ? 'opacity-100 scale-100 translate-y-0'
+                          : 'opacity-0 scale-90 translate-y-3 pointer-events-none'
+                      }`}
                     >
-                      {tech}
+                      {tech.name}
                     </span>
                   ))}
-                </motion.div>
+                </div>
 
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.55 }}
-                  className="mt-10 flex items-center gap-3"
+                {/* 5. Begin Action appears at t >= 90% */}
+                <div
+                  className={`mt-10 flex items-center gap-3 transition-all duration-700 transform ${
+                    isRevealed(90) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                  }`}
                 >
                   <button
                     type="button"
@@ -491,40 +486,48 @@ export const OneShotViewModal: React.FC = () => {
                     <span>Begin Journey</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
-                </motion.div>
+                </div>
               </motion.div>
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 2: JAVA CORE TOPICS & INTERVIEW ESSENTIALS               */}
+            {/* CHAPTER 2: JAVA CORE TOPICS (Cards Appear 1-by-1 Like a Video)   */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 1 && (
               <motion.div
                 key="ch-1"
-                initial={{ opacity: 0, scale: 0.96, y: 16 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: -16 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
                 className="py-2 sm:py-4"
               >
                 <div className="text-center max-w-2xl mx-auto mb-5">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 mb-2">
-                    <Code2 className="w-3.5 h-3.5" />
-                    JAVA CORE & INTERVIEW MASTERY
-                  </span>
-                  <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">
-                    Java Core Topics & Concurrency Foundations
-                  </h2>
-                  <p className="mt-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                    High-yield concepts tested in senior engineering technical interviews.
-                  </p>
+                  <div
+                    className={`transition-all duration-500 transform ${
+                      isRevealed(2) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+                    }`}
+                  >
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 mb-2">
+                      <Code2 className="w-3.5 h-3.5" />
+                      JAVA CORE & INTERVIEW MASTERY
+                    </span>
+                    <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">
+                      Java Core Topics & Concurrency Foundations
+                    </h2>
+                    <p className="mt-1 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                      High-yield concepts tested in senior engineering technical interviews.
+                    </p>
+                  </div>
                 </div>
 
+                {/* 6 High-Yield Cards Revealed 1 by 1 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
                   {[
                     {
                       title: 'JVM Memory Architecture',
                       badge: 'Heap vs Stack vs Metaspace',
+                      threshold: 8,
                       points: [
                         'Heap: Young Gen (Eden, S0, S1) & Old Gen (Tenured) for objects.',
                         'Thread Stack: Private frames for local vars & operand stack.',
@@ -534,6 +537,7 @@ export const OneShotViewModal: React.FC = () => {
                     {
                       title: 'Garbage Collection (GC)',
                       badge: 'G1GC & ZGC Mechanics',
+                      threshold: 24,
                       points: [
                         'G1GC: Region-based generational collection minimizing STW pauses.',
                         'ZGC: Concurrent colored pointers with < 1ms pause times.',
@@ -543,6 +547,7 @@ export const OneShotViewModal: React.FC = () => {
                     {
                       title: 'Collections & HashMap',
                       badge: 'Bucket Array & Treeification',
+                      threshold: 40,
                       points: [
                         'Hashing index: (n - 1) & hash(key) using separate chaining.',
                         'Treeifies to Red-Black tree when bucket length >= 8 and cap >= 64.',
@@ -552,6 +557,7 @@ export const OneShotViewModal: React.FC = () => {
                     {
                       title: 'Multithreading & Concurrency',
                       badge: 'ExecutorService & JMM',
+                      threshold: 56,
                       points: [
                         'ThreadPoolExecutor: corePoolSize, maxPoolSize, BlockingQueue.',
                         'volatile: Enforces memory visibility & prevents instruction reordering.',
@@ -561,6 +567,7 @@ export const OneShotViewModal: React.FC = () => {
                     {
                       title: 'equals() & hashCode() Contract',
                       badge: 'Object Integrity',
+                      threshold: 72,
                       points: [
                         'If a.equals(b) == true, a.hashCode() MUST equal b.hashCode().',
                         'Violating the contract corrupts HashMap and HashSet lookups.',
@@ -570,166 +577,225 @@ export const OneShotViewModal: React.FC = () => {
                     {
                       title: 'Java 17+ Modern Standards',
                       badge: 'LTS Language Features',
+                      threshold: 88,
                       points: [
                         'Records: Immutable carrier models with compiler-generated accessors.',
                         'Sealed Classes: Strict hierarchy control via permits keyword.',
                         'Pattern Matching for instanceof & switch, Text blocks.',
                       ],
                     },
-                  ].map((topic, i) => (
-                    <motion.div
-                      key={topic.title}
-                      initial={{ opacity: 0, y: 14 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.06 * i }}
-                      className="p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-md shadow-xs hover:border-amber-400 dark:hover:border-amber-400/60 transition-all flex flex-col justify-between"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-mono text-[11px] font-bold text-amber-600 dark:text-amber-400">
-                            0{i + 1}.
-                          </span>
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-300 font-bold">
-                            {topic.badge}
-                          </span>
+                  ].map((topic, i) => {
+                    const revealed = isRevealed(topic.threshold);
+                    const activeNow = isCurrentActive(topic.threshold, topic.threshold + 16);
+
+                    return (
+                      <div
+                        key={topic.title}
+                        className={`transition-all duration-700 transform p-4 rounded-2xl border backdrop-blur-md flex flex-col justify-between ${
+                          revealed
+                            ? 'opacity-100 translate-y-0 scale-100'
+                            : 'opacity-0 translate-y-8 scale-95 pointer-events-none'
+                        } ${
+                          activeNow
+                            ? 'border-amber-400 bg-amber-50/20 dark:bg-amber-950/20 shadow-md ring-2 ring-amber-400/40'
+                            : 'border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/85 shadow-xs'
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-mono text-[11px] font-bold text-amber-600 dark:text-amber-400">
+                              0{i + 1}.
+                            </span>
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-300 font-bold">
+                              {topic.badge}
+                            </span>
+                          </div>
+                          <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                            {topic.title}
+                          </h3>
+                          <ul className="mt-2 space-y-1.5 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            {topic.points.map((pt, pIdx) => (
+                              <li key={pIdx} className="flex items-start gap-1.5">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                                <span>{pt}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
-                          {topic.title}
-                        </h3>
-                        <ul className="mt-2 space-y-1.5 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-                          {topic.points.map((pt, pIdx) => (
-                            <li key={pIdx} className="flex items-start gap-1.5">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                              <span>{pt}</span>
-                            </li>
-                          ))}
-                        </ul>
                       </div>
-                    </motion.div>
-                  ))}
+                    );
+                  })}
                 </div>
               </motion.div>
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 3: MVC PATTERN & MONOLITHIC ARCHITECTURE                  */}
+            {/* CHAPTER 3: MVC, DTO & MONOLITHIC WORKFLOW (1-by-1 Flow Animation) */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 2 && (
               <motion.div
                 key="ch-2"
-                initial={{ opacity: 0, scale: 0.96, y: 16 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: -16 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
                 className="py-1 sm:py-3"
               >
-                <div className="text-center max-w-2xl mx-auto mb-5">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 mb-2">
-                    <Layers className="w-3.5 h-3.5" />
-                    MVC & MONOLITHIC SYSTEM DESIGN
-                  </span>
-                  <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">
-                    Spring MVC & Monolithic Architecture
-                  </h2>
-                  <p className="mt-1 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                    Clean Model-View-Controller request flow combined with high-performance monolithic transactional boundaries.
-                  </p>
+                <div className="text-center max-w-2xl mx-auto mb-4">
+                  <div
+                    className={`transition-all duration-500 transform ${
+                      isRevealed(2) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+                    }`}
+                  >
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 mb-2">
+                      <Layers className="w-3.5 h-3.5" />
+                      REQUEST FLOW • DTO PATTERN • MONOLITH
+                    </span>
+                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+                      Spring MVC, DTOs & Monolithic Request Workflow
+                    </h2>
+                    <p className="mt-1 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                      Step-by-step trace of how an HTTP request flows end-to-end through controllers, DTO validation, service transactions, and MySQL.
+                    </p>
+                  </div>
                 </div>
 
-                {/* Section A: MVC Request Flow */}
+                {/* Progressive 6-Stage Backend Request Flow Pipeline */}
                 <div className="mb-4 p-4 sm:p-5 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-md">
                   <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-200/70 dark:border-blue-900/40">
                     <span className="font-mono text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
                       <Server className="w-4 h-4 text-blue-600 dark:text-cyan-400" />
-                      Spring MVC Pattern: End-to-End Request Pipeline
+                      Backend Workflow: How an HTTP Request Flows (Step-by-Step)
                     </span>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-cyan-300 font-bold">
-                      DispatcherServlet Flow
+                      Full Life Cycle
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3">
                     {[
                       {
-                        stage: '01. Client & Dispatcher',
-                        role: 'DispatcherServlet',
-                        desc: 'Front controller intercepts incoming HTTP requests and queries HandlerMapping for matching route.',
-                        color: 'border-blue-500/40 bg-blue-500/10 text-blue-600 dark:text-cyan-400',
+                        step: '1',
+                        label: 'Client Ingress',
+                        threshold: 6,
+                        role: 'POST /api/v1/auth/login',
+                        desc: 'React 19 SPA dispatches JSON body { email, password } over HTTPS to the backend server.',
+                        color: 'border-blue-500 text-blue-600 dark:text-cyan-400',
                       },
                       {
-                        stage: '02. Controller Layer',
-                        role: '@RestController',
-                        desc: 'Validates DTO (@Valid), deserializes JSON via Jackson HttpMessageConverter, dispatches to service.',
-                        color: 'border-cyan-500/40 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300',
+                        step: '2',
+                        label: 'Dispatcher & Security',
+                        threshold: 22,
+                        role: 'DispatcherServlet + Security Filter',
+                        desc: 'Front controller intercepts request, enforces CORS/CSRF headers, and queries HandlerMapping to locate the matching controller method.',
+                        color: 'border-cyan-500 text-cyan-600 dark:text-cyan-300',
                       },
                       {
-                        stage: '03. Service Layer',
+                        step: '3',
+                        label: 'Controller & DTO Validation',
+                        threshold: 38,
+                        role: '@Valid LoginRequestDTO',
+                        desc: 'Jackson HttpMessageConverter deserializes JSON into Request DTO. Bean Validation enforces @NotBlank & @Email before hitting business logic.',
+                        color: 'border-emerald-500 text-emerald-700 dark:text-emerald-400',
+                      },
+                      {
+                        step: '4',
+                        label: 'Service & Transaction',
+                        threshold: 54,
                         role: '@Service @Transactional',
-                        desc: 'Executes core business logic, coordinates domain rules, enforces ACID transaction boundary.',
-                        color: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
+                        desc: 'Opens an in-process ACID transaction boundary. Enforces business workflows, applies SHA-256 cryptographic salting, maps DTO to Entity.',
+                        color: 'border-amber-500 text-amber-600 dark:text-amber-400',
                       },
                       {
-                        stage: '04. Model & Response',
-                        role: 'Entities & View DTO',
-                        desc: 'JPA entities hydrate from database. Controller projects secure DTO back to Client UI as JSON.',
-                        color: 'border-purple-500/40 bg-purple-500/10 text-purple-600 dark:text-purple-400',
+                        step: '5',
+                        label: 'Hibernate ORM & DB',
+                        threshold: 70,
+                        role: 'JPA Repository + MySQL 8',
+                        desc: 'Queries 1st-level session cache, borrows HikariCP connection, executes indexed SQL query, and fetches the UserAccount entity.',
+                        color: 'border-purple-500 text-purple-600 dark:text-purple-400',
                       },
-                    ].map((step) => (
-                      <div
-                        key={step.stage}
-                        className="p-3 rounded-xl border border-slate-200 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70"
-                      >
-                        <span className="text-[10px] font-mono font-bold text-slate-400">
-                          {step.stage}
-                        </span>
-                        <div className="text-xs font-mono font-bold text-slate-900 dark:text-white mt-0.5">
-                          {step.role}
+                      {
+                        step: '6',
+                        label: 'Response DTO Projection',
+                        threshold: 86,
+                        role: 'UserResponseDTO Serialization',
+                        desc: 'Service projects Entity into UserResponseDTO (sanitizing password hash and salt). Controller returns HTTP 200 OK with clean JSON.',
+                        color: 'border-pink-500 text-pink-600 dark:text-pink-400',
+                      },
+                    ].map((st) => {
+                      const revealed = isRevealed(st.threshold);
+                      const activeNow = isCurrentActive(st.threshold, st.threshold + 16);
+
+                      return (
+                        <div
+                          key={st.step}
+                          className={`transition-all duration-600 transform p-3 rounded-xl border ${
+                            revealed
+                              ? 'opacity-100 translate-y-0 scale-100'
+                              : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                          } ${
+                            activeNow
+                              ? 'border-cyan-400 bg-cyan-50/20 dark:bg-cyan-950/30 shadow-md ring-2 ring-cyan-400/40'
+                              : 'border-slate-200 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-[10px] font-mono font-bold text-slate-400">
+                              STEP 0{st.step} • {st.label}
+                            </span>
+                            {activeNow && (
+                              <span className="flex h-2 w-2 relative">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-xs font-mono font-bold text-slate-900 dark:text-white">
+                            {st.role}
+                          </div>
+                          <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                            {st.desc}
+                          </p>
                         </div>
-                        <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
-                          {step.desc}
-                        </p>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 
-                {/* Section B: Monolithic Architecture Strengths */}
-                <div className="p-4 sm:p-5 rounded-2xl border border-blue-500/30 bg-blue-50/60 dark:bg-[#0E1A30]/80 backdrop-blur-md">
-                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-blue-200 dark:border-blue-900/50">
+                {/* Monolith & DTO Architecture Strengths (Appears at t >= 65%) */}
+                <div
+                  className={`p-4 rounded-2xl border border-blue-500/30 bg-blue-50/60 dark:bg-[#0E1A30]/80 backdrop-blur-md transition-all duration-700 transform ${
+                    isRevealed(65) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-blue-200 dark:border-blue-900/50">
                     <span className="font-mono text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
                       <Box className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                      Production Strengths of Monolithic Architecture
+                      DTO Pattern & Monolithic Production Advantages
                     </span>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-bold">
-                      Zero Distributed Friction
+                      Zero Entity Leaks
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="p-3 rounded-xl border border-slate-200 dark:border-blue-900/40 bg-white/80 dark:bg-[#0B1528]/80">
                       <div className="font-mono text-xs font-bold text-blue-600 dark:text-cyan-400">
-                        1. Single Deployable Unit
+                        Why DTO (Data Transfer Object)?
                       </div>
                       <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
-                        Packaged into a single optimized Spring Boot executable JAR. Eliminates multi-service container orchestration nightmares and simplifies CI/CD.
+                        1. Decouples external API JSON payload from internal JPA entities.<br />
+                        2. Prevents mass-assignment exploits and shields password hashes/salts.<br />
+                        3. Encapsulates Bean Validation annotations (@NotBlank, @Email) at the HTTP boundary.
                       </p>
                     </div>
 
                     <div className="p-3 rounded-xl border border-slate-200 dark:border-blue-900/40 bg-white/80 dark:bg-[#0B1528]/80">
                       <div className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                        2. In-Process ACID Integrity
+                        Monolithic In-Process Speed (&lt; 0.1ms)
                       </div>
                       <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
-                        Single @Transactional boundary guarantees atomicity. No fragile 2PC (Two-Phase Commit) or complex Saga compensations required across network partitions.
-                      </p>
-                    </div>
-
-                    <div className="p-3 rounded-xl border border-slate-200 dark:border-blue-900/40 bg-white/80 dark:bg-[#0B1528]/80">
-                      <div className="font-mono text-xs font-bold text-purple-600 dark:text-purple-400">
-                        3. Zero Network Serialization Latency
-                      </div>
-                      <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
-                        Internal module calls execute as direct in-memory method invocations (&lt; 0.1ms) instead of costly HTTP/gRPC network hops between services.
+                        All 6 workflow steps execute in-process inside a single JVM artifact. In-memory method calls eliminate network latency, serialization penalties, and multi-service 2PC/Saga rollback complexity.
                       </p>
                     </div>
                   </div>
@@ -743,14 +809,18 @@ export const OneShotViewModal: React.FC = () => {
             {currentChapterIndex === 3 && (
               <motion.div
                 key="ch-3"
-                initial={{ opacity: 0, scale: 0.96, y: 16 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: -16 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
                 className="py-1 sm:py-2"
               >
-                {/* User Prompt Exact Required Quote Banner */}
-                <div className="p-4 sm:p-5 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/30 backdrop-blur-md mb-4">
+                {/* 1. Exact Required Quote Banner (Appears at t >= 4%) */}
+                <div
+                  className={`p-4 sm:p-5 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/30 backdrop-blur-md mb-4 transition-all duration-700 transform ${
+                    isRevealed(4) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  }`}
+                >
                   <div className="flex items-start gap-3">
                     <Database className="w-5 h-5 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
                     <div>
@@ -761,7 +831,7 @@ export const OneShotViewModal: React.FC = () => {
                         ORM (Object-Relational Mapping): Hibernate and JPA for mapping Java objects directly to database tables.
                       </h3>
                       <p className="text-xs text-slate-700 dark:text-slate-300 mt-1">
-                        Eliminates manual JDBC code, manages entity lifecycles, and maintains relational integrity using Hibernate dialects and dirty checking.
+                        Eliminates manual JDBC code, manages entity lifecycles, and maintains relational integrity using Hibernate dialects, dirty checking, and first-level caching.
                       </p>
                     </div>
                   </div>
@@ -769,7 +839,7 @@ export const OneShotViewModal: React.FC = () => {
 
                 {/* Abhay's Actual Architecture Diagram & Relational Mapping */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
-                  {/* Left 7 Cols: Abhay's Actual Multi-Tier Architecture Pipeline */}
+                  {/* Left 7 Cols: Abhay's Actual Multi-Tier Architecture Pipeline (Steps Appear 1 by 1) */}
                   <div className="lg:col-span-7 p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-md flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-200/70 dark:border-blue-900/40">
@@ -784,10 +854,14 @@ export const OneShotViewModal: React.FC = () => {
                         </span>
                       </div>
 
-                      {/* Architecture Step Flow */}
+                      {/* 4 Pipeline Layers Revealed 1 by 1 */}
                       <div className="space-y-2">
-                        {/* Layer 1: Client UI */}
-                        <div className="p-2.5 rounded-xl border border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20 flex items-center justify-between">
+                        {/* Layer 1: Client UI (Appears at t >= 18%) */}
+                        <div
+                          className={`p-2.5 rounded-xl border border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20 flex items-center justify-between transition-all duration-600 transform ${
+                            isRevealed(18) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+                          }`}
+                        >
                           <div className="flex items-center gap-2">
                             <span className="h-6 w-6 rounded-lg bg-blue-600 text-white font-mono text-xs font-bold flex items-center justify-center">1</span>
                             <div>
@@ -795,14 +869,15 @@ export const OneShotViewModal: React.FC = () => {
                               <div className="text-[10px] font-mono text-slate-500 dark:text-slate-400">React 19 SPA • HTTPS JSON Payload</div>
                             </div>
                           </div>
-                          <span className="text-[10px] font-mono text-blue-600 dark:text-cyan-300 font-semibold">User Credentials / Profile Data</span>
+                          <span className="text-[10px] font-mono text-blue-600 dark:text-cyan-300 font-semibold">User Credentials / Profile DTO</span>
                         </div>
 
-                        {/* Arrow */}
-                        <div className="flex justify-center text-slate-400 dark:text-slate-600 text-xs">↓</div>
-
-                        {/* Layer 2: Spring MVC & Security */}
-                        <div className="p-2.5 rounded-xl border border-cyan-500/30 bg-cyan-50/50 dark:bg-cyan-950/20 flex items-center justify-between">
+                        {/* Layer 2: Spring MVC & Security (Appears at t >= 36%) */}
+                        <div
+                          className={`p-2.5 rounded-xl border border-cyan-500/30 bg-cyan-50/50 dark:bg-cyan-950/20 flex items-center justify-between transition-all duration-600 transform ${
+                            isRevealed(36) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+                          }`}
+                        >
                           <div className="flex items-center gap-2">
                             <span className="h-6 w-6 rounded-lg bg-cyan-600 text-white font-mono text-xs font-bold flex items-center justify-center">2</span>
                             <div>
@@ -813,11 +888,12 @@ export const OneShotViewModal: React.FC = () => {
                           <span className="text-[10px] font-mono text-cyan-600 dark:text-cyan-300 font-semibold">DTO Validation & Business Logic</span>
                         </div>
 
-                        {/* Arrow */}
-                        <div className="flex justify-center text-slate-400 dark:text-slate-600 text-xs">↓</div>
-
-                        {/* Layer 3: Hibernate ORM Engine */}
-                        <div className="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20 flex items-center justify-between">
+                        {/* Layer 3: Hibernate ORM Engine (Appears at t >= 54%) */}
+                        <div
+                          className={`p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20 flex items-center justify-between transition-all duration-600 transform ${
+                            isRevealed(54) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+                          }`}
+                        >
                           <div className="flex items-center gap-2">
                             <span className="h-6 w-6 rounded-lg bg-emerald-600 text-white font-mono text-xs font-bold flex items-center justify-center">3</span>
                             <div>
@@ -828,11 +904,12 @@ export const OneShotViewModal: React.FC = () => {
                           <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-300 font-semibold">Object-to-Relational Mapping</span>
                         </div>
 
-                        {/* Arrow */}
-                        <div className="flex justify-center text-slate-400 dark:text-slate-600 text-xs">↓</div>
-
-                        {/* Layer 4: Relational MySQL Database */}
-                        <div className="p-2.5 rounded-xl border border-purple-500/30 bg-purple-50/50 dark:bg-purple-950/20 flex items-center justify-between">
+                        {/* Layer 4: Relational MySQL Database (Appears at t >= 72%) */}
+                        <div
+                          className={`p-2.5 rounded-xl border border-purple-500/30 bg-purple-50/50 dark:bg-purple-950/20 flex items-center justify-between transition-all duration-600 transform ${
+                            isRevealed(72) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+                          }`}
+                        >
                           <div className="flex items-center gap-2">
                             <span className="h-6 w-6 rounded-lg bg-purple-600 text-white font-mono text-xs font-bold flex items-center justify-center">4</span>
                             <div>
@@ -851,8 +928,12 @@ export const OneShotViewModal: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Right 5 Cols: Real JPA Entity Code for Abhay's Application */}
-                  <div className="lg:col-span-5 p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-[#070F1E] text-slate-200 flex flex-col justify-between font-mono text-xs">
+                  {/* Right 5 Cols: Real JPA Entity Code for Abhay's Application (Appears at t >= 45%) */}
+                  <div
+                    className={`lg:col-span-5 p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-[#070F1E] text-slate-200 flex flex-col justify-between font-mono text-xs transition-all duration-700 transform ${
+                      isRevealed(45) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'
+                    }`}
+                  >
                     <div>
                       {/* Tabs */}
                       <div className="flex items-center gap-1.5 pb-2 border-b border-blue-900/50 mb-3 overflow-x-auto no-scrollbar">
@@ -934,7 +1015,7 @@ public class PortfolioData {
                         <pre className="text-[11px] leading-relaxed text-slate-300 overflow-x-auto no-scrollbar">
                           <code>{`@Repository
 public interface PortfolioRepository extends JpaRepository<PortfolioData, String> {
-    // Solves N+1 Problem: fetches User + Portfolio in single JOIN query
+    // Solves N+1: fetches User + Portfolio in single JOIN query
     @Query("SELECT u FROM UserAccount u JOIN FETCH u.portfolio WHERE u.email = :email")
     Optional<UserAccount> findByEmailWithPortfolio(@Param("email") String email);
 
@@ -955,57 +1036,78 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 5: PRODUCTION & SUMMARY                                  */}
+            {/* CHAPTER 5: PRODUCTION & SUMMARY (Pillars Appear 1 by 1)           */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 4 && (
               <motion.div
                 key="ch-4"
-                initial={{ opacity: 0, scale: 0.96, y: 16 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: -16 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
                 className="flex flex-col items-center text-center py-6 sm:py-8"
               >
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-1 text-xs font-mono font-bold text-purple-600 dark:text-purple-300">
+                <div
+                  className={`mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-1 text-xs font-mono font-bold text-purple-600 dark:text-purple-300 transition-all duration-500 transform ${
+                    isRevealed(4) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+                  }`}
+                >
                   <Zap className="h-4 w-4" />
                   <span>CHAPTER 05 • PRODUCTION DELIVERY</span>
                 </div>
 
-                <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white">
-                  Enterprise Ready & Continuously Delivered
-                </h2>
+                <div
+                  className={`transition-all duration-600 transform ${
+                    isRevealed(12) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  }`}
+                >
+                  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white">
+                    Enterprise Ready & Continuously Delivered
+                  </h2>
+                  <p className="mt-3 max-w-2xl text-xs sm:text-base text-slate-700 dark:text-slate-200 leading-relaxed">
+                    Combining clean Java architecture, optimized SQL queries, DTO validation, Hibernate mapping, and Docker microservices to deliver reliable end-to-end applications.
+                  </p>
+                </div>
 
-                <p className="mt-3 max-w-2xl text-xs sm:text-base text-slate-700 dark:text-slate-200 leading-relaxed">
-                  Combining clean Java architecture, optimized SQL queries, Hibernate mapping, and Docker microservices to deliver reliable end-to-end applications.
-                </p>
-
-                {/* 3 Value Pillars */}
+                {/* 3 Pillars Revealed 1 by 1 */}
                 <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-3xl w-full text-left">
-                  <div className="p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md">
+                  <div
+                    className={`p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md transition-all duration-600 transform ${
+                      isRevealed(30) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                    }`}
+                  >
                     <div className="font-mono text-xs font-bold text-blue-600 dark:text-cyan-400 mb-1">
-                      01. CLEAN LAYERS
+                      01. CLEAN LAYERS & DTO
                     </div>
                     <div className="text-sm font-bold text-slate-900 dark:text-white">
                       Controller-Service-Repo
                     </div>
                     <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-                      Decoupled business logic ready for unit and integration testing.
+                      DTO validation boundary and decoupled business logic ready for rigorous unit testing.
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md">
+                  <div
+                    className={`p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md transition-all duration-600 transform ${
+                      isRevealed(52) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                    }`}
+                  >
                     <div className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">
-                      02. ZERO N+1 QUERIES
+                      02. ZERO N+1 & ACID
                     </div>
                     <div className="text-sm font-bold text-slate-900 dark:text-white">
                       Optimized Hibernate
                     </div>
                     <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-                      JOIN FETCH, entity graphs, and proper indexing for lightning DB latency.
+                      JOIN FETCH, entity graphs, HikariCP pooling, and true transactional atomicity.
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md">
+                  <div
+                    className={`p-4 rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-md transition-all duration-600 transform ${
+                      isRevealed(74) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                    }`}
+                  >
                     <div className="font-mono text-xs font-bold text-purple-600 dark:text-purple-400 mb-1">
                       03. DOCKER & CI/CD
                     </div>
@@ -1013,13 +1115,17 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
                       Container Delivery
                     </div>
                     <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-                      Standardized builds with Maven, Dockerized runtime, and automated testing.
+                      Multi-stage Maven builds, lightweight Alpine JRE, and automated deployment pipelines.
                     </div>
                   </div>
                 </div>
 
-                {/* Final Actions */}
-                <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+                {/* Final Actions (Appears at t >= 88%) */}
+                <div
+                  className={`mt-8 flex flex-wrap items-center justify-center gap-3 transition-all duration-600 transform ${
+                    isRevealed(88) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                  }`}
+                >
                   <button
                     type="button"
                     onClick={handleRestart}
@@ -1116,11 +1222,10 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
             </button>
           </div>
 
-          {/* Quick Shortcuts Hint */}
+          {/* Clean Keyboard Shortcuts Hint (No ESC div) */}
           <div className="hidden lg:flex items-center gap-3 text-[11px] font-mono text-slate-500 dark:text-slate-400">
             <span>[Space] Pause</span>
             <span>[←/→] Navigate</span>
-            <span>[ESC] Close</span>
           </div>
         </div>
       </footer>

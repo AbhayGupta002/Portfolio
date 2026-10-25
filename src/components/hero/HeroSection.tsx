@@ -299,9 +299,6 @@ export const HeroSection: React.FC = () => {
                       </h2>
                       <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-cyan-400 shrink-0" />
                     </div>
-                    <span className="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-cyan-300 border border-blue-500/20">
-                      {profile.snapshotBadge || 'VERIFIED'}
-                    </span>
                   </div>
 
                   <p className="text-xs text-slate-700 dark:text-slate-200 font-medium truncate mt-0.5">
