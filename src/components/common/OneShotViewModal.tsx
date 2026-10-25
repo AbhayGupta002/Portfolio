@@ -44,7 +44,7 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'Overview',
     headline: 'Java Backend Journey — Abhay Gupta',
     subtitle: 'Architecting scalable, production-grade distributed backend applications with Java 17 and Spring Boot 3.',
-    durationMs: 4200,
+    durationMs: 4400,
   },
   {
     id: 'java-core',
@@ -52,7 +52,7 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'Java Core',
     headline: 'Java Core Topics & Concurrency Foundations',
     subtitle: 'Mastering the JVM runtime, memory layout, Collections framework, and multi-threaded concurrency.',
-    durationMs: 6000,
+    durationMs: 6200,
   },
   {
     id: 'mvc-monolith',
@@ -60,7 +60,7 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'MVC, DTO & Monolith',
     headline: 'Spring MVC, DTOs & Monolithic Request Workflow',
     subtitle: 'Step-by-step trace of how an HTTP request flows end-to-end through controllers, DTO validation, service transactions, and MySQL.',
-    durationMs: 6800,
+    durationMs: 7000,
   },
   {
     id: 'orm-jpa',
@@ -68,7 +68,7 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'ORM & Architecture',
     headline: 'ORM (Object-Relational Mapping): Hibernate and JPA',
     subtitle: 'Hibernate and JPA for mapping Java objects directly to database tables.',
-    durationMs: 6200,
+    durationMs: 6400,
   },
   {
     id: 'production',
@@ -76,9 +76,61 @@ const CHAPTERS: Chapter[] = [
     tabTitle: 'Production',
     headline: 'Production Engineering & Cloud Delivery',
     subtitle: 'High-throughput query tuning, containerized delivery, and rigorous interview readiness.',
-    durationMs: 4500,
+    durationMs: 4600,
   },
 ];
+
+// High-speed character-by-character live typing component
+interface TypewriterTextProps {
+  text: string;
+  isStarted: boolean;
+  speedMs?: number;
+  className?: string;
+  showCursor?: boolean;
+}
+
+const TypewriterText: React.FC<TypewriterTextProps> = ({
+  text,
+  isStarted,
+  speedMs = 12,
+  className = '',
+  showCursor = false,
+}) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isStarted) {
+      setCount(0);
+      return;
+    }
+
+    setCount(0);
+    let current = 0;
+    const interval = setInterval(() => {
+      current += 1;
+      setCount(current);
+      if (current >= text.length) {
+        clearInterval(interval);
+      }
+    }, speedMs);
+
+    return () => clearInterval(interval);
+  }, [isStarted, text, speedMs]);
+
+  if (!isStarted) return null;
+
+  const visibleText = text.slice(0, count);
+  const isTyping = count < text.length;
+
+  return (
+    <span className={className}>
+      {visibleText}
+      {showCursor && isTyping && (
+        <span className="inline-block w-1.5 h-3.5 ml-0.5 bg-cyan-400 animate-pulse align-baseline" />
+      )}
+    </span>
+  );
+};
 
 export const OneShotViewModal: React.FC = () => {
   const { isOneShotOpen, closeOneShot, openResumeHeist } = usePortfolioData();
@@ -394,7 +446,7 @@ export const OneShotViewModal: React.FC = () => {
         <div className="relative z-10 mx-auto w-full max-w-5xl">
           <AnimatePresence mode="wait">
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 1: INTRO (Fast Kinetic Cascade from t = 0)               */}
+            {/* CHAPTER 1: INTRO (Fast Kinetic Character-by-Character Typing)     */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 0 && (
               <motion.div
@@ -417,44 +469,58 @@ export const OneShotViewModal: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 2. Headline appears at t >= 5% (0.2s) */}
+                {/* 2. Headline types char by char at t >= 4% */}
                 <div
                   className={`transition-all duration-300 ease-out transform ${
-                    isRevealed(5) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                    isRevealed(4) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                   }`}
                 >
                   <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]">
                     <span className="block text-slate-900 dark:text-white">
-                      Java Backend Journey
+                      <TypewriterText
+                        text="Java Backend Journey"
+                        isStarted={isRevealed(4)}
+                        speedMs={16}
+                        showCursor
+                      />
                     </span>
                     <span className="block bg-gradient-to-r from-blue-600 via-cyan-400 to-indigo-500 bg-clip-text text-transparent mt-1">
-                      Abhay Gupta
+                      <TypewriterText
+                        text="Abhay Gupta"
+                        isStarted={isRevealed(12)}
+                        speedMs={18}
+                        showCursor
+                      />
                     </span>
                   </h1>
                 </div>
 
-                {/* 3. Subtitle appears at t >= 12% (0.5s) */}
+                {/* 3. Subtitle types char by char at t >= 18% */}
                 <div
                   className={`transition-all duration-300 ease-out transform ${
-                    isRevealed(12) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                    isRevealed(18) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                   }`}
                 >
                   <p className="mt-5 max-w-2xl text-base sm:text-xl font-normal leading-relaxed text-slate-700 dark:text-slate-200">
-                    {currentChapter.subtitle}
+                    <TypewriterText
+                      text={currentChapter.subtitle}
+                      isStarted={isRevealed(18)}
+                      speedMs={8}
+                    />
                   </p>
                 </div>
 
-                {/* 4. Core Stack Badges cascade rapidly 1-by-1 from t >= 20% */}
+                {/* 4. Core Stack Badges cascade rapidly 1-by-1 from t >= 26% */}
                 <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl">
                   {[
-                    { name: 'Core Java 17/21', threshold: 20 },
-                    { name: 'Spring Boot 3', threshold: 24 },
-                    { name: 'Spring MVC', threshold: 28 },
-                    { name: 'DTO Pattern', threshold: 32 },
-                    { name: 'Monolithic Architecture', threshold: 36 },
-                    { name: 'Hibernate & JPA ORM', threshold: 40 },
-                    { name: 'MySQL Relational Modeling', threshold: 44 },
-                    { name: 'Docker Microservices', threshold: 48 },
+                    { name: 'Core Java 17/21', threshold: 26 },
+                    { name: 'Spring Boot 3', threshold: 30 },
+                    { name: 'Spring MVC', threshold: 34 },
+                    { name: 'DTO Pattern', threshold: 38 },
+                    { name: 'Monolithic Architecture', threshold: 42 },
+                    { name: 'Hibernate & JPA ORM', threshold: 46 },
+                    { name: 'MySQL Relational Modeling', threshold: 50 },
+                    { name: 'Docker Microservices', threshold: 54 },
                   ].map((tech) => (
                     <span
                       key={tech.name}
@@ -469,10 +535,10 @@ export const OneShotViewModal: React.FC = () => {
                   ))}
                 </div>
 
-                {/* 5. Begin Action appears at t >= 55% */}
+                {/* 5. Begin Action appears at t >= 60% */}
                 <div
                   className={`mt-10 flex items-center gap-3 transition-all duration-300 ease-out transform ${
-                    isRevealed(55) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
+                    isRevealed(60) ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                   }`}
                 >
                   <button
@@ -488,7 +554,7 @@ export const OneShotViewModal: React.FC = () => {
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 2: JAVA CORE TOPICS (Cards Appear 1-by-1 Line-by-Line)   */}
+            {/* CHAPTER 2: JAVA CORE TOPICS (Cards & Bullets Typed Char by Char)  */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 1 && (
               <motion.div
@@ -518,7 +584,7 @@ export const OneShotViewModal: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 6 High-Yield Cards Revealed 1 by 1 Line by Line */}
+                {/* 6 High-Yield Cards with Char-by-Char Live Typing */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
                   {[
                     {
@@ -608,11 +674,18 @@ export const OneShotViewModal: React.FC = () => {
                               {topic.badge}
                             </span>
                           </div>
-                          {/* Card Title Line */}
+
+                          {/* Card Title Line Typed */}
                           <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
-                            {topic.title}
+                            <TypewriterText
+                              text={topic.title}
+                              isStarted={revealed}
+                              speedMs={14}
+                              showCursor={activeNow}
+                            />
                           </h3>
-                          {/* Card Bullets Line by Line */}
+
+                          {/* Card Bullets Typed Line by Line */}
                           <ul className="mt-2 space-y-1.5 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                             {topic.points.map((pt, pIdx) => (
                               <li
@@ -620,10 +693,15 @@ export const OneShotViewModal: React.FC = () => {
                                 className={`flex items-start gap-1.5 transition-all duration-300 ease-out transform ${
                                   revealed ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
                                 }`}
-                                style={{ transitionDelay: `${pIdx * 70}ms` }}
                               >
                                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                                <span>{pt}</span>
+                                <span>
+                                  <TypewriterText
+                                    text={pt}
+                                    isStarted={revealed}
+                                    speedMs={7}
+                                  />
+                                </span>
                               </li>
                             ))}
                           </ul>
@@ -636,7 +714,7 @@ export const OneShotViewModal: React.FC = () => {
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 3: MVC, DTO & MONOLITH (Fast 1-by-1 Motion Workflow)     */}
+            {/* CHAPTER 3: MVC, DTO & MONOLITH (Fast Typed Request Flow)          */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 2 && (
               <motion.div
@@ -757,23 +835,24 @@ export const OneShotViewModal: React.FC = () => {
                               </span>
                             )}
                           </div>
-                          {/* Step Method Line */}
-                          <div
-                            className={`text-xs font-mono font-bold text-slate-900 dark:text-white transition-all duration-300 ease-out ${
-                              revealed ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'
-                            }`}
-                            style={{ transitionDelay: '50ms' }}
-                          >
-                            {st.role}
+
+                          {/* Step Method Line Typed Live */}
+                          <div className="text-xs font-mono font-bold text-slate-900 dark:text-white">
+                            <TypewriterText
+                              text={st.role}
+                              isStarted={revealed}
+                              speedMs={10}
+                              showCursor={activeNow}
+                            />
                           </div>
-                          {/* Step Description Line */}
-                          <p
-                            className={`mt-1 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed transition-all duration-300 ease-out ${
-                              revealed ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'
-                            }`}
-                            style={{ transitionDelay: '100ms' }}
-                          >
-                            {st.desc}
+
+                          {/* Step Description Line Typed Live */}
+                          <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                            <TypewriterText
+                              text={st.desc}
+                              isStarted={revealed}
+                              speedMs={6}
+                            />
                           </p>
                         </div>
                       );
@@ -834,7 +913,7 @@ export const OneShotViewModal: React.FC = () => {
                 transition={{ duration: 0.2 }}
                 className="py-1 sm:py-2"
               >
-                {/* 1. Exact Required Quote Banner (Appears immediately at t >= 0%) */}
+                {/* 1. Exact Required Quote Banner (Typed char-by-char at t >= 0%) */}
                 <div
                   className={`p-4 sm:p-5 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/30 backdrop-blur-md mb-4 transition-all duration-300 ease-out transform ${
                     isRevealed(0) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
@@ -847,7 +926,12 @@ export const OneShotViewModal: React.FC = () => {
                         CORE ORM ARCHITECTURE
                       </span>
                       <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-0.5">
-                        ORM (Object-Relational Mapping): Hibernate and JPA for mapping Java objects directly to database tables.
+                        <TypewriterText
+                          text="ORM (Object-Relational Mapping): Hibernate and JPA for mapping Java objects directly to database tables."
+                          isStarted={isRevealed(0)}
+                          speedMs={10}
+                          showCursor
+                        />
                       </h3>
                       <p className="text-xs text-slate-700 dark:text-slate-300 mt-1">
                         Eliminates manual JDBC code, manages entity lifecycles, and maintains relational integrity using Hibernate dialects, dirty checking, and first-level caching.
@@ -1055,7 +1139,7 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
             )}
 
             {/* ----------------------------------------------------------------- */}
-            {/* CHAPTER 5: PRODUCTION & SUMMARY (Pillars Appear Line by Line)      */}
+            {/* CHAPTER 5: PRODUCTION & SUMMARY (Pillars Typed Line by Line)      */}
             {/* ----------------------------------------------------------------- */}
             {currentChapterIndex === 4 && (
               <motion.div
@@ -1081,10 +1165,19 @@ public interface PortfolioRepository extends JpaRepository<PortfolioData, String
                   }`}
                 >
                   <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white">
-                    Enterprise Ready & Continuously Delivered
+                    <TypewriterText
+                      text="Enterprise Ready & Continuously Delivered"
+                      isStarted={isRevealed(8)}
+                      speedMs={14}
+                      showCursor
+                    />
                   </h2>
                   <p className="mt-3 max-w-2xl text-xs sm:text-base text-slate-700 dark:text-slate-200 leading-relaxed">
-                    Combining clean Java architecture, optimized SQL queries, DTO validation, Hibernate mapping, and Docker microservices to deliver reliable end-to-end applications.
+                    <TypewriterText
+                      text="Combining clean Java architecture, optimized SQL queries, DTO validation, Hibernate mapping, and Docker microservices to deliver reliable end-to-end applications."
+                      isStarted={isRevealed(12)}
+                      speedMs={6}
+                    />
                   </p>
                 </div>
 
