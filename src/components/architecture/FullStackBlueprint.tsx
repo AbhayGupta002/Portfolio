@@ -586,31 +586,9 @@ export const FullStackBlueprint: React.FC = () => {
         {/* ========================================================================= */}
         {/* 2. ARCHITECTURAL HUD STATUS BAR & CONTROLS                                */}
         {/* ========================================================================= */}
-        <div className={`flex flex-wrap items-center justify-between gap-4 mb-12 pb-5 border-b ${
+        <div className={`flex items-center justify-end gap-4 mb-12 pb-5 border-b ${
           isDark ? 'border-cyan-500/20' : 'border-slate-300'
         }`}>
-          {/* Monogram & Title Tag */}
-          <div className="flex items-center gap-3">
-            <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-xs font-mono shadow-sm ${
-              isDark
-                ? 'bg-[#111C2E] border border-cyan-500/40 text-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.3)]'
-                : 'bg-white border border-slate-300 text-blue-600 shadow-sm'
-            }`}>
-              AG
-            </div>
-            <span className={`font-mono font-bold text-xl tracking-tight ${
-              isDark ? 'text-[#3B82F6]' : 'text-blue-600'
-            }`}>
-              /&gt;
-            </span>
-            <div className={`hidden sm:flex items-center gap-2 pl-2 text-[11px] font-mono uppercase tracking-widest font-semibold ${
-              isDark ? 'text-[#94A3B8]' : 'text-slate-600'
-            }`}>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Full-Stack Blueprint // Systems Architecture</span>
-            </div>
-          </div>
-
           {/* Interactive Simulation Trigger Button */}
           <div className="flex items-center gap-3">
             <button

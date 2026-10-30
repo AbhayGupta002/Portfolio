@@ -814,7 +814,7 @@ export const AdminModal: React.FC = () => {
                   type="text"
                   value={profileForm.headline || ''}
                   onChange={(e) => setProfileForm({ ...profileForm, headline: e.target.value })}
-                  placeholder="Building end-to-end applications with Java & React."
+                  placeholder="Backend Developer | Full Stack Developer | Gen AI"
                   className={`w-full px-3.5 py-2 rounded-xl border text-sm font-medium ${
                     isDark ? 'bg-[#0E1A30] border-blue-900/50 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
                   }`}

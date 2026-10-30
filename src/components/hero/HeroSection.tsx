@@ -98,33 +98,6 @@ export const HeroSection: React.FC = () => {
             className="lg:col-span-7 flex flex-col justify-between rounded-3xl border border-slate-200/80 dark:border-blue-900/40 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-xl p-6 sm:p-8 lg:p-10 shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition-all hover:border-blue-400/60 dark:hover:border-cyan-500/40"
           >
             <div>
-              {/* Top Row: Status Pill & Role Tag */}
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
-                <span
-                  onClick={() => isAdminMode && openAdminModal('profile')}
-                  className={`inline-flex items-center gap-2 rounded-full border border-slate-200 dark:border-blue-800/60 bg-slate-50/90 dark:bg-[#0E1A30] px-3.5 py-1.5 text-xs font-mono font-medium text-slate-700 dark:text-cyan-300 transition-all hover:scale-105 ${
-                    isAdminMode ? 'cursor-pointer hover:ring-2 hover:ring-blue-400' : ''
-                  }`}
-                >
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                  </span>
-                  {profile.statusMessage}
-                  {isAdminMode && <Edit3 className="w-3 h-3 text-blue-500 ml-1" />}
-                </span>
-
-                <span
-                  onClick={() => isAdminMode && openAdminModal('profile')}
-                  className={`inline-flex items-center gap-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-blue-600 dark:text-cyan-400 px-2.5 py-1 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/50 dark:border-blue-800/40 ${
-                    isAdminMode ? 'cursor-pointer hover:underline' : ''
-                  }`}
-                >
-                  <Code2 className="w-3.5 h-3.5" />
-                  {profile.title}
-                </span>
-              </div>
-
               {/* Primary Headline (Font Type 1: Clean Sans Bold) */}
               <h1
                 onClick={() => isAdminMode && openAdminModal('profile')}
@@ -132,7 +105,9 @@ export const HeroSection: React.FC = () => {
                   isAdminMode ? 'cursor-pointer hover:bg-blue-50/50 dark:hover:bg-blue-950/30 p-1 -ml-1 rounded-xl' : ''
                 }`}
               >
-                {profile.headline || 'Building end-to-end applications with Java & React.'}
+                {profile.headline && profile.headline !== 'Building end-to-end applications with Java & React.'
+                  ? profile.headline
+                  : 'Backend Developer | Full Stack Developer | Gen AI'}
                 {isAdminMode && <Edit3 className="inline w-4 h-4 text-blue-500 ml-2" />}
               </h1>
 
@@ -285,10 +260,6 @@ export const HeroSection: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5" title="Available for Hire">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-white dark:border-[#0B1528]" />
-                  </span>
                 </div>
 
                 <div className="min-w-0 flex-1">
@@ -302,15 +273,8 @@ export const HeroSection: React.FC = () => {
                   </div>
 
                   <p className="text-xs text-slate-700 dark:text-slate-200 font-medium truncate mt-0.5">
-                    {profile.targetRole || profile.title}
+                    {profile.targetRole || 'Software Engineer'}
                   </p>
-
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 font-semibold">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      Available for Hire
-                    </span>
-                  </div>
                 </div>
               </div>
 
@@ -322,7 +286,7 @@ export const HeroSection: React.FC = () => {
                   [attr3Label, attr3Val],
                   ['Experience', profile.internshipsSummary || dynamicInternshipsSummary],
                   ['Education', profile.educationSummary || dynamicEducationSummary],
-                  ['Role Focus', profile.snapshotFocus || `${taxItem.label.split('(')[0].trim()} Focus`],
+                  ['Focus Area', profile.snapshotFocus || 'Full Stack & Gen AI Systems'],
                 ].map(([label, value]) => (
                   <div
                     key={label}
@@ -354,7 +318,7 @@ export const HeroSection: React.FC = () => {
                 <span className="truncate">{profile.workType || 'Full-Time Opportunities'}</span>
               </span>
               <span className="font-mono text-blue-700 dark:text-cyan-400 font-semibold truncate">
-                {profile.locationPreference || profile.location || 'Indore, MP / Remote'}
+                {profile.locationPreference || 'Open to Relocation / Remote'}
               </span>
             </div>
           </motion.div>
@@ -413,11 +377,8 @@ export const HeroSection: React.FC = () => {
 
             {/* Bottom info strip */}
             <div className="mt-4 flex items-center justify-between text-xs text-slate-400 pt-3 border-t border-blue-900/40">
-              <span className="font-mono text-cyan-400">{profile.locationPreference || profile.location || 'Indore, MP / Remote'}</span>
-              <span className="text-emerald-400 font-medium flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                Available for Hire
-              </span>
+              <span className="font-mono text-cyan-400">{profile.name}</span>
+              <span className="text-slate-300 font-mono text-xs">{profile.location}</span>
             </div>
           </div>
         </div>

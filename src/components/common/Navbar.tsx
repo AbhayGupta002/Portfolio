@@ -130,13 +130,6 @@ export const Navbar: React.FC = () => {
             }`}>
               {profile.name}
             </span>
-            <span className="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-              </span>
-              available for hire
-            </span>
           </div>
         </a>
 
@@ -259,7 +252,7 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-mono font-medium transition-all hover:scale-105 active:scale-95 cursor-pointer ${
+            className={`inline-flex items-center justify-center rounded-xl border p-2 text-xs font-mono font-medium transition-all hover:scale-105 active:scale-95 cursor-pointer ${
               isDark
                 ? 'border-blue-500/40 bg-[#0F1C33] text-yellow-300 hover:bg-[#162744] hover:border-yellow-400 shadow-[0_0_12px_rgba(234,179,8,0.15)]'
                 : 'border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 hover:border-slate-400 shadow-2xs'
@@ -268,7 +261,6 @@ export const Navbar: React.FC = () => {
             aria-label="Toggle theme"
           >
             <span className="text-sm transition-transform duration-300 hover:rotate-12">{isDark ? '🌙' : '☀️'}</span>
-            <span className="font-semibold">{isDark ? 'Dark' : 'Light'}</span>
           </button>
 
           {/* Play Button */}
@@ -349,15 +341,14 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className={`flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-xs font-mono font-semibold transition-all active:scale-95 cursor-pointer ${
+            className={`flex items-center justify-center rounded-xl border p-2 text-xs font-mono font-semibold transition-all active:scale-95 cursor-pointer ${
               isDark
                 ? 'border-blue-500/40 bg-[#0F1C33] text-yellow-300'
                 : 'border-slate-300 bg-slate-50 text-slate-700'
             }`}
             aria-label="Toggle theme"
           >
-            <span>{isDark ? '🌙' : '☀️'}</span>
-            <span className="text-[11px]">{isDark ? 'Dark' : 'Light'}</span>
+            <span className="text-sm">{isDark ? '🌙' : '☀️'}</span>
           </button>
 
           <button

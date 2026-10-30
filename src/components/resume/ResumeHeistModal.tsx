@@ -225,8 +225,8 @@ export const ResumeHeistModal: React.FC = () => {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
-                        <CheckCircle2 className="w-3.5 h-3.5" /> Ready for Hire
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-600 dark:text-cyan-400 border border-blue-500/20">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Software Engineer
                       </span>
                     </div>
                   </div>

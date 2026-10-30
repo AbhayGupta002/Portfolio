@@ -233,6 +233,24 @@ export const PortfolioDataProvider: React.FC<{ children: React.ReactNode }> = ({
     return currentUser ? `abhay_portfolio_data_user_${currentUser.id}` : PUBLIC_STORAGE_KEY;
   };
 
+  const cleanProfile = (rawProfile: any): UserProfile => {
+    const merged = { ...PROFILE_DATA, ...(rawProfile || {}) };
+    if (!merged.headline || merged.headline === 'Building end-to-end applications with Java & React.') {
+      merged.headline = 'Backend Developer | Full Stack Developer | Gen AI';
+    }
+    if (merged.statusMessage === 'Associate Software Engineer Candidate · Indore, MP') {
+      merged.statusMessage = '';
+    }
+    if (merged.locationPreference === 'Indore, MP / Remote') {
+      merged.locationPreference = 'Open to Relocation / Remote';
+    }
+    return {
+      ...merged,
+      avatarUrl: typeof rawProfile?.avatarUrl === 'string' ? rawProfile.avatarUrl : PROFILE_DATA.avatarUrl,
+      photoFilter: rawProfile?.photoFilter || PROFILE_DATA.photoFilter || 'smooth',
+    };
+  };
+
   const defaultInitialState: PortfolioDataState = {
     profile: PROFILE_DATA,
     experiences: EXPERIENCE_DATA,
@@ -257,12 +275,7 @@ export const PortfolioDataProvider: React.FC<{ children: React.ReactNode }> = ({
       if (saved) {
         const parsed = JSON.parse(saved);
         return {
-          profile: {
-            ...PROFILE_DATA,
-            ...(parsed.profile || {}),
-            avatarUrl: typeof parsed.profile?.avatarUrl === 'string' ? parsed.profile.avatarUrl : PROFILE_DATA.avatarUrl,
-            photoFilter: parsed.profile?.photoFilter || PROFILE_DATA.photoFilter || 'smooth',
-          },
+          profile: cleanProfile(parsed.profile),
           experiences: parsed.experiences && parsed.experiences.length > 0 ? parsed.experiences : EXPERIENCE_DATA,
           projects: parsed.projects && parsed.projects.length > 0 ? parsed.projects : PROJECTS_DATA,
           layoutConfig: parsed.layoutConfig || defaultInitialState.layoutConfig,
@@ -285,12 +298,7 @@ export const PortfolioDataProvider: React.FC<{ children: React.ReactNode }> = ({
         if (saved) {
           const parsed = JSON.parse(saved);
           setData({
-            profile: {
-              ...PROFILE_DATA,
-              ...(parsed.profile || {}),
-              avatarUrl: typeof parsed.profile?.avatarUrl === 'string' ? parsed.profile.avatarUrl : PROFILE_DATA.avatarUrl,
-              photoFilter: parsed.profile?.photoFilter || PROFILE_DATA.photoFilter || 'smooth',
-            },
+            profile: cleanProfile(parsed.profile),
             experiences: parsed.experiences && parsed.experiences.length > 0 ? parsed.experiences : EXPERIENCE_DATA,
             projects: parsed.projects && parsed.projects.length > 0 ? parsed.projects : PROJECTS_DATA,
             layoutConfig: parsed.layoutConfig || defaultInitialState.layoutConfig,
