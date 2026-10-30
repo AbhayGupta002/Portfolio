@@ -34,10 +34,10 @@ export const ProjectsSection: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="scroll-mt-20 px-4 py-14 sm:px-6 sm:py-22 transition-colors">
+    <section id="projects" className="scroll-mt-20 px-3.5 py-10 sm:px-6 sm:py-18 transition-colors">
       <div className="mx-auto max-w-6xl">
         {/* Section Header */}
-        <div className="mb-8 sm:mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div className="mb-6 sm:mb-10 flex flex-col justify-between gap-3.5 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
             <span className="section-kicker font-mono">
               <FolderKanban className="h-4 w-4" /> Selected Work
@@ -150,13 +150,13 @@ export const ProjectsSection: React.FC = () => {
                     viewport={{ once: true, margin: '-30px' }}
                     transition={{ duration: 0.45, delay: index * 0.08 }}
                     whileHover={{ y: -4 }}
-                    className={`snap-center shrink-0 w-[86vw] sm:w-[75vw] md:w-auto ${spanClass} group flex flex-col justify-between rounded-3xl border border-slate-200/80 dark:border-blue-900/40 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-xl p-6 sm:p-7 transition-all duration-300 hover:border-blue-500/80 dark:hover:border-cyan-400/80 hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-[0_20px_45px_rgba(6,182,212,0.15)] ${
+                    className={`snap-center shrink-0 w-[88vw] sm:w-[75vw] md:w-auto ${spanClass} group flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-slate-200/80 dark:border-blue-900/40 bg-white/85 dark:bg-[#0B1528]/85 backdrop-blur-xl p-4 sm:p-6 lg:p-7 transition-all duration-300 hover:border-blue-500/80 dark:hover:border-cyan-400/80 hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-[0_20px_45px_rgba(6,182,212,0.15)] ${
                       isAdminMode ? 'ring-1 ring-blue-500/20' : ''
                     }`}
                   >
                     <div>
                       {/* Card Top Bar with Terminal Code Dots & Category */}
-                      <div className="mb-4 flex items-center justify-between gap-2">
+                      <div className="mb-3 sm:mb-4 flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
                           {/* Developer IDE window dots */}
                           <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-slate-100 dark:bg-[#071120] border border-slate-200/60 dark:border-blue-900/40">
@@ -227,7 +227,7 @@ export const ProjectsSection: React.FC = () => {
                     </div>
 
                     {/* Footer: Tech Spans & Links */}
-                    <div className="mt-6 pt-4 border-t border-slate-200/80 dark:border-blue-900/50">
+                    <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-slate-200/80 dark:border-blue-900/50">
                       <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
                         {project.tags.map((tag) => (
                           <span

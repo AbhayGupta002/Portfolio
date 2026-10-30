@@ -69,7 +69,7 @@ export const HeroSection: React.FC = () => {
   };
 
   return (
-    <section id="about" className="relative overflow-hidden px-4 pb-12 pt-24 sm:px-6 sm:pb-20 sm:pt-32">
+    <section id="about" className="relative overflow-hidden px-3.5 pb-10 pt-20 sm:px-6 sm:pb-16 sm:pt-28">
       {/* Ambient Background Glow */}
       <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-blue-500/10 dark:bg-blue-600/15 blur-3xl transition-colors duration-500" />
       <div className="pointer-events-none absolute -left-32 bottom-0 h-80 w-80 rounded-full bg-cyan-500/10 dark:bg-cyan-500/10 blur-3xl transition-colors duration-500" />
@@ -89,19 +89,19 @@ export const HeroSection: React.FC = () => {
         )}
 
         {/* Unified Adaptive Glass Bento Container (Rearranges from 12-col laptop split to clean mobile view) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-stretch">
           {/* Left Span (7 cols on laptop): Identity, Headline & Horizontal Quick-Stats */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="lg:col-span-7 flex flex-col justify-between rounded-3xl border border-slate-200/80 dark:border-blue-900/40 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-xl p-6 sm:p-8 lg:p-10 shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition-all hover:border-blue-400/60 dark:hover:border-cyan-500/40"
+            className="lg:col-span-7 flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-slate-200/80 dark:border-blue-900/40 bg-white/80 dark:bg-[#0B1528]/80 backdrop-blur-xl p-4 sm:p-7 lg:p-10 shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition-all hover:border-blue-400/60 dark:hover:border-cyan-500/40"
           >
             <div>
               {/* Primary Headline (Font Type 1: Clean Sans Bold) */}
               <h1
                 onClick={() => isAdminMode && openAdminModal('profile')}
-                className={`text-2xl sm:text-4xl lg:text-5xl font-bold leading-[1.12] tracking-tight text-slate-900 dark:text-white transition-colors ${
+                className={`text-2xl sm:text-3xl lg:text-5xl font-bold leading-tight sm:leading-[1.12] tracking-tight text-slate-900 dark:text-white transition-colors ${
                   isAdminMode ? 'cursor-pointer hover:bg-blue-50/50 dark:hover:bg-blue-950/30 p-1 -ml-1 rounded-xl' : ''
                 }`}
               >
@@ -114,7 +114,7 @@ export const HeroSection: React.FC = () => {
               {/* Bio Copy (Font Type 1: Clean Sans Regular) */}
               <p
                 onClick={() => isAdminMode && openAdminModal('profile')}
-                className={`mt-4 sm:mt-5 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-200 font-normal transition-colors ${
+                className={`mt-3.5 sm:mt-5 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-200 font-normal transition-colors ${
                   isAdminMode ? 'cursor-pointer hover:bg-blue-50/50 dark:hover:bg-blue-950/30 p-2 -ml-2 rounded-xl' : ''
                 }`}
               >
@@ -123,18 +123,18 @@ export const HeroSection: React.FC = () => {
               </p>
 
               {/* Horizontal Scrollable Skill Spans (Adaptive on Mobile & Desktop) */}
-              <div className="mt-6">
-                <span className="block text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-2.5">
+              <div className="mt-5 sm:mt-6">
+                <span className="block text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-2 sm:mb-2.5">
                   Core Engineering Stack
                 </span>
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1">
                   {(profile.primarySkills || ['Java 17', 'Spring Boot 3', 'React', 'MySQL', 'REST APIs', 'JWT']).map(
                     (skill) => (
                       <motion.span
                         key={skill}
                         whileHover={{ scale: 1.05, y: -1 }}
                         transition={{ duration: 0.15 }}
-                        className="shrink-0 rounded-xl border border-slate-300/80 dark:border-blue-800/60 bg-slate-100/80 dark:bg-[#101D33]/90 px-3 py-1.5 text-xs font-mono font-semibold text-slate-800 dark:text-cyan-300 shadow-2xs hover:border-blue-500 dark:hover:border-cyan-400 cursor-default"
+                        className="shrink-0 rounded-xl border border-slate-300/80 dark:border-blue-800/60 bg-slate-100/80 dark:bg-[#101D33]/90 px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-mono font-semibold text-slate-800 dark:text-cyan-300 shadow-2xs hover:border-blue-500 dark:hover:border-cyan-400 cursor-default"
                       >
                         {skill}
                       </motion.span>
@@ -145,13 +145,13 @@ export const HeroSection: React.FC = () => {
             </div>
 
             {/* Bottom Actions & Social Strip */}
-            <div className="mt-7 pt-5 border-t border-slate-200/70 dark:border-blue-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex flex-wrap items-center gap-2.5">
+            <div className="mt-6 pt-4 sm:mt-7 sm:pt-5 border-t border-slate-200/70 dark:border-blue-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
                 <motion.a
                   href="#architecture-blueprint"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="group inline-flex items-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md shadow-blue-500/20 transition-all cursor-pointer"
+                  className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md shadow-blue-500/20 transition-all cursor-pointer"
                 >
                   Explore Blueprint <ArrowDownRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
                 </motion.a>
@@ -160,7 +160,7 @@ export const HeroSection: React.FC = () => {
                   onClick={openOneShot}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="group inline-flex items-center gap-1.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/40 px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-cyan-700 dark:text-cyan-300 transition-all hover:border-cyan-400 cursor-pointer shadow-xs"
+                  className="group inline-flex items-center gap-1.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 dark:bg-cyan-950/40 px-3 py-2 sm:px-3.5 sm:py-2.5 text-xs sm:text-sm font-semibold text-cyan-700 dark:text-cyan-300 transition-all hover:border-cyan-400 cursor-pointer shadow-xs"
                   title="Play Tour: Java Architecture"
                   aria-label="Play Tour"
                 >
@@ -171,13 +171,13 @@ export const HeroSection: React.FC = () => {
                   onClick={openResumeHeist}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="group inline-flex items-center gap-2 rounded-xl border border-slate-300 dark:border-blue-800/70 bg-white dark:bg-[#0E1A30] px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 transition-all hover:border-blue-500 dark:hover:border-cyan-400 cursor-pointer shadow-xs"
+                  className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-xl border border-slate-300 dark:border-blue-800/70 bg-white dark:bg-[#0E1A30] px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 transition-all hover:border-blue-500 dark:hover:border-cyan-400 cursor-pointer shadow-xs"
                 >
                   <Download className="h-4 w-4 text-blue-600 dark:text-cyan-400 transition-transform group-hover:-translate-y-0.5" /> Résumé
                 </motion.button>
               </div>
 
-              <div className="flex items-center gap-3.5 text-xs font-mono text-slate-600 dark:text-slate-400">
+              <div className="flex items-center gap-2.5 sm:gap-3.5 text-xs font-mono text-slate-600 dark:text-slate-400">
                 <span
                   onClick={() => isAdminMode && openAdminModal('profile')}
                   className={`inline-flex items-center gap-1.5 ${
@@ -185,13 +185,13 @@ export const HeroSection: React.FC = () => {
                   }`}
                 >
                   <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-cyan-400 shrink-0" />
-                  <span className="truncate max-w-[130px]">{profile.location}</span>
+                  <span className="truncate max-w-[120px] sm:max-w-[140px]">{profile.location}</span>
                 </span>
                 <a
                   href={profile.linkedinUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 p-1.5 rounded-lg hover:text-blue-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-[#132238] transition"
+                  className="inline-flex items-center gap-1 p-1 sm:p-1.5 rounded-lg hover:text-blue-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-[#132238] transition"
                   title="LinkedIn (Opens in new tab)"
                 >
                   <LinkedinIcon className="h-3.5 w-3.5" /> <span className="hidden sm:inline">LinkedIn</span>
@@ -200,7 +200,7 @@ export const HeroSection: React.FC = () => {
                   href={profile.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 p-1.5 rounded-lg hover:text-blue-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-[#132238] transition"
+                  className="inline-flex items-center gap-1 p-1 sm:p-1.5 rounded-lg hover:text-blue-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-[#132238] transition"
                   title="GitHub (Opens in new tab)"
                 >
                   <GithubIcon className="h-3.5 w-3.5" /> <span className="hidden sm:inline">GitHub</span>
@@ -214,7 +214,7 @@ export const HeroSection: React.FC = () => {
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-            className="lg:col-span-5 flex flex-col justify-between rounded-3xl border border-slate-200/80 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/90 backdrop-blur-xl p-6 sm:p-7 shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.45)] transition-all hover:border-blue-400/60 dark:hover:border-cyan-500/40"
+            className="lg:col-span-5 flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-slate-200/80 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/90 backdrop-blur-xl p-4 sm:p-6 lg:p-7 shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.45)] transition-all hover:border-blue-400/60 dark:hover:border-cyan-500/40"
           >
             <div>
               {/* Admin Quick Edit Header */}
@@ -234,13 +234,13 @@ export const HeroSection: React.FC = () => {
               )}
 
               {/* Profile Header Card */}
-              <div className="flex items-center gap-4 p-3 rounded-2xl border border-slate-200/70 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70">
+              <div className="flex items-center gap-3 sm:gap-4 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200/70 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70">
                 <div
                   className="relative shrink-0 cursor-pointer group"
                   onClick={() => setIsPhotoModalOpen(true)}
                   title="Click to view profile photo"
                 >
-                  <div className="relative h-20 w-20 sm:h-22 sm:w-22 overflow-hidden rounded-2xl border-2 border-white dark:border-cyan-500/40 shadow-md transition-transform duration-300 group-hover:scale-105 bg-[#071120] flex items-center justify-center">
+                  <div className="relative h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-xl sm:rounded-2xl border-2 border-white dark:border-cyan-500/40 shadow-md transition-transform duration-300 group-hover:scale-105 bg-[#071120] flex items-center justify-center">
                     {getPhotoSrc() ? (
                       <>
                         <img
@@ -279,7 +279,7 @@ export const HeroSection: React.FC = () => {
               </div>
 
               {/* 2-Column Adaptive Glass Span Grid (Replaces serial vertical list) */}
-              <div className="mt-4 grid grid-cols-2 gap-2.5">
+              <div className="mt-3 sm:mt-4 grid grid-cols-2 gap-2 sm:gap-2.5">
                 {[
                   [attr1Label, attr1Val],
                   [attr2Label, attr2Val],
@@ -291,7 +291,7 @@ export const HeroSection: React.FC = () => {
                   <div
                     key={label}
                     onClick={() => isAdminMode && openAdminModal('snapshot')}
-                    className={`p-3 rounded-2xl border border-slate-200/80 dark:border-blue-900/50 bg-slate-100/70 dark:bg-[#0E1A30]/60 flex flex-col justify-between transition-all ${
+                    className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-blue-900/50 bg-slate-100/70 dark:bg-[#0E1A30]/60 flex flex-col justify-between transition-all ${
                       isAdminMode ? 'cursor-pointer hover:border-blue-400' : ''
                     }`}
                   >
@@ -309,7 +309,7 @@ export const HeroSection: React.FC = () => {
             {/* Card Footer Strip */}
             <div
               onClick={() => isAdminMode && openAdminModal('snapshot')}
-              className={`mt-4 pt-3 border-t border-slate-200/80 dark:border-blue-900/50 flex items-center justify-between text-xs ${
+              className={`mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-200/80 dark:border-blue-900/50 flex items-center justify-between text-xs ${
                 isAdminMode ? 'cursor-pointer hover:opacity-80' : ''
               }`}
             >
@@ -317,7 +317,7 @@ export const HeroSection: React.FC = () => {
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span className="truncate">{profile.workType || 'Full-Time Opportunities'}</span>
               </span>
-              <span className="font-mono text-blue-700 dark:text-cyan-400 font-semibold truncate">
+              <span className="font-mono text-blue-700 dark:text-cyan-400 font-semibold truncate text-[11px] sm:text-xs">
                 {profile.locationPreference || 'Open to Relocation / Remote'}
               </span>
             </div>

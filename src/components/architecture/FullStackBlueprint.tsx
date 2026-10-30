@@ -402,7 +402,7 @@ export const FullStackBlueprint: React.FC = () => {
   return (
     <section
       id="architecture-blueprint"
-      className={`relative py-24 sm:py-32 overflow-hidden transition-colors duration-500 ${
+      className={`relative py-12 sm:py-20 lg:py-28 overflow-hidden transition-colors duration-500 ${
         isDark
           ? 'bg-[#050A14] text-[#E2E8F0]'
           : 'bg-[#F8FAFD] text-[#0F172A]'
@@ -581,19 +581,19 @@ export const FullStackBlueprint: React.FC = () => {
 
 
       {/* Main Content Container */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+      <div className="relative max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 z-10">
 
         {/* ========================================================================= */}
         {/* 2. ARCHITECTURAL HUD STATUS BAR & CONTROLS                                */}
         {/* ========================================================================= */}
-        <div className={`flex items-center justify-end gap-4 mb-12 pb-5 border-b ${
+        <div className={`flex items-center justify-end gap-3 sm:gap-4 mb-6 sm:mb-10 pb-3 sm:pb-4 border-b ${
           isDark ? 'border-cyan-500/20' : 'border-slate-300'
         }`}>
           {/* Interactive Simulation Trigger Button */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={handleStartSimulation}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-semibold transition-all duration-300 border ${
+              className={`inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-mono font-semibold transition-all duration-300 border ${
                 simulating
                   ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)]'
                   : isDark
@@ -620,10 +620,10 @@ export const FullStackBlueprint: React.FC = () => {
         {/* ========================================================================= */}
         {/* 3. HERO HEADLINE & PHILOSOPHY HANDWRITTEN CALLOUT                         */}
         {/* ========================================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-start mb-16 sm:mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 sm:gap-8 items-start mb-10 sm:mb-16">
           {/* Left Column: Bold Typography & Manifesto */}
           <div className="max-w-3xl">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] mb-3">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight sm:leading-[1.08] mb-2 sm:mb-3">
               <span className={isDark ? 'text-[#4E75FF] drop-shadow-[0_0_18px_rgba(78,117,255,0.4)]' : 'text-[#2563EB]'}>
                 Java
               </span>{' '}
@@ -632,7 +632,7 @@ export const FullStackBlueprint: React.FC = () => {
               </span>
             </h1>
 
-            <p className={`text-xl sm:text-2xl font-semibold tracking-wider mb-4 ${
+            <p className={`text-lg sm:text-xl font-semibold tracking-wide mb-3 sm:mb-4 ${
               isDark ? 'text-[#94A3B8]' : 'text-[#334155]'
             }`}>
               Building End-to-End Applications
@@ -689,17 +689,17 @@ export const FullStackBlueprint: React.FC = () => {
         {/* ========================================================================= */}
         {/* 4. THE HORIZONTAL ARCHITECTURE PIPELINE (5 Neon Glass Cards)              */}
         {/* ========================================================================= */}
-        <div className="mb-14 sm:mb-18">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-2.5">
-              <Layers className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
-              <h2 className={`text-sm sm:text-base font-mono uppercase tracking-wider font-bold ${
+        <div className="mb-10 sm:mb-16">
+          <div className="flex items-center justify-between mb-4 sm:mb-5">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              <Layers className={`w-4 h-4 sm:w-5 sm:h-5 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
+              <h2 className={`text-xs sm:text-base font-mono uppercase tracking-wider font-bold ${
                 isDark ? 'text-cyan-300' : 'text-[#0F172A]'
               }`}>
                 Pipeline Execution Flow
               </h2>
             </div>
-            <div className={`text-xs font-mono font-medium ${isDark ? 'text-[#94A3B8]' : 'text-slate-600'}`}>
+            <div className={`text-[11px] sm:text-xs font-mono font-medium ${isDark ? 'text-[#94A3B8]' : 'text-slate-600'}`}>
               {simulating ? (
                 <span className="text-cyan-500 font-bold animate-pulse">
                   ● Packet Active: Node {simStepIndex + 1}/5
@@ -711,7 +711,7 @@ export const FullStackBlueprint: React.FC = () => {
           </div>
 
           {/* Single Adaptive Pipeline Row: Horizontal Snap Slides on Mobile -> 5-Column Grid on Laptop */}
-          <div className="flex lg:grid lg:grid-cols-5 overflow-x-auto lg:overflow-visible snap-x snap-mandatory gap-3.5 lg:gap-4 items-stretch no-scrollbar pb-2">
+          <div className="flex lg:grid lg:grid-cols-5 overflow-x-auto lg:overflow-visible snap-x snap-mandatory gap-3 sm:gap-4 items-stretch no-scrollbar pb-2">
             {pipelineSteps.map((step, idx) => {
               const isActive = activeStepId === step.id;
               const isSimActive = simulating && simStepIndex === idx;
@@ -722,7 +722,7 @@ export const FullStackBlueprint: React.FC = () => {
                   onClick={() => setActiveStepId(isActive ? null : step.id)}
                   onMouseEnter={() => !simulating && setActiveStepId(step.id)}
                   className={`
-                    snap-center shrink-0 w-[72vw] sm:w-[44vw] lg:w-auto relative group p-5 sm:p-6 rounded-2xl transition-all duration-300 ease-out cursor-pointer flex flex-col justify-between
+                    snap-center shrink-0 w-[74vw] sm:w-[44vw] lg:w-auto relative group p-4 sm:p-5 lg:p-6 rounded-2xl transition-all duration-300 ease-out cursor-pointer flex flex-col justify-between
                     ${isDark
                       ? 'bg-[#0B1424]/90 backdrop-blur-xl border'
                       : 'bg-white/90 backdrop-blur-xl border border-slate-200/90 shadow-xs'
@@ -747,8 +747,8 @@ export const FullStackBlueprint: React.FC = () => {
                   />
 
                   {/* Step Sequence Badge */}
-                  <div className="flex items-center justify-between mb-3">
-                    <span className={`font-mono text-[10px] font-bold tracking-widest px-2.5 py-0.5 rounded-full border ${
+                  <div className="flex items-center justify-between mb-2.5 sm:mb-3">
+                    <span className={`font-mono text-[10px] font-bold tracking-widest px-2 sm:px-2.5 py-0.5 rounded-full border ${
                       isDark
                         ? 'bg-[#101D33] text-[#94A3B8] border-white/10'
                         : 'bg-slate-100 text-slate-700 border-slate-200'
@@ -765,8 +765,8 @@ export const FullStackBlueprint: React.FC = () => {
                   </div>
 
                   {/* Centered Icon */}
-                  <div className="my-3.5 sm:my-4 flex justify-center">
-                    <div className={`p-3.5 rounded-2xl transition-all duration-300 ${
+                  <div className="my-2.5 sm:my-3.5 flex justify-center">
+                    <div className={`p-3 sm:p-3.5 rounded-2xl transition-all duration-300 ${
                       isDark ? 'bg-[#0E1A30]/80' : 'bg-slate-50 border border-slate-100'
                     } group-hover:scale-105`}>
                       {step.icon(isDark)}
@@ -775,12 +775,12 @@ export const FullStackBlueprint: React.FC = () => {
 
                   {/* Typography: Title & Subtitle */}
                   <div className="text-center">
-                    <h3 className={`text-base font-bold tracking-tight mb-1 ${
+                    <h3 className={`text-sm sm:text-base font-bold tracking-tight mb-0.5 sm:mb-1 ${
                       isDark ? 'text-white' : 'text-[#0F172A]'
                     }`}>
                       {step.title}
                     </h3>
-                    <p className={`text-xs font-mono font-semibold ${
+                    <p className={`text-[11px] sm:text-xs font-mono font-semibold ${
                       isDark ? 'text-slate-300' : 'text-slate-700'
                     }`}>
                       {step.subtitle}
@@ -789,7 +789,7 @@ export const FullStackBlueprint: React.FC = () => {
 
                   {/* Active Packet Indicator when simulating */}
                   {isSimActive && (
-                    <div className="mt-3 pt-2 border-t border-cyan-500/30 text-[10px] font-mono font-bold text-cyan-500 text-center animate-pulse">
+                    <div className="mt-2.5 pt-2 border-t border-cyan-500/30 text-[10px] font-mono font-bold text-cyan-500 text-center animate-pulse">
                       ⚡ TRANSMITTING
                     </div>
                   )}
@@ -800,12 +800,12 @@ export const FullStackBlueprint: React.FC = () => {
 
           {/* Interactive Telemetry Drawer (Visible when a card is selected or simulated) */}
           {currentActiveStep && (
-            <div className={`mt-4 p-5 rounded-2xl border transition-all duration-300 ${
+            <div className={`mt-3 sm:mt-4 p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 ${
               isDark
                 ? 'bg-[#0B1528]/95 border-cyan-500/30 text-slate-200 shadow-xl'
                 : 'bg-white/95 border-blue-200 shadow-sm text-slate-800'
             }`}>
-              <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+              <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 text-xs font-mono">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
                   <span className={`font-bold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
@@ -819,7 +819,7 @@ export const FullStackBlueprint: React.FC = () => {
                   {currentActiveStep.telemetry.latency}
                 </div>
               </div>
-              <div className={`mt-2 text-sm font-sans ${isDark ? 'text-slate-200' : 'text-slate-800 font-normal'}`}>
+              <div className={`mt-2 text-xs sm:text-sm font-sans ${isDark ? 'text-slate-200' : 'text-slate-800 font-normal'}`}>
                 {currentActiveStep.telemetry.description}
               </div>
               <div className={`mt-1 text-xs font-mono font-semibold ${isDark ? 'text-cyan-300' : 'text-blue-700'}`}>
@@ -832,29 +832,29 @@ export const FullStackBlueprint: React.FC = () => {
         {/* ========================================================================= */}
         {/* 5. UNIFIED ADAPTIVE DISCIPLINE CONTAINER (Horizontal Slide -> 3x2 Grid)   */}
         {/* ========================================================================= */}
-        <div className="mb-14 sm:mb-18">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2.5">
-              <Code2 className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
-              <h2 className={`text-lg sm:text-xl font-bold tracking-tight ${
+        <div className="mb-10 sm:mb-16">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              <Code2 className={`w-4 h-4 sm:w-5 sm:h-5 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
+              <h2 className={`text-base sm:text-xl font-bold tracking-tight ${
                 isDark ? 'text-white' : 'text-[#0F172A]'
               }`}>
                 Engineering Sub-Disciplines
               </h2>
             </div>
-            <span className="md:hidden text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            <span className="md:hidden text-[10px] sm:text-[11px] font-mono text-slate-500 dark:text-slate-400">
               Swipe cards →
             </span>
           </div>
 
           {/* 1 Adaptive Div that rearranges from Horizontal Snap Cards on Mobile to 3-Column Bento Grid on Laptop */}
-          <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory gap-4 sm:gap-5 no-scrollbar pb-2">
+          <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory gap-3.5 sm:gap-5 no-scrollbar pb-2">
             {[...column1Disciplines, ...column2Disciplines, ...column3Disciplines].map((cat) => {
               const isHighlighted = activeStepId === cat.relatedStepId;
               return (
                 <div
                   key={cat.id}
-                  className={`snap-center shrink-0 w-[84vw] sm:w-[68vw] md:w-auto p-5 sm:p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between border ${
+                  className={`snap-center shrink-0 w-[84vw] sm:w-[68vw] md:w-auto p-4 sm:p-5 lg:p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between border ${
                     isDark
                       ? 'bg-[#0B1424]/85 backdrop-blur-md'
                       : 'bg-white/90 backdrop-blur-md shadow-xs'
@@ -870,22 +870,22 @@ export const FullStackBlueprint: React.FC = () => {
                 >
                   <div>
                     {/* Header with Icon and Badge */}
-                    <div className="flex items-center justify-between gap-3 mb-4">
-                      <div className="flex items-center gap-2.5">
-                        <div className={`p-2 rounded-xl border ${
+                    <div className="flex items-center justify-between gap-2.5 sm:gap-3 mb-3 sm:mb-4">
+                      <div className="flex items-center gap-2 sm:gap-2.5">
+                        <div className={`p-1.5 sm:p-2 rounded-xl border ${
                           isDark
                             ? 'bg-[#101D33] border-white/10'
                             : 'bg-slate-50 border-slate-200'
                         }`}>
                           {cat.icon(isDark)}
                         </div>
-                        <h3 className={`text-base font-bold tracking-tight ${
+                        <h3 className={`text-sm sm:text-base font-bold tracking-tight ${
                           isDark ? 'text-white' : 'text-[#0F172A]'
                         }`}>
                           {cat.title}
                         </h3>
                       </div>
-                      <span className={`text-[10px] font-mono font-semibold uppercase px-2.5 py-0.5 rounded-full border ${
+                      <span className={`text-[9px] sm:text-[10px] font-mono font-semibold uppercase px-2 sm:px-2.5 py-0.5 rounded-full border ${
                         isDark
                           ? 'bg-[#101D33] text-[#94A3B8] border-white/10'
                           : 'bg-slate-100 text-slate-700 border-slate-200'
@@ -895,13 +895,13 @@ export const FullStackBlueprint: React.FC = () => {
                     </div>
 
                     {/* Horizontal / Wrap Skill Spans inside each card */}
-                    <div className={`pt-3 border-t flex flex-wrap gap-1.5 ${
+                    <div className={`pt-2.5 sm:pt-3 border-t flex flex-wrap gap-1.5 ${
                       isDark ? 'border-white/10' : 'border-slate-200/80'
                     }`}>
                       {cat.items.map((item, iIdx) => (
                         <span
                           key={iIdx}
-                          className={`inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-medium border ${
+                          className={`inline-flex items-center gap-1.5 rounded-xl px-2 sm:px-2.5 py-1 sm:py-1.5 text-[11px] sm:text-xs font-medium border ${
                             isDark
                               ? 'bg-[#0E1A30]/90 text-slate-200 border-blue-900/40'
                               : 'bg-slate-50 text-slate-700 border-slate-200/80'
@@ -924,14 +924,14 @@ export const FullStackBlueprint: React.FC = () => {
         {/* ========================================================================= */}
         {/* 6. THE JOURNEY / FLOW BREADCRUMBS & FOOTER CALLOUTS                       */}
         {/* ========================================================================= */}
-        <div className="space-y-10">
+        <div className="space-y-6 sm:space-y-10">
           {/* Subtle Horizontal Breadcrumb Flow with "Business Logic" highlighted */}
-          <div className={`relative py-4 px-3 sm:px-6 rounded-2xl border transition-colors ${
+          <div className={`relative py-3 sm:py-4 px-3 sm:px-6 rounded-2xl border transition-colors ${
             isDark
               ? 'border-cyan-500/20 bg-[#0B1528]/80 backdrop-blur-md'
               : 'border-slate-200 bg-white/95 backdrop-blur-md shadow-sm'
           }`}>
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm font-mono font-semibold">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-4 text-xs sm:text-sm font-mono font-semibold">
               <span className={isDark ? 'text-white' : 'text-slate-800'}>
                 Frontend
               </span>
@@ -943,7 +943,7 @@ export const FullStackBlueprint: React.FC = () => {
               <span className={isDark ? 'text-cyan-400' : 'text-blue-600'}>→</span>
 
               {/* Highlighted Business Logic Pill */}
-              <span className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_0_15px_rgba(59,130,246,0.4)] flex items-center gap-1.5 font-bold">
+              <span className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_0_15px_rgba(59,130,246,0.4)] flex items-center gap-1.5 font-bold text-xs sm:text-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-200 animate-pulse" />
                 <span>Business Logic</span>
               </span>
@@ -966,14 +966,14 @@ export const FullStackBlueprint: React.FC = () => {
           </div>
 
           {/* Two Clean Side-by-Side Callouts at Bottom */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-6 relative">
             {/* Callout 1: Current Focus */}
-            <div className={`p-5 sm:p-7 rounded-2xl border transition-all duration-300 flex items-start gap-3.5 sm:gap-4 ${
+            <div className={`p-4 sm:p-6 lg:p-7 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 ${
               isDark
                 ? 'bg-[#0B1424]/85 backdrop-blur-md border-white/10'
                 : 'bg-white/95 backdrop-blur-md border-slate-200 shadow-sm'
             }`}>
-              <div className={`p-2.5 sm:p-3 rounded-xl border flex-shrink-0 ${
+              <div className={`p-2 sm:p-3 rounded-xl border flex-shrink-0 ${
                 isDark
                   ? 'bg-[#101D33] border-cyan-500/30 text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.3)]'
                   : 'bg-sky-50 border-sky-200 text-sky-700 shadow-sm'
@@ -995,30 +995,30 @@ export const FullStackBlueprint: React.FC = () => {
             </div>
 
             {/* Callout 2: Build with purpose */}
-            <div className={`p-5 sm:p-7 rounded-2xl border transition-all duration-300 flex items-start gap-3.5 sm:gap-4 ${
+            <div className={`p-4 sm:p-6 lg:p-7 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 ${
               isDark
                 ? 'bg-[#0B1424]/85 backdrop-blur-md border-white/10'
                 : 'bg-white/95 backdrop-blur-md border-slate-200 shadow-sm'
             }`}>
-              <div className={`p-2.5 sm:p-3 rounded-xl border flex-shrink-0 ${
+              <div className={`p-2 sm:p-3 rounded-xl border flex-shrink-0 ${
                 isDark
                   ? 'bg-[#101D33] border-cyan-500/30 text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.3)]'
                   : 'bg-indigo-50 border-indigo-200 text-indigo-700 shadow-sm'
               }`}>
                 <MountainPeaksIcon className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-0.5 sm:space-y-1">
                 <p className={`text-sm font-bold ${
                   isDark ? 'text-white' : 'text-[#0F172A]'
                 }`}>
                   Build with purpose.
                 </p>
-                <p className={`text-sm leading-relaxed ${
+                <p className={`text-xs sm:text-sm leading-relaxed ${
                   isDark ? 'text-[#94A3B8]' : 'text-[#475569]'
                 }`}>
                   Understand the architecture.
                 </p>
-                <p className={`text-sm leading-relaxed ${
+                <p className={`text-xs sm:text-sm leading-relaxed ${
                   isDark ? 'text-[#94A3B8]' : 'text-[#475569]'
                 }`}>
                   Keep improving.

@@ -8,10 +8,10 @@ export const EducationSection: React.FC = () => {
   const [mobilePane, setMobilePane] = useState<'academic' | 'certs'>('academic');
 
   return (
-    <section id="education" className="section-wash scroll-mt-20 px-4 py-14 sm:px-6 sm:py-22 transition-colors">
+    <section id="education" className="section-wash scroll-mt-20 px-3.5 py-10 sm:px-6 sm:py-18 transition-colors">
       <div className="mx-auto max-w-6xl">
         {/* Section Header */}
-        <div className="mb-8 sm:mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div className="mb-6 sm:mb-10 flex flex-col justify-between gap-3.5 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
             <span className="section-kicker font-mono">
               <GraduationCap className="h-4 w-4" /> Credentials & Academics
@@ -67,16 +67,16 @@ export const EducationSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.5 }}
-          className="rounded-3xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/90 backdrop-blur-xl shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden transition-all hover:border-blue-400/60 dark:hover:border-cyan-500/40"
+          className="rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/90 backdrop-blur-xl shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden transition-all hover:border-blue-400/60 dark:hover:border-cyan-500/40"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-200/80 dark:divide-blue-900/40">
             {/* Left Page (6 cols on laptop): Academic Degrees */}
             <div
-              className={`lg:col-span-6 p-5 sm:p-7 lg:p-8 ${
+              className={`lg:col-span-6 p-4 sm:p-6 lg:p-8 ${
                 mobilePane === 'academic' ? 'block' : 'hidden lg:block'
               }`}
             >
-              <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center justify-between mb-4 sm:mb-5">
                 <span className="inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-cyan-400">
                   <GraduationCap className="h-4 w-4" /> Academic Degrees
                 </span>
@@ -92,11 +92,11 @@ export const EducationSection: React.FC = () => {
                   </p>
                 </div>
               ) : (
-                <div className="flex lg:flex-col overflow-x-auto lg:overflow-visible snap-x snap-mandatory gap-4 no-scrollbar pb-1">
+                <div className="flex lg:flex-col overflow-x-auto lg:overflow-visible snap-x snap-mandatory gap-3.5 sm:gap-4 no-scrollbar pb-1">
                   {education.map((edu, idx) => (
                     <article
                       key={idx}
-                      className="snap-center shrink-0 w-[84vw] sm:w-[70vw] lg:w-auto rounded-2xl border border-slate-200/80 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70 p-5 transition hover:border-blue-400 dark:hover:border-cyan-500/40 hover:-translate-y-0.5"
+                      className="snap-center shrink-0 w-[84vw] sm:w-[70vw] lg:w-auto rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-blue-900/40 bg-slate-50/70 dark:bg-[#0E1A30]/70 p-3.5 sm:p-5 transition hover:border-blue-400 dark:hover:border-cyan-500/40 hover:-translate-y-0.5"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                         <span className="px-2.5 py-0.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-cyan-400 font-mono text-xs font-semibold">
@@ -128,11 +128,11 @@ export const EducationSection: React.FC = () => {
 
             {/* Right Page (6 cols on laptop): Workshops, Hackathons & Recognition */}
             <div
-              className={`lg:col-span-6 p-5 sm:p-7 lg:p-8 bg-slate-50/30 dark:bg-[#091324]/40 ${
+              className={`lg:col-span-6 p-4 sm:p-6 lg:p-8 bg-slate-50/30 dark:bg-[#091324]/40 ${
                 mobilePane === 'certs' ? 'block' : 'hidden lg:block'
               }`}
             >
-              <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center justify-between mb-4 sm:mb-5">
                 <span className="inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-cyan-400">
                   <Award className="h-4 w-4" /> Workshops & Recognition
                 </span>
@@ -148,11 +148,11 @@ export const EducationSection: React.FC = () => {
                   </p>
                 </div>
               ) : (
-                <div className="flex lg:grid lg:grid-cols-1 overflow-x-auto lg:overflow-visible snap-x snap-mandatory gap-3.5 no-scrollbar pb-1">
+                <div className="flex lg:grid lg:grid-cols-1 overflow-x-auto lg:overflow-visible snap-x snap-mandatory gap-3 sm:gap-3.5 no-scrollbar pb-1">
                   {certifications.map((cert, idx) => (
                     <article
                       key={idx}
-                      className="snap-center shrink-0 w-[84vw] sm:w-[70vw] lg:w-auto rounded-2xl border border-slate-200/80 dark:border-blue-900/40 bg-white/90 dark:bg-[#0E1A30]/80 p-4 sm:p-5 transition hover:border-blue-400 dark:hover:border-cyan-500/40 hover:-translate-y-0.5"
+                      className="snap-center shrink-0 w-[84vw] sm:w-[70vw] lg:w-auto rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-blue-900/40 bg-white/90 dark:bg-[#0E1A30]/80 p-3.5 sm:p-5 transition hover:border-blue-400 dark:hover:border-cyan-500/40 hover:-translate-y-0.5"
                     >
                       <div className="flex items-center justify-between gap-2 mb-1.5">
                         <span className="font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400">

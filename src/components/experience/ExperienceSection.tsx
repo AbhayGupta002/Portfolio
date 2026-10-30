@@ -44,10 +44,10 @@ export const ExperienceSection: React.FC = () => {
   };
 
   return (
-    <section id="experience" className="section-wash scroll-mt-20 px-4 py-14 sm:px-6 sm:py-22 transition-colors">
+    <section id="experience" className="section-wash scroll-mt-20 px-3.5 py-10 sm:px-6 sm:py-18 transition-colors">
       <div className="mx-auto max-w-6xl">
         {/* Section Header */}
-        <div className="mb-8 sm:mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div className="mb-6 sm:mb-10 flex flex-col justify-between gap-3.5 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
             <span className="section-kicker font-mono">
               <BriefcaseBusiness className="h-4 w-4" /> Career Chapters
@@ -119,9 +119,9 @@ export const ExperienceSection: React.FC = () => {
           </div>
         ) : (
           /* Single Adaptive Container: Book Spread on Laptop & Horizontal Book Slide on Mobile */
-          <div className="rounded-3xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/90 backdrop-blur-xl shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.45)] overflow-hidden transition-colors">
+          <div className="rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-blue-900/50 bg-white/85 dark:bg-[#0B1528]/90 backdrop-blur-xl shadow-sm dark:shadow-[0_20px_50px_rgba(0,0,0,0.45)] overflow-hidden transition-colors">
             {/* Top Chapter Selector Tabs (Horizontal Scrollable Spans on Mobile & Laptop) */}
-            <div className="flex items-center justify-between gap-2 px-4 sm:px-6 py-3.5 border-b border-slate-200/80 dark:border-blue-900/40 bg-slate-50/80 dark:bg-[#081120]/80 overflow-x-auto no-scrollbar">
+            <div className="flex items-center justify-between gap-2 px-3.5 sm:px-6 py-2.5 sm:py-3.5 border-b border-slate-200/80 dark:border-blue-900/40 bg-slate-50/80 dark:bg-[#081120]/80 overflow-x-auto no-scrollbar">
               <div className="flex items-center gap-2">
                 {experiences.map((exp, idx) => {
                   const isSelected = idx === safeIndex;
@@ -286,12 +286,12 @@ export const ExperienceSection: React.FC = () => {
                   setActiveIndex(idx);
                 }
               }}
-              className="flex sm:hidden overflow-x-auto snap-x snap-mandatory gap-4 p-4 no-scrollbar"
+              className="flex sm:hidden overflow-x-auto snap-x snap-mandatory gap-3.5 p-3.5 sm:p-4 no-scrollbar"
             >
               {experiences.map((exp, idx) => (
                 <article
                   key={exp.id}
-                  className="snap-center shrink-0 w-[88vw] max-w-[360px] rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-slate-50/70 dark:bg-[#0E1A30]/70 p-5 flex flex-col justify-between"
+                  className="snap-center shrink-0 w-[88vw] max-w-[360px] rounded-2xl border border-slate-200/90 dark:border-blue-900/50 bg-slate-50/70 dark:bg-[#0E1A30]/70 p-4 sm:p-5 flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-3">
